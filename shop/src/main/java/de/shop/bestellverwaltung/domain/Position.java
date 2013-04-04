@@ -13,19 +13,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
 /*import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;*/
 import javax.persistence.OrderColumn;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 
@@ -49,7 +48,6 @@ import de.shop.artikelverwaltung.domain.Artikel;
 		
 })*/
 
-@XmlRootElement
 public class Position implements Serializable {
 	private static final long serialVersionUID = 1L;	
 	
@@ -60,31 +58,31 @@ public class Position implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_POSITION", unique = true, nullable = false, updatable = false)
-	@XmlAttribute
+	@JsonProperty
 	private Long pkPosition;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 
 	@Column(name = "ANZAHL")
 	@Min(0)
-	@XmlElement
+	@JsonProperty
 	private int anzahl;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "FK_ARTIKEL", nullable = false)
-	@XmlTransient
+	@JsonIgnore
 	private Artikel artikel;
 	
 	@Transient
-	@XmlElement(name = "artikel", required = true)
+	@JsonProperty("artikel")
 	private URI artikelUri;
 	
 	public void setArtikelUri(URI artikelUri) {
@@ -103,7 +101,7 @@ public class Position implements Serializable {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "FK_BESTELLUNG", nullable = false, insertable = false, updatable = false)
 	@OrderColumn(name = "idx")
-	@XmlTransient
+	@JsonIgnore
 	private Bestellung bestellung;
 
 	@PrePersist

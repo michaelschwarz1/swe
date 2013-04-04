@@ -25,7 +25,7 @@ import com.google.common.base.Strings;
  */
 @ApplicationScoped
 @Log
-public class ValidationService implements Serializable {
+public class ValidatorProvider implements Serializable {
 	private static final long serialVersionUID = 7886864531128694923L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
