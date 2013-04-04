@@ -2,8 +2,6 @@ package de.shop.bestellverwaltung.rest;
 
 import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -41,7 +39,7 @@ import de.shop.util.Log;
 import de.shop.util.NotFoundException;
 
 @Path("/bestellungen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -117,7 +115,7 @@ public class BestellungResource {
 	 * @return Objekt mit Bestelldaten, falls die ID vorhanden ist
 	 */
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final String kundeUriStr = bestellung.getKundeUri().toString();
