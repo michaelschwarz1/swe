@@ -27,10 +27,9 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.istack.NotNull;
 
@@ -67,7 +66,6 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 })
 
 //@RequestScoped
-@XmlRootElement
 public class Kunde implements Serializable {
  private static final long serialVersionUID = 5685115602958386843L;
 
@@ -91,59 +89,59 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_KUNDE", unique = true, nullable = false, updatable = false)
-	@XmlAttribute
+	@JsonProperty
 	private Long pkKunde = null;
 
 	@Column(name = "NACHNAME")
 	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@XmlElement(required = true)
+	@JsonProperty("Nachname")
 	private String nachname;
 	
 	@Column(name = "VORNAME")
 	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@XmlElement
+	@JsonProperty
 	private String vorname;
 	
 	@Column(name = "EMAIL")
 	@NotNull
 	@Size(max = 128)
 	@Pattern(regexp = "[\\w.%-]+@[\\w.%-]+\\.[A-Za-z]{2,4}")
-	@XmlElement
+	@JsonProperty
 	private String email;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 	
 	@Column(name = "PASSWORD")
-	@XmlTransient
+	@JsonIgnore
 	private String password;
 	
 	@Transient
-	@XmlElement
+	@JsonProperty
 	private URI bestellungenUri;
 
 	//bi-directional many-to-one association to Bestellung
 	@OneToMany()
 	@JoinColumn(name = "FK_KUNDE", nullable = true)
 	@Size(min = 1)
-	@XmlTransient
+	@JsonIgnore
 	private List<Bestellung> bestellung;
 
 	@OneToOne(cascade = {PERSIST, REMOVE }, mappedBy = "kunde") //(optional =false)
 	@NotNull
 	@Valid
-	@XmlElement
+	@JsonProperty
 	private Adresse adresse;
 	
 	@PrePersist

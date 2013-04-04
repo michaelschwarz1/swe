@@ -22,12 +22,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import static javax.xml.bind.annotation.XmlAccessType.FIELD;
 
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 
 /**
@@ -36,55 +33,54 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Adresse")
-@XmlAccessorType(FIELD)
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_ADRESSE", unique = true, nullable = false, updatable = false)
-	@XmlAttribute
+	@JsonProperty
 	private long pkAdresse;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 
 	@Column(name = "HAUSNR")
 	@Min(1)
 	@Max(1000)
-	@XmlElement
+	@JsonProperty
 	private String hausnr;
 
 	@Column(name = "ORT")
 	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@XmlElement(required = true)
+	@JsonProperty("Ort")
 	private String ort;
 
 	@Column(name = "PLZ")
 	@Digits(integer = 5, fraction = 0)
-	@XmlElement(required = true)
+	@JsonProperty("PLZ")
 	private String plz;
 
 	@Column(name = "STRASSE")
 	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@XmlElement
+	@JsonProperty
 	private String strasse;
 
 	@OneToOne
 	@JoinColumn(name = "fk_kunde", nullable = false)
 	@NotNull(message = "{kundeverwaltung.adresse.kunde.notNull}")
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kunde;
 
 	public Kunde getKunde() {
