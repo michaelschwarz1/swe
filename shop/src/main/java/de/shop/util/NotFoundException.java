@@ -1,6 +1,6 @@
 package de.shop.util;
 
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends AbstractShopException {
 	private static final long serialVersionUID = -866705588853138386L;
 
 	public NotFoundException(String msg) {

@@ -20,10 +20,9 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.istack.NotNull;
 
@@ -65,7 +64,6 @@ import com.sun.istack.NotNull;
 			 	        + " ORDER BY a.id DESC")
 })
 
-@XmlRootElement
 public class Artikel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -82,48 +80,47 @@ public class Artikel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_ARTIKEL", unique = true, nullable = false, updatable = false)
-	@XmlAttribute
 	private Long pkArtikel;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 
 	@Column(name = "AUF_LAGER")
 	@Min(0)
-	@XmlElement
+	@JsonProperty
 	private int aufLager;
 	
     @Column(name = "BESCHREIBUNG")
     @NotNull
     @Size(min = 2, max = 32)
     @Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-    @XmlElement
+    @JsonProperty
     private String beschreibung;
     
     @Column(name = "KATEGORIE")
     @NotNull
     @Size(min = 2, max = 32)
     @Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-    @XmlElement
+    @JsonProperty
 	private String kategorie;
 
 	@Column(name = "PREIS")
 	@NotNull
-	@XmlElement
+	@JsonProperty
 	private double preis;
 
 	public Artikel() {
 		super();
 	}
 
-	@XmlTransient
+	@JsonIgnore
 	public Long getPkArtikel() {
 		return this.pkArtikel;
 	}
@@ -148,7 +145,7 @@ public class Artikel implements Serializable {
 		return akt;
 	} 
 
-	@XmlTransient
+	@JsonIgnore
 	public int getAufLager() {
 		return this.aufLager;
 	}
@@ -157,7 +154,7 @@ public class Artikel implements Serializable {
 		this.aufLager = aufLager;
 	}
 
-	@XmlTransient
+	@JsonIgnore
 	public String getBeschreibung() {
 		return this.beschreibung;
 	}

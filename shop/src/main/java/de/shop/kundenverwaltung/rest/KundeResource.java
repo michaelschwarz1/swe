@@ -3,9 +3,8 @@ package de.shop.kundenverwaltung.rest;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
+
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
@@ -31,7 +31,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
+
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.rest.UriHelperBestellung;
 import de.shop.bestellverwaltung.service.BestellungService;
@@ -39,18 +41,28 @@ import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.util.JsonFile;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 
 @Path("/kunden")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class KundeResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	private static final String VERSION = "1.0";
+	
+	@Context
+	private UriInfo uriInfo;
+	
+    @Context
+    private HttpHeaders headers;
 	
 	@Inject
 	private KundeService ks;
@@ -63,6 +75,9 @@ public class KundeResource {
 	
 	@Inject
 	private UriHelperBestellung uriHelperBestellung;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -96,22 +111,19 @@ public class KundeResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 //	@Formatted    // XML formatieren, d.h. Einruecken und Zeilenumbruch
-	public Kunde findKundeById(@PathParam("id") Long id,
-			                           @Context UriInfo uriInfo,
-			                           @Context HttpHeaders headers) {
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		final Kunde kunde = ks.findKundeById(id, FetchType.NUR_KUNDE, locale);
-		if (kunde == null) {
-			// TODO msg passend zu locale
-			final String msg = "Kein Kunde gefunden mit der ID " + id;
-			throw new NotFoundException(msg);
-		}
-	
-		// URLs innerhalb des gefundenen Kunden anpassen
-		uriHelperKunde.updateUriKunde(kunde, uriInfo);
-		
-		return kunde;
+	public Kunde findKundeById(@PathParam("id") Long id) {
+			final Locale locale = localeHelper.getLocale(headers);
+			final Kunde kunde = ks.findKundeById(id, FetchType.NUR_KUNDE, locale);
+			if (kunde == null) {
+				// TODO msg passend zu locale
+				final String msg = "Kein Kunde gefunden mit der ID " + id;
+				throw new NotFoundException(msg);
+			}
+
+			// URIs innerhalb des gefundenen Kunden anpassen
+			uriHelperKunde.updateUriKunde(kunde, uriInfo);
+			
+			return kunde;
 	}
 
 	/**
@@ -193,7 +205,7 @@ public class KundeResource {
 	}
 
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final Adresse adresse = kunde.getAdresse();
@@ -215,7 +227,7 @@ public class KundeResource {
 	 * @param kunde zu aktualisierende Daten des Kunden
 	 */
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandenen Kunden ermitteln
@@ -255,4 +267,23 @@ public class KundeResource {
 		final Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
 		ks.deleteKunde(kunde);
 	}
+	
+	
+//	@Path("{id:[1-9][0-9]*}/multimedia")
+//	@POST
+//	@Consumes(APPLICATION_JSON)
+//	public Response upload(@PathParam("id") Long kundeId, JsonFile file) {
+//	Locale locale = localeHelper.getLocale(headers);
+//	ks.setFile(kundeId, file.getBytes(), FetchType.NUR_KUNDE, locale);
+//	URI location = uriHelperKunde.getUriDownload(kundeId, uriInfo);
+//	return Response.created(location).build();
+//	}
+//	
+//	@Path("{id:[1-9][0-9]*}/multimedia")
+//	@GET
+//	public JsonFile download(@PathParam("id") Long kundeId) {
+//	Locale locale = localeHelper.getLocale(headers);
+//	Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+//	return new JsonFile(kunde.getFile().getBytes());
+//	}
 }

@@ -23,7 +23,7 @@ import javax.validation.groups.Default;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 
 /**
  * Anwendungslogik fuer die KundeService
@@ -48,7 +48,7 @@ public class KundeService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationService;
 	
 	@PostConstruct
 	private void postConstruct() {

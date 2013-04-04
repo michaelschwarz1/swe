@@ -24,10 +24,9 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.istack.NotNull;
 
@@ -58,7 +57,6 @@ import de.shop.kundenverwaltung.domain.Kunde;
 			
 })
 
-@XmlRootElement
 public class Bestellung implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -77,17 +75,17 @@ public class Bestellung implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_BESTELLUNG", unique = true, nullable = false, updatable = false)
-	@XmlAttribute
+	@JsonProperty
 	private Long pkBestellung;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 
 	@Column(nullable = false, insertable = true, updatable = true)
@@ -96,11 +94,11 @@ public class Bestellung implements Serializable {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "FK_KUNDE", nullable = false, insertable = true, updatable = false)
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kunde;
 	
 	@Transient
-	@XmlElement(name = "kunde", required = true)
+	@JsonProperty("kunde")
 	private URI kundeUri;
 
 	public URI getKundeUri() {
