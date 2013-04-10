@@ -32,11 +32,13 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 @Path("/artikel")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class ArtikelResource {
 	
