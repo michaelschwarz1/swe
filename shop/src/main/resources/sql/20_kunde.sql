@@ -1,0 +1,10 @@
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(201,'Michael','Schwarz','scmi1025@hs-karlsruhe.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(202,'David','Schillinger','david@hs-karlsruhe.de','1234','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(203,'Marc','Reinhard','marc@hs-karlsruhe.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(204,'Patrick','Pfefferle','patrick@hs-karlsruhe.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(205,'Sebastian','Schmitt','sebastian@hs-karlsruhe.de','asd123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(206,'Max','Mustermann','max@musteremail.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(207,'Anton','Maier','anton@web.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(208,'Elsa','Schmitt','elsa@hs-karlsruhe.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(209,'Tanja','Müller','tanjam@web.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Kunde(pk_kunde, vorname, nachname, email, password, erzeugt, aktualisiert) VALUES(210,'Miriam','Kramer','mirik@web.de','123','10.10.2012 00:00:00','10.10.2012 00:00:00');

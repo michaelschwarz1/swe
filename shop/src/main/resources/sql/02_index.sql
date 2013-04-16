@@ -1,0 +1,1 @@
+CREATE INDEX bestellung__kunde_index ON bestellung(fk_kunde);

@@ -1,7 +1,9 @@
 package de.shop.bestellverwaltung.domain;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
-
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.FetchType.EAGER;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -109,8 +111,8 @@ public class Bestellung implements Serializable {
 		this.kundeUri = kundeUri;
 	}
 
-	@OneToMany
-	@JoinColumn(name = "FK_BESTELLUNG", nullable = false, insertable = true, updatable = false)
+	@OneToMany(fetch = EAGER, cascade = { PERSIST, REMOVE })
+	@JoinColumn(name = "FK_BESTELLUNG", nullable = true, insertable = true, updatable = false)
 	@OrderColumn(name = "idx")
 	private List<Position> positionen;
 

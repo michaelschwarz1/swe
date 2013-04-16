@@ -9,11 +9,13 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,6 +44,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
  */
 @Entity
 @Table(name = "Kunde")
+@Inheritance 
 @NamedQueries({
 	
 	@NamedQuery(name  = Kunde.FIND_KUNDEN,
@@ -65,7 +68,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
    						+ " WHERE k.adresse.plz LIKE :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
 })
 
-//@RequestScoped
+@RequestScoped
 public class Kunde implements Serializable {
  private static final long serialVersionUID = 5685115602958386843L;
 
@@ -90,7 +93,7 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_KUNDE", unique = true, nullable = false, updatable = false)
 	@JsonProperty
-	private Long pkKunde = null;
+	private Long pkKunde;
 
 	@Column(name = "NACHNAME")
 	@NotNull
@@ -128,7 +131,6 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	private String password;
 	
 	@Transient
-	@JsonProperty
 	private URI bestellungenUri;
 
 	//bi-directional many-to-one association to Bestellung

@@ -1,0 +1,10 @@
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(101,201,'69168','Wiesloch','Hauptstrasse','8','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(110,202,'69126','Rohrbach','Gartenstrasse','10','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(102,203,'76133','Karlsruhe','Karlsstrasse ','34','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(103,204,'79576','Weil am Rhein','Schweizerstrasse','4','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(104,205,'68723','Plankstadt','Heilbronnerallee ','1','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(105,206,'76646','Bruchsal', 'Brobinenweg ','38','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(106,207,'70567','Stuttgar', 'Ulmenweg','14','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(107,208,'81243','München','Säbenerstrasse','1','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(108,209,'44267','Dortmund','Stadionalle','99','10.10.2012 00:00:00','10.10.2012 00:00:00');
+INSERT INTO Adresse(pk_adresse,fk_kunde,plz,ort,strasse,hausnr,erzeugt,aktualisiert) VALUES(109,210,'69151','Heidelberg','Hauptstrasse','33','10.10.2012 00:00:00','10.10.2012 00:00:00');
