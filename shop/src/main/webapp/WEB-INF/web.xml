@@ -50,7 +50,7 @@
  </security-constraint>
  <security-constraint>
   <web-resource-collection>
-   <web-resource-name>Privatkunden durch ein "Formular" erzeugen</web-resource-name>
+   <web-resource-name>Kunden durch ein "Formular" erzeugen</web-resource-name>
    <url-pattern>/rest/kunden/form</url-pattern>
    <http-method>POST</http-method>
   </web-resource-collection>

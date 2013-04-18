@@ -35,8 +35,7 @@ public class KundeService implements Serializable {
 	
 	public enum FetchType {
 		NUR_KUNDE,
-		MIT_BESTELLUNGEN,
-		MIT_WARTUNGSVERTRAEGEN
+		MIT_BESTELLUNGEN
 	}
 	
 	public enum OrderType {

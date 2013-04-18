@@ -2,15 +2,19 @@ package de.shop.kundenverwaltung.domain;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +30,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -35,6 +40,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.istack.NotNull;
 
+import de.shop.auth.service.jboss.AuthService.RolleType;
 import de.shop.bestellverwaltung.domain.Bestellung;
 
 
@@ -139,6 +145,13 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	@Size(min = 1)
 	@JsonIgnore
 	private List<Bestellung> bestellung;
+	
+	@ElementCollection(fetch = EAGER)
+	@CollectionTable(name = "kunde_rolle",
+	                 joinColumns = @JoinColumn(name = "fk_kunde", nullable = false),
+	                 uniqueConstraints =  @UniqueConstraint(columnNames = { "fk_kunde", "fk_rolle" }))
+	@Column(table = "kunde_rolle", name = "fk_rolle", nullable = false)
+	private Set<RolleType> rollen;
 
 	@OneToOne(cascade = {PERSIST, REMOVE }, mappedBy = "kunde") //(optional =false)
 	@NotNull
@@ -255,6 +268,14 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 		if (pkKunde.equals(k.pkKunde))
 			return new Kunde(this.vorname, this.nachname,  this.email, this.password , this.adresse);
 		return null;	
+	}
+
+	public Set<RolleType> getRollen() {
+		return rollen;
+	}
+
+	public void setRollen(Set<RolleType> rollen) {
+		this.rollen = rollen;
 	}
 
 }
