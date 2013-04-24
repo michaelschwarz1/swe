@@ -88,7 +88,7 @@ public class KundeService implements Serializable {
 	
 	/**
 	 */
-	@RolesAllowed({"sachbearbeiter", "gruppenleiter"})
+	//@RolesAllowed({"sachbearbeiter", "gruppenleiter"})
 	public List<Kunde> findKundenByNachname(String nachname, FetchType fetch, Locale locale) {
 		validateNachname(nachname, locale);
 		

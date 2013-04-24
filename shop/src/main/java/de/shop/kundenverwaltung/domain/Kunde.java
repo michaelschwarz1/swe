@@ -105,7 +105,7 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@JsonProperty("Nachname")
+	@JsonProperty
 	private String nachname;
 	
 	@Column(name = "VORNAME")
@@ -137,6 +137,7 @@ public static final String PARAM_KUNDE_EMAIL = "email";
 	private String password;
 	
 	@Transient
+	@JsonProperty
 	private URI bestellungenUri;
 
 	//bi-directional many-to-one association to Bestellung
