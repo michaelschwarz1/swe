@@ -80,6 +80,7 @@ public class Artikel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_ARTIKEL", unique = true, nullable = false, updatable = false)
+	@JsonProperty
 	private Long pkArtikel;
 
 	@Column(nullable = false)
