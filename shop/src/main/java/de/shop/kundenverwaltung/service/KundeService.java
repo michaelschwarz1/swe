@@ -8,10 +8,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -86,6 +88,7 @@ public class KundeService implements Serializable {
 	
 	/**
 	 */
+	@RolesAllowed({"sachbearbeiter", "gruppenleiter"})
 	public List<Kunde> findKundenByNachname(String nachname, FetchType fetch, Locale locale) {
 		validateNachname(nachname, locale);
 		
@@ -254,6 +257,7 @@ public class KundeService implements Serializable {
 
 	/**
 	 */
+	@RolesAllowed("gruppenleiter")
 	public void deleteKunde(Kunde kunde) {
 		if (kunde == null) {
 			return;
