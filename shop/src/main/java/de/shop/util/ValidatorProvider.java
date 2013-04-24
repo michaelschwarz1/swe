@@ -1,75 +1,64 @@
 package de.shop.util;
 
-import static java.util.logging.Level.INFO;
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import com.google.common.base.Strings;
-
+import org.hibernate.validator.internal.engine.resolver.JPATraversableResolver;
+import org.jboss.logging.Logger;
 
 
 /*
- * Bei Verwendung von JSF werden die Attribute bereits in der
- * Praesentationsschicht validiert.
+ * Bei Verwendung von JSF werden die Attribute bereits in der Praesentationsschicht validiert.
  */
 @ApplicationScoped
-@Log
 public class ValidatorProvider implements Serializable {
 	private static final long serialVersionUID = 7886864531128694923L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-
-	private String[] locales;   // in META-INF\seam-beans.xml setzen
 	
-	private Locale defaultLocale;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+
+	@Inject
+	private Config config;
+	
 	private transient HashMap<Locale, Validator> validators;
+	private Locale defaultLocale;
 	
 	@PostConstruct
 	private void init() {
-		validators = new HashMap<>();
+		defaultLocale = config.getDefaultLocale();
 		
-		if (locales == null || locales.length == 0) {
-			LOGGER.severe("In META-INF/seam-beans.xml sind keine Sprachen eingetragen");
-			return;
-		}
-		
+		final List<Locale> locales = config.getLocales();
 		final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		final JPATraversableResolver jpaTraversableResolver = new JPATraversableResolver();  // Spez. Kap. 4.4.3
 
-		for (String localeStr : locales) {
-			if (Strings.isNullOrEmpty(localeStr)) {
-				continue;
-			}
-			final Locale locale = new Locale(localeStr);
-			
-			// Erste Sprache als Default
-			if (defaultLocale == null) {
-				defaultLocale = locale;
-			}
-		
+		validators = new HashMap<>(locales.size(), 1);  // Anzahl Elemente bei Fuellgrad 1.0
+		for (Locale locale : locales) {
 			final MessageInterpolator interpolator = validatorFactory.getMessageInterpolator();
 			final MessageInterpolator localeInterpolator =
 				                      new LocaleSpecificMessageInterpolator(interpolator,
                                                                             locale);
 			final Validator validator = validatorFactory.usingContext()
                                                         .messageInterpolator(localeInterpolator)
+                                                        .traversableResolver(jpaTraversableResolver)
                                                         .getValidator();
 			validators.put(locale, validator);
 		}
 
 		if (validators.keySet() == null || validators.keySet().isEmpty()) {
-			LOGGER.severe("In META-INF/seam-beans.xml sind keine Sprachen eingetragen");
+			LOGGER.error("Es sind keine Sprachen eingetragen");
+			return;
 		}
-		LOGGER.log(INFO, "Locales fuer die Fehlermeldungen bei Bean Validation: {0}", validators.keySet());
+		LOGGER.infof("Locales fuer die Fehlermeldungen bei Bean Validation: %s", validators.keySet());
 	}
 	
 	/*
@@ -77,6 +66,10 @@ public class ValidatorProvider implements Serializable {
 	 * JAX-RS liefert List<Locale> durch HttpHeaders.getAcceptableLanguages() mit absteigenden Prioritaeten.
 	 */
 	public Validator getValidator(Locale locale) {
+		if (locale == null) {
+			return validators.get(defaultLocale);
+		}
+		
 		Validator validator = validators.get(locale);
 		if (validator != null) {
 			return validator;
@@ -93,6 +86,7 @@ public class ValidatorProvider implements Serializable {
 
 		return validators.get(defaultLocale);
 	}
+
 	
 	/**
 	 * http://hibernate.org/~emmanuel/validation
@@ -103,7 +97,7 @@ public class ValidatorProvider implements Serializable {
 	 * ResourceBundleMessageInterpolator.findUserResourceBundle(Locale) line: 284	
 	 * ResourceBundleMessageInterpolator.interpolateMessage(String, Map<String,Object>, Locale) line: 123	
 	 * ResourceBundleMessageInterpolator.interpolate(String, MessageInterpolator$Context, Locale) line: 101	
-	 * ValidationUtil$LocaleSpecificMessageInterpolator.interpolate(String, MessageInterpolator$Context) line: 100	
+	 * ValidatorProvider$LocaleSpecificMessageInterpolator.interpolate(String, MessageInterpolator$Context) line: 100	
 	 */
 	public static class LocaleSpecificMessageInterpolator implements MessageInterpolator {
 		private final MessageInterpolator interpolator;
