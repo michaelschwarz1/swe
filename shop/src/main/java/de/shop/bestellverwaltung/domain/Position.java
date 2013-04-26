@@ -1,11 +1,13 @@
 package de.shop.bestellverwaltung.domain;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -60,6 +63,10 @@ public class Position implements Serializable {
 	@Column(name = "PK_POSITION", unique = true, nullable = false, updatable = false)
 	@JsonProperty
 	private Long pkPosition;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
@@ -158,6 +165,14 @@ public class Position implements Serializable {
 
 	public void setBestellung(Bestellung bestellung) {
 		this.bestellung = bestellung;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 	
 }

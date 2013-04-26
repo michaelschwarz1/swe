@@ -1,10 +1,12 @@
 package de.shop.kundenverwaltung.domain;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -42,6 +45,10 @@ public class Adresse implements Serializable {
 	@JsonProperty
 	private long pkAdresse;
 
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
 	@JsonIgnore
@@ -166,6 +173,14 @@ public class Adresse implements Serializable {
 	@PreUpdate
 	private void preUpdate() {
 		aktualisiert = new Date();
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

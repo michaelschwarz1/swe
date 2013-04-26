@@ -1,11 +1,13 @@
 package de.shop.artikelverwaltung.domain;
 
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -82,6 +85,10 @@ public class Artikel implements Serializable {
 	@Column(name = "PK_ARTIKEL", unique = true, nullable = false, updatable = false)
 	@JsonProperty
 	private Long pkArtikel;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
@@ -249,6 +256,14 @@ public class Artikel implements Serializable {
 		       + ", preis=" + preis + ", AufLager=" + aufLager
 		       + ", erzeugt=" + erzeugt
 			   + ", aktualisiert=" + aktualisiert + "]";
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 	
 }

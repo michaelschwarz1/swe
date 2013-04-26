@@ -1,15 +1,18 @@
 package de.shop.bestellverwaltung.domain;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.TemporalType.TIMESTAMP;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +29,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -79,6 +83,10 @@ public class Bestellung implements Serializable {
 	@Column(name = "PK_BESTELLUNG", unique = true, nullable = false, updatable = false)
 	@JsonProperty
 	private Long pkBestellung;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
@@ -179,5 +187,13 @@ public class Bestellung implements Serializable {
 		
 		positionen.add(p);
 		return this;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }
