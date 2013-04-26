@@ -2,8 +2,8 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
+import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -28,13 +28,14 @@ import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
-import de.shop.util.ConcurrentDelete;
 import de.shop.util.AbstractResourceTest;
+import de.shop.util.ConcurrentDelete;
 import de.shop.util.ConcurrentUpdate;
 
 @RunWith(Arquillian.class)
@@ -42,11 +43,11 @@ import de.shop.util.ConcurrentUpdate;
 public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(120);
+	private static final Long KUNDE_ID_UPDATE = Long.valueOf(202);
 	private static final String NEUER_NACHNAME = "Testname";
 	private static final String NEUER_NACHNAME_2 = "Neuername";
-	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(122);
-	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(124);
+	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(203);
+	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(204);
 
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
@@ -113,7 +114,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-	
+	@Ignore
 	@Test
 	public void updateDelete() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -166,7 +167,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-	
+	@Ignore
 	@Test
 	public void deleteUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
