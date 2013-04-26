@@ -101,7 +101,7 @@ import de.shop.util.NoMimeTypeException;
 			assertThat(true, is(true));
 		}
 		
-		
+		@Ignore
 		@Test
 		public void notYetImplemented() {
 			fail();
@@ -193,7 +193,6 @@ import de.shop.util.NoMimeTypeException;
 			LOGGER.finer("ENDE");
 		}
 		
-		@Ignore
 		@Test
 		public void createKunde() {
 			LOGGER.finer("BEGINN");
@@ -203,7 +202,6 @@ import de.shop.util.NoMimeTypeException;
 			final String nachname = NEUER_NACHNAME;
 			final String vorname = NEUER_VORNAME;
 			final String email = NEUE_EMAIL;
-			final short kategorie = NEUE_KATEGORIE;
 			final String plz = NEUE_PLZ;
 			final String ort = NEUER_ORT;
 			final String strasse = NEUE_STRASSE;
@@ -214,7 +212,6 @@ import de.shop.util.NoMimeTypeException;
 			             		          .add("nachname", nachname)
 			             		          .add("vorname", vorname)
 			             		          .add("email", email)
-			             		          .add("kategorie", kategorie)
 			             		          .add("adresse", getJsonBuilderFactory().createObjectBuilder()
 			                    		                  .add("plz", plz)
 			                    		                  .add("ort", ort)
@@ -228,7 +225,7 @@ import de.shop.util.NoMimeTypeException;
 					                         .body(jsonObject.toString())
 	                                         .auth()
 	                                         .basic(username, password)
-	                                         .post(KUNDEN_PATH); 
+	                                         .post(KUNDEN_PATH);
 			
 			// Then
 			assertThat(response.getStatusCode(), is(HTTP_CREATED));
