@@ -1,0 +1,10 @@
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (201,0);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (202,1);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (203,2);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (204,3);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (205,0);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (206,1);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (207,3);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (208,1);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (209,3);
+INSERT INTO kunde_rolle (fk_kunde, fk_rolle) VALUES (210,3);
