@@ -1,19 +1,15 @@
 package de.shop.kundenverwaltung.service;
-
-import static de.shop.util.Constants.KEINE_ID;
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import org.jboss.logging.Logger;
+import static de.shop.util.Constants.KEINE_ID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.security.RolesAllowed;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,7 +18,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.jboss.logging.Logger;
+
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.domain.PasswordGroup;
+import de.shop.util.ConcurrentDeletedException;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
@@ -44,6 +44,10 @@ public class KundeService implements Serializable {
 		KEINE,
 		ID
 	}
+	
+	@Inject
+	@NeuerKunde
+	private transient Event<Kunde> event;
 	
 	@PersistenceContext
 	private transient EntityManager em;
@@ -209,7 +213,13 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Einfuegen gewahrt?
-// 		validateKunde(kunde, locale, Default.class, PasswordGroup.class);
+ 		validateKunde(kunde, locale, Default.class, PasswordGroup.class);
+		
+		// Pruefung, ob ein solcher Kunde schon existiert
+		final Kunde tmp = findKundeByEmail(kunde.getEmail(), locale);
+		if (tmp != null) {
+			throw new EmailExistsException(kunde.getEmail());
+		}
 		
 		// Pruefung, ob die Email-Adresse schon existiert
 		try {
@@ -225,7 +235,9 @@ public class KundeService implements Serializable {
 		
 		kunde.setPkKunde(KEINE_ID);
 		em.persist(kunde);
-		return kunde;		
+		event.fire(kunde);
+		
+		return kunde;	
 	}
 	
 	@SuppressWarnings("unused")
@@ -247,27 +259,40 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
-//		validateKunde(kunde, locale, Default.class, PasswordGroup.class, IdGroup.class);
-		
-		// Pruefung, ob die Email-Adresse schon existiert
-		try {
-			final Kunde vorhandenerKunde = em.createNamedQuery(Kunde.FIND_KUNDE_BY_EMAIL,
-					                                                   Kunde.class)
-					                                 .setParameter(Kunde.PARAM_KUNDE_EMAIL, kunde.getEmail())
-					                                 .getSingleResult();
-			
-			// Gibt es die Email-Adresse bei einem anderen Kunden?
-			if (vorhandenerKunde.getPkKunde().longValue() != kunde.getPkKunde().longValue()) {
-				throw new EmailExistsException(kunde.getEmail());
-			}
-		}
-		catch (NoResultException e) {
-			LOGGER.debugf("Neue Email-Adresse");
-		}
+		validateKunde(kunde, locale, Default.class, PasswordGroup.class, IdGroup.class);
 
-		em.merge(kunde);
+		// kunde vom EntityManager trennen, weil anschliessend z.B. nach Id und Email gesucht wird
+		em.detach(kunde);
+
+		// Wurde das Objekt konkurrierend geloescht?
+		Kunde tmp = findKundeById(kunde.getPkKunde(), FetchType.NUR_KUNDE, locale);
+		if (tmp == null) {
+			throw new ConcurrentDeletedException(kunde.getPkKunde());
+		}
+		em.detach(tmp);
+
+		// Gibt es ein anderes Objekt mit gleicher Email-Adresse?
+		tmp = findKundeByEmail(kunde.getEmail(), locale);
+		if (tmp != null) {
+			em.detach(tmp);
+		if (tmp.getPkKunde().longValue() != kunde.getPkKunde().longValue()) {
+		// anderes Objekt mit gleichem Attributwert fuer email
+		throw new EmailExistsException(kunde.getEmail());
+		}
+	}
+
+		// Password verschluesseln
+//		if (geaendertPassword) {
+//		passwordVerschluesseln(kunde);
+//		}
+//
+//		kunde.setPasswordWdh(kunde.getPassword());
+		
+		kunde = em.merge(kunde);   // OptimisticLockException
 		return kunde;
 	}
+	
+	
 
 	/**
 	 */
