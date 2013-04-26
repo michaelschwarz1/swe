@@ -48,8 +48,8 @@
 			<property name="hibernate.cache.use_reference_entries" value="true"/>
 			
 			<!-- im Produktivbetrieb auskommentieren -->
-			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-			<property name="hibernate.hbm2ddl.import_files" value="sql/02_index.sql,sql/10_hibernate_sequence.sql,sql/20_kunde.sql,sql/22_adresse.sql,sql/30_artikel.sql,sql/40_bestellung.sql,sql/50_positionen.sql"/>
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
+			<property name="hibernate.hbm2ddl.import_files" value="sql/01_rolle.sql,sql/02_index.sql,sql/10_hibernate_sequence.sql,sql/20_kunde.sql,sql/22_adresse.sql,sql/30_artikel.sql,sql/40_bestellung.sql,sql/50_positionen.sql"/>
 		</properties>
 	</persistence-unit>
 </persistence>
