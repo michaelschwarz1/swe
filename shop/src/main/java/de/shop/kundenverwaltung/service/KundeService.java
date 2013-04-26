@@ -88,7 +88,7 @@ public class KundeService implements Serializable {
 	
 	/**
 	 */
-	//@RolesAllowed({"sachbearbeiter", "gruppenleiter"})
+	//@RolesAllowed({"admin", "mitarbeiter"})
 	public List<Kunde> findKundenByNachname(String nachname, FetchType fetch, Locale locale) {
 		validateNachname(nachname, locale);
 		
@@ -120,13 +120,13 @@ public class KundeService implements Serializable {
 			throw new InvalidNachnameException(nachname, violations);
 	}
 	
-	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
-		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX,
-				                                           String.class)
-				                         .setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
-				                         .getResultList();
-		return nachnamen;
-	}
+//	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+//		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX,
+//				                                           String.class)
+//				                         .setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
+//				                         .getResultList();
+//		return nachnamen;
+//	}
 
 	/**
 	 */
@@ -149,6 +149,20 @@ public class KundeService implements Serializable {
 			return null;
 		}
 
+		return kunde;
+	}
+	
+	public Kunde findKundeByUserName(String userName) {
+		Kunde kunde;
+		try {
+			kunde = em.createNamedQuery(Kunde.FIND_KUNDE_BY_USERNAME, Kunde.class)
+					  .setParameter(Kunde.PARAM_KUNDE_USERNAME, userName)
+					  .getSingleResult();
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+		
 		return kunde;
 	}
 	
@@ -294,10 +308,10 @@ public class KundeService implements Serializable {
 
 	/**
 	 */
-	public List<Kunde> findKundenBySeit(Date seit) {
-		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_DATE, Kunde.class)
-                                             .setParameter(Kunde.PARAM_KUNDE_SEIT, seit)
-                                             .getResultList();
-		return kunden;
-	}
+//	public List<Kunde> findKundenBySeit(Date seit) {
+//		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_DATE, Kunde.class)
+//                                             .setParameter(Kunde.PARAM_KUNDE_SEIT, seit)
+//                                             .getResultList();
+//		return kunden;
+//	}
 }

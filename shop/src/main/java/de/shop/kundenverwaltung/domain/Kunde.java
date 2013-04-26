@@ -56,7 +56,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 	@NamedQuery(name  = Kunde.FIND_KUNDEN,
                 query = "SELECT k"
 				        + " FROM   Kunde k"),			       
-	@NamedQuery(name  = Kunde.FIND_KUNDR_BY_ID,
+	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_ID,
 		        query = "SELECT   k"
 		                + " FROM  Kunde k"
 		                + " WHERE k.id LIKE :" + Kunde.PARAM_KUNDE_ID),
@@ -72,6 +72,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
    				query ="SELECT k"
    						+ " FROM Kunde k"
    						+ " WHERE k.adresse.plz LIKE :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
+	
 })
 
 @RequestScoped
@@ -81,19 +82,21 @@ public class Kunde implements Serializable {
 private static final String PREFIX = "Kunde.";
 public static final String FIND_KUNDEN = PREFIX + "findKunden";
 public static final String FIND_KUNDEN_ORDER_BY_ID = PREFIX + "findKundenOrderById";
-public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnamenByPrefix";
+//public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnamenByPrefix";
 public static final String FIND_KUNDE_BY_EMAIL = PREFIX + "findKundeByEmail";
 public static final String FIND_KUNDEN_BY_PLZ = PREFIX + "findKundenByPlz";
-public static final String FIND_KUNDEN_BY_DATE = PREFIX + "findKundenByDate";
+public static final String FIND_KUNDE_BY_USERNAME = PREFIX + "findKundeByUsername";
+//public static final String FIND_KUNDEN_BY_DATE = PREFIX + "findKundenByDate";
 public static final String FIND_KUNDEN_BY_NACHNAME = PREFIX + "findKundenByNachname";
-public static final String FIND_KUNDR_BY_ID = PREFIX + "findKundeById";
+public static final String FIND_KUNDE_BY_ID = PREFIX + "findKundeById";
 public static final String PARAM_KUNDE_ID = "kundeId";
 public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
 public static final String PARAM_KUNDE_NACHNAME = "nachname";
-public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
+//public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 public static final String PARAM_KUNDE_ADRESSE_PLZ = "plz";
-public static final String PARAM_KUNDE_SEIT = "seit";
+//public static final String PARAM_KUNDE_SEIT = "seit";
 public static final String PARAM_KUNDE_EMAIL = "email";
+public static final String PARAM_KUNDE_USERNAME = "username";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

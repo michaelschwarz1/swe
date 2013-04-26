@@ -5,8 +5,8 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.BASEPATH;
 import static de.shop.util.TestConstants.BASEURI;
 import static de.shop.util.TestConstants.KUNDEN_ID_FILE_PATH;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
+import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -54,6 +55,7 @@ import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.AbstractResourceTest;
 import de.shop.util.NoMimeTypeException;
 
@@ -99,7 +101,7 @@ import de.shop.util.NoMimeTypeException;
 			assertThat(true, is(true));
 		}
 		
-		@Ignore
+		
 		@Test
 		public void notYetImplemented() {
 			fail();
@@ -123,7 +125,7 @@ import de.shop.util.NoMimeTypeException;
 			try (final JsonReader jsonReader =
 					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 				final JsonObject jsonObject = jsonReader.readObject();
-				assertThat(jsonObject.getJsonNumber("id").longValue(), is(kundeId.longValue()));
+				assertThat(jsonObject.getJsonNumber("pkKunde").longValue(), is(kundeId.longValue()));
 			}
 			
 			LOGGER.finer("ENDE");
@@ -190,51 +192,54 @@ import de.shop.util.NoMimeTypeException;
 
 			LOGGER.finer("ENDE");
 		}
-//		@Ignore
-//		@Test
-//		public void createKunde() {
-//			LOGGER.finer("BEGINN");
-//			
-//			// Given
-//			final String nachname = NEUER_NACHNAME;
-//			final String vorname = NEUER_VORNAME;
-//			final String email = NEUE_EMAIL;
-//			final short kategorie = NEUE_KATEGORIE;
-//			final String plz = NEUE_PLZ;
-//			final String ort = NEUER_ORT;
-//			final String strasse = NEUE_STRASSE;
-//			final String hausnr = NEUE_HAUSNR;
-//			final String password = PASSWORD;
-//			
-//			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-//			             		          .add("nachname", nachname)
-//			             		          .add("vorname", vorname)
-//			             		          .add("email", email)
-//			             		          .add("kategorie", kategorie)
-//			             		          .add("adresse", getJsonBuilderFactory().createObjectBuilder()
-//			                    		                  .add("plz", plz)
-//			                    		                  .add("ort", ort)
-//			                    		                  .add("strasse", strasse)
-//			                    		                  .add("hausnr", hausnr)
-//			                    		                  .build())
-//			                              .build();
-//
-//			// When
-//			final Response response = given().contentType(APPLICATION_JSON)
-//					                         .body(jsonObject.toString())
-//	                                         .auth()
-//	                                         .post(KUNDEN_PATH); 
-//			
-//			// Then
-//			assertThat(response.getStatusCode(), is(HTTP_CREATED));
-//			final String location = response.getHeader(LOCATION);
-//			final int startPos = location.lastIndexOf('/');
-//			final String idStr = location.substring(startPos + 1);
-//			final Long id = Long.valueOf(idStr);
-//			assertThat(id.longValue() > 0, is(true));
-//
-//			LOGGER.finer("ENDE");
-//		}
+		
+		@Ignore
+		@Test
+		public void createKunde() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final String username = USERNAME;
+			final String nachname = NEUER_NACHNAME;
+			final String vorname = NEUER_VORNAME;
+			final String email = NEUE_EMAIL;
+			final short kategorie = NEUE_KATEGORIE;
+			final String plz = NEUE_PLZ;
+			final String ort = NEUER_ORT;
+			final String strasse = NEUE_STRASSE;
+			final String hausnr = NEUE_HAUSNR;
+			final String password = PASSWORD;
+			
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+			             		          .add("nachname", nachname)
+			             		          .add("vorname", vorname)
+			             		          .add("email", email)
+			             		          .add("kategorie", kategorie)
+			             		          .add("adresse", getJsonBuilderFactory().createObjectBuilder()
+			                    		                  .add("plz", plz)
+			                    		                  .add("ort", ort)
+			                    		                  .add("strasse", strasse)
+			                    		                  .add("hausnr", hausnr)
+			                    		                  .build())
+			                              .build();
+
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+	                                         .auth()
+	                                         .basic(username, password)
+	                                         .post(KUNDEN_PATH); 
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_CREATED));
+			final String location = response.getHeader(LOCATION);
+			final int startPos = location.lastIndexOf('/');
+			final String idStr = location.substring(startPos + 1);
+			final Long id = Long.valueOf(idStr);
+			assertThat(id.longValue() > 0, is(true));
+
+			LOGGER.finer("ENDE");
+		}
 		
 		@Ignore
 		@Test
