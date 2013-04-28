@@ -41,12 +41,10 @@ public abstract class AbstractResourceTest {
 	private static JsonReaderFactory jsonReaderFactory;    // Fabrik zum Lesen bei GET-Requests
 	private static JsonBuilderFactory jsonBuilderFactory;  // Fabrik zum Schreiben bei POST- und PUT-Requests
 	
-	
 	@Deployment(name = ArchiveBuilder.TEST_WAR, testable = false)  // Die Tests laufen nicht im Container
 	protected static Archive<?> deployment() {
 		return ArchiveBuilder.getInstance().getArchive();
 	}
-	
 	
 	@BeforeClass
 	public static void init() {
@@ -70,12 +68,10 @@ public abstract class AbstractResourceTest {
 				                        .httpClient(httpClientConfig().setParam(DEFAULT_HEADERS, httpClientHeaders));
 	}
 	
-	
 	@After
 	public void reset() {
 		RestAssured.reset();
 	}
-
 
 	protected static JsonReaderFactory getJsonReaderFactory() {
 		return jsonReaderFactory;

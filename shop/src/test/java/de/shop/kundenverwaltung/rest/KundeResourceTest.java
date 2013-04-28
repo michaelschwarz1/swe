@@ -7,10 +7,12 @@ import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
+import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -53,10 +55,10 @@ import de.shop.util.AbstractResourceTest;
 		private static final String NACHNAME_VORHANDEN = "Schwarz";
 		private static final String NACHNAME_NICHT_VORHANDEN = "König";
 		private static final String NEUER_NACHNAME = "Nachnameneu";
-//		private static final String NEUER_NACHNAME_INVALID = "!";
+		private static final String NEUER_NACHNAME_INVALID = "!";
 		private static final String NEUER_VORNAME = "Vornameneu";
 		private static final String NEUE_EMAIL = NEUER_NACHNAME + "123@test.de";
-//		private static final String NEUE_EMAIL_INVALID = "falsch";
+		private static final String NEUE_EMAIL_INVALID = "falsch";
 		private static final String NEUE_PLZ = "76133";
 		private static final String NEUER_ORT = "Karlsruhe";
 		private static final String NEUE_STRASSE = "Testweg";
@@ -119,6 +121,7 @@ import de.shop.util.AbstractResourceTest;
 			LOGGER.finer("ENDE");
 		}
 		
+		//TODO findKundeByNachname
 		@Ignore
 		@Test
 		public void findKundenByNachnameVorhanden() {
@@ -180,15 +183,6 @@ import de.shop.util.AbstractResourceTest;
 			final String hausnr = NEUE_HAUSNR;
 			final String password = PASSWORD;
 
-//			final String nachname = "Potter";
-//			final String vorname = "Harry";
-//			final String email = "eule@mail.de";
-//			final String plz = "76133";
-//			final String ort = "Hogwarts";
-//			final String strasse = "Bahnhofstr";
-//			final String hausnr = "9";
-//			final String username = "admin";
-//			final String password = "p";
 			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 			             		          .add("nachname", nachname)
 			             		          .add("vorname", vorname)
@@ -219,62 +213,64 @@ import de.shop.util.AbstractResourceTest;
 			LOGGER.finer("ENDE");
 		}
 		
-//		@Ignore
-//		@Test
-//		public void createPrivatkundeFalschesPassword() {
-//			LOGGER.finer("BEGINN");
-//			
-//			// Given
-//			final String username = USERNAME;
-//			final String password = PASSWORD_FALSCH;
-//			final String nachname = NEUER_NACHNAME;
-//			
-//			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-//	            		                  .add("nachname", nachname)
-//	            		                  .build();
-//			
-//			// When
-//			final Response response = given().contentType(APPLICATION_JSON)
-//					                         .body(jsonObject.toString())
-//	                                         .auth()
-//	                                         .basic(username, password)
-//	                                         .post(KUNDEN_PATH);
-//			
-//			// Then
-//			assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
-//			
-//			LOGGER.finer("ENDE");
-//		}
-//		@Ignore
-//		@Test
-//		public void createKundeInvalid() {
-//			LOGGER.finer("BEGINN");
-//			
-//			// Given
-//			final String nachname = NEUER_NACHNAME_INVALID;
-//			final String vorname = NEUER_VORNAME;
-//			final String email = NEUE_EMAIL_INVALID;
-//			final String password = PASSWORD;
-//
-//			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-//	   		                              .add("nachname", nachname)
-//	   		                              .add("vorname", vorname)
-//	   		                              .add("email", email)
-//	   		                              .addNull("adresse")
-//	   		                              .build();
-//
-//			// When
-//			final Response response = given().contentType(APPLICATION_JSON)
-//					                         .body(jsonObject.toString())
-//	                                         .auth()
-//	                                         .post(KUNDEN_PATH);
-//			
-//			// Then
-//			assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-//			assertThat(response.asString().isEmpty(), is(false));
-//			
-//			LOGGER.finer("ENDE");
-//		}
+		
+		@Test
+		public void createKundeFalschesPassword() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final String username = USERNAME;
+			final String password = PASSWORD_FALSCH;
+			final String nachname = NEUER_NACHNAME;
+			
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+	            		                  .add("nachname", nachname)
+	            		                  .build();
+			
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+	                                         .auth()
+	                                         .basic(username, password)
+	                                         .post(KUNDEN_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
+			
+			LOGGER.finer("ENDE");
+		}
+		
+		@Test
+		public void createKundeInvalid() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final String username = USERNAME;
+			final String nachname = NEUER_NACHNAME_INVALID;
+			final String vorname = NEUER_VORNAME;
+			final String email = NEUE_EMAIL_INVALID;
+			final String password = PASSWORD;
+
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+	   		                              .add("nachname", nachname)
+	   		                              .add("vorname", vorname)
+	   		                              .add("email", email)
+	   		                              .addNull("adresse")
+	   		                              .build();
+
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+	                                         .auth()
+	                                         .basic(username, password)
+	                                         .post(KUNDEN_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
+			assertThat(response.asString().isEmpty(), is(false));
+			
+			LOGGER.finer("ENDE");
+		}
 		
 		@Test
 		public void updateKunde() {

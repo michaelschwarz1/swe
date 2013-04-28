@@ -41,6 +41,7 @@ import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
@@ -131,20 +132,13 @@ public class KundeResource {
 	 * @return Collection mit den gefundenen Kundendaten
 	 */
 	@GET
-	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname,
-			                                              @Context UriInfo uriInfo,
-			                                              @Context HttpHeaders headers) {
+	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
 		Collection<Kunde> kunden = null;
 		if ("".equals(nachname)) {
-			kunden = ks.findAllKunden(FetchType.NUR_KUNDE, null);
-			if (kunden.isEmpty()) {
-				final String msg = "Keine Kunden vorhanden";
-				throw new NotFoundException(msg);
-			}
+			kunden = ks.findAllKunden(FetchType.NUR_KUNDE, OrderType.KEINE);
 		}
 		else {
-			final List<Locale> locales = headers.getAcceptableLanguages();
-			final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+			final Locale locale = localeHelper.getLocale(headers);
 			kunden = ks.findKundenByNachname(nachname, FetchType.NUR_KUNDE, locale);
 			if (kunden.isEmpty()) {
 				final String msg = "Kein Kunde gefunden mit Nachname " + nachname;
@@ -152,16 +146,44 @@ public class KundeResource {
 			}
 		}
 		
-		// URLs innerhalb der gefundenen Kunden anpassen
+		// URIs innerhalb der gefundenen Kunden anpassen
 		for (Kunde kunde : kunden) {
 			uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		}
-		
-		// Konvertierung in eigene Collection-Klasse wg. Wurzelelement
-		//final KundeCollection kundeColl = new KundeCollection(kunden);
-		
 		return kunden;
 	}
+//	@GET
+//	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname,
+//			                                              @Context UriInfo uriInfo,
+//			                                              @Context HttpHeaders headers) {
+//		Collection<Kunde> kunden = null;
+//		if ("".equals(nachname)) {
+//			kunden = ks.findAllKunden(FetchType.NUR_KUNDE, null);
+//			if (kunden.isEmpty()) {
+//				final String msg = "Keine Kunden vorhanden";
+//				throw new NotFoundException(msg);
+//			}
+//		}
+//		else {
+//			final List<Locale> locales = headers.getAcceptableLanguages();
+//			final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+//			kunden = ks.findKundenByNachname(nachname, FetchType.NUR_KUNDE, locale);
+//			if (kunden.isEmpty()) {
+//				final String msg = "Kein Kunde gefunden mit Nachname " + nachname;
+//				throw new NotFoundException(msg);
+//			}
+//		}
+//		
+//		// URLs innerhalb der gefundenen Kunden anpassen
+//		for (Kunde kunde : kunden) {
+//			uriHelperKunde.updateUriKunde(kunde, uriInfo);
+//		}
+//		
+//		// Konvertierung in eigene Collection-Klasse wg. Wurzelelement
+//		//final KundeCollection kundeColl = new KundeCollection(kunden);
+//		
+//		return kunden;
+//	}
 	
 	/**
 	 * Mit der URL /kunden/{id}/bestellungen die Bestellungen zu eine Kunden ermitteln

@@ -6,7 +6,6 @@ import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
@@ -35,7 +34,6 @@ import org.junit.runner.RunWith;
 import com.jayway.restassured.response.Response;
 
 import de.shop.util.AbstractResourceTest;
-import de.shop.util.ConcurrentDelete;
 import de.shop.util.ConcurrentUpdate;
 
 @RunWith(Arquillian.class)
@@ -43,12 +41,13 @@ import de.shop.util.ConcurrentUpdate;
 public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(202);
+	private static final Long KUNDE_ID_UPDATE = Long.valueOf(210);
 	private static final String NEUER_NACHNAME = "Testname";
 	private static final String NEUER_NACHNAME_2 = "Neuername";
-	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(203);
-	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(204);
+//	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(203);
+//	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(204);
 	
+	@Ignore
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
