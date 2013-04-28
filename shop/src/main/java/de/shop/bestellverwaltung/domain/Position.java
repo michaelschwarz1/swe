@@ -62,7 +62,7 @@ public class Position implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_POSITION", unique = true, nullable = false, updatable = false)
 	@JsonProperty
-	private Long pkPosition;
+	private Long pkPosition = null;
 	
 	@Version
 	@Basic(optional = false)
@@ -89,7 +89,7 @@ public class Position implements Serializable {
 	private Artikel artikel;
 	
 	@Transient
-	@JsonProperty("artikel")
+	@JsonProperty
 	private URI artikelUri;
 	
 	public void setArtikelUri(URI artikelUri) {

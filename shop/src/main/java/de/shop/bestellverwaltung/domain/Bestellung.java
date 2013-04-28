@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,7 +63,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
 	
 			
 })
-
+@Cacheable
 public class Bestellung implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -74,7 +75,7 @@ public class Bestellung implements Serializable {
 	public static final String FIND_KUNDE_BY_ID = PREFIX + "findBestellungKundeById";
 	public static final String ALLE_BESTELLUNGEN = PREFIX + "allebestellungen";
 	public static final String ALLE_POSITIONEN_FUER_BESTELLUNGEN = PREFIX + "allesPositionenfuerartikel";
-	public static final String PARAM_KUNDE_NACHNAME = "Schwarzz";
+	public static final String PARAM_KUNDE_NACHNAME = "nachname";
 	public static final String PARAM_KUNDEID = "kundeId";
 	public static final String PARAM_ID = "id";
 	
@@ -82,7 +83,7 @@ public class Bestellung implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_BESTELLUNG", unique = true, nullable = false, updatable = false)
 	@JsonProperty
-	private Long pkBestellung;
+	private Long pkBestellung = null;
 	
 	@Version
 	@Basic(optional = false)
@@ -108,7 +109,7 @@ public class Bestellung implements Serializable {
 	private Kunde kunde;
 	
 	@Transient
-	@JsonProperty("kunde")
+	@JsonProperty
 	private URI kundeUri;
 
 	public URI getKundeUri() {
@@ -121,7 +122,7 @@ public class Bestellung implements Serializable {
 
 	@OneToMany(fetch = EAGER, cascade = { PERSIST, REMOVE })
 	@JoinColumn(name = "FK_BESTELLUNG", nullable = false, insertable = false, updatable = false)
-	@OrderColumn(name = "idx")
+	@OrderColumn(name = "idx", nullable = false)
 	private List<Position> positionen;
 
 	public Bestellung() {

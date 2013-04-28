@@ -22,7 +22,7 @@ public final class TestConstants {
 	public static final String KUNDEN_URI = BASEURI + ":" + PORT + BASEPATH + KUNDEN_PATH;
 	public static final String KUNDEN_ID_PATH_PARAM = "kundeId";
 	public static final String KUNDEN_ID_PATH = KUNDEN_PATH + "/{" + KUNDEN_ID_PATH_PARAM + "}";
-	public static final String KUNDEN_NACHNAME_QUERY_PARAM = "nachname";
+	public static final String KUNDEN_NACHNAME_QUERY_PARAM = "Nachname";
 	public static final String KUNDEN_ID_FILE_PATH = KUNDEN_ID_PATH + "/file";
 	
 	public static final String BESTELLUNGEN_PATH = "/bestellungen";
