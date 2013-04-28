@@ -1,14 +1,14 @@
 package de.shop.kundenverwaltung.service;
+import static de.shop.util.Constants.KEINE_ID;
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import static de.shop.util.Constants.KEINE_ID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.annotation.security.RolesAllowed;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -296,7 +296,7 @@ public class KundeService implements Serializable {
 
 	/**
 	 */
-	@RolesAllowed("gruppenleiter")
+
 	public void deleteKunde(Kunde kunde) {
 		if (kunde == null) {
 			return;

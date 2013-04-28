@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.enterprise.context.RequestScoped;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -77,8 +77,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
    						+ " WHERE k.adresse.plz LIKE :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
 	
 })
-
-@RequestScoped
+@Cacheable
 public class Kunde implements Serializable {
  private static final long serialVersionUID = 5685115602958386843L;
 
@@ -105,7 +104,7 @@ public static final String PARAM_KUNDE_USERNAME = "username";
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PK_KUNDE", unique = true, nullable = false, updatable = false)
 	@JsonProperty
-	private Long pkKunde;
+	private Long pkKunde = null;
 	
 	@Version
 	@Basic(optional = false)

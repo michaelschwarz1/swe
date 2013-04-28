@@ -2,41 +2,22 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.BASEPATH;
-import static de.shop.util.TestConstants.BASEURI;
-import static de.shop.util.TestConstants.KUNDEN_ID_FILE_PATH;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
+import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
-import static de.shop.util.TestConstants.PORT;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.math.BigDecimal;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -45,7 +26,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
@@ -55,9 +35,7 @@ import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
-import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.AbstractResourceTest;
-import de.shop.util.NoMimeTypeException;
 
 
 	
@@ -68,43 +46,36 @@ import de.shop.util.NoMimeTypeException;
 		
 		private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(201);
 		private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
-		private static final Long KUNDE_ID_UPDATE = Long.valueOf(220);
-		private static final Long KUNDE_ID_DELETE = Long.valueOf(202);
-		private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(203);
-		private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(201);
+		private static final Long KUNDE_ID_UPDATE = Long.valueOf(202);
+//		private static final Long KUNDE_ID_DELETE = Long.valueOf(205);
+//		private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(203);
+//		private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(204);
 		private static final String NACHNAME_VORHANDEN = "Schwarz";
 		private static final String NACHNAME_NICHT_VORHANDEN = "Dasistfalsch";
 		private static final String NEUER_NACHNAME = "Nachnameneu";
-		private static final String NEUER_NACHNAME_INVALID = "!";
+//		private static final String NEUER_NACHNAME_INVALID = "!";
 		private static final String NEUER_VORNAME = "Vornameneu";
-		private static final String NEUE_EMAIL = NEUER_NACHNAME + "@test.de";
-		private static final String NEUE_EMAIL_INVALID = "falsch@falsch";
-		private static final short NEUE_KATEGORIE = 1;
+		private static final String NEUE_EMAIL = NEUER_NACHNAME + "123@test.de";
+//		private static final String NEUE_EMAIL_INVALID = "falsch";
 		private static final String NEUE_PLZ = "76133";
 		private static final String NEUER_ORT = "Karlsruhe";
 		private static final String NEUE_STRASSE = "Testweg";
 		private static final String NEUE_HAUSNR = "1";
 		
-		private static final String FILENAME = "image.gif";
-		//private static final String FILENAME = "video.mp4";
-		private static final String FILENAME_UPLOAD = "src/test/resources/rest/" + FILENAME;
-		private static final String FILENAME_DOWNLOAD = "target/" + FILENAME;
-		private static final CopyOption[] COPY_OPTIONS = { REPLACE_EXISTING };
-		private static final Long KUNDE_ID_UPLOAD = Long.valueOf(102);
+//		private static final String FILENAME = "image.gif";
+//		//private static final String FILENAME = "video.mp4";
+//		private static final String FILENAME_UPLOAD = "src/test/resources/rest/" + FILENAME;
+//		private static final String FILENAME_DOWNLOAD = "target/" + FILENAME;
+//		private static final CopyOption[] COPY_OPTIONS = { REPLACE_EXISTING };
+//		private static final Long KUNDE_ID_UPLOAD = Long.valueOf(102);
 
-		private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";
-		private static final String FILENAME_UPLOAD_INVALID_MIMETYPE = "src/test/resources/rest/" + FILENAME_INVALID_MIMETYPE;
+//		private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";
+//		private static final String FILENAME_UPLOAD_INVALID_MIMETYPE = "src/test/resources/rest/" + FILENAME_INVALID_MIMETYPE;
 		
 		
 		@Test
 		public void validate() {
 			assertThat(true, is(true));
-		}
-		
-		@Ignore
-		@Test
-		public void notYetImplemented() {
-			fail();
 		}
 		
 		@Test
@@ -164,7 +135,7 @@ import de.shop.util.NoMimeTypeException;
 			try (final JsonReader jsonReader =
 					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 				final JsonArray jsonArray = jsonReader.readArray();
-		    	assertThat(jsonArray.size() > 0, is(true));
+		    	assertThat(jsonArray.size() > 1, is(true));
 		    	
 		    	final List<JsonObject> jsonObjectList = jsonArray.getValuesAs(JsonObject.class);
 		    	for (JsonObject jsonObject : jsonObjectList) {
@@ -198,25 +169,34 @@ import de.shop.util.NoMimeTypeException;
 			LOGGER.finer("BEGINN");
 			
 			// Given
-			final String username = USERNAME;
-			final String nachname = NEUER_NACHNAME;
-			final String vorname = NEUER_VORNAME;
-			final String email = NEUE_EMAIL;
-			final String plz = NEUE_PLZ;
-			final String ort = NEUER_ORT;
-			final String strasse = NEUE_STRASSE;
-			final String hausnr = NEUE_HAUSNR;
-			final String password = PASSWORD;
-			
+//			final String username = USERNAME;
+//			final String nachname = NEUER_NACHNAME;
+//			final String vorname = NEUER_VORNAME;
+//			final String email = NEUE_EMAIL;
+//			final String plz = NEUE_PLZ;
+//			final String ort = NEUER_ORT;
+//			final String strasse = NEUE_STRASSE;
+//			final String hausnr = NEUE_HAUSNR;
+//			final String password = PASSWORD;
+
+			final String nachname = "Potter";
+			final String vorname = "Harry";
+			final String email = "eule@mail.de";
+			final String plz = "76133";
+			final String ort = "Hogwarts";
+			final String strasse = "Bahnhofstr";
+			final String hausnr = "9";
+			final String username = "admin";
+			final String password = "p";
 			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 			             		          .add("nachname", nachname)
 			             		          .add("vorname", vorname)
 			             		          .add("email", email)
 			             		          .add("adresse", getJsonBuilderFactory().createObjectBuilder()
-			                    		                  .add("plz", plz)
-			                    		                  .add("ort", ort)
-			                    		                  .add("strasse", strasse)
 			                    		                  .add("hausnr", hausnr)
+			                    		                  .add("ort", ort)
+			                    		                  .add("plz", plz)
+			                    		                  .add("strasse", strasse)                    		                  
 			                    		                  .build())
 			                              .build();
 
@@ -238,32 +218,32 @@ import de.shop.util.NoMimeTypeException;
 			LOGGER.finer("ENDE");
 		}
 		
-		@Ignore
-		@Test
-		public void createPrivatkundeFalschesPassword() {
-			LOGGER.finer("BEGINN");
-			
-			// Given
-			final String username = USERNAME;
-			final String password = PASSWORD_FALSCH;
-			final String nachname = NEUER_NACHNAME;
-			
-			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-	            		                  .add("nachname", nachname)
-	            		                  .build();
-			
-			// When
-			final Response response = given().contentType(APPLICATION_JSON)
-					                         .body(jsonObject.toString())
-	                                         .auth()
-	                                         .basic(username, password)
-	                                         .post(KUNDEN_PATH);
-			
-			// Then
-			assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
-			
-			LOGGER.finer("ENDE");
-		}
+//		@Ignore
+//		@Test
+//		public void createPrivatkundeFalschesPassword() {
+//			LOGGER.finer("BEGINN");
+//			
+//			// Given
+//			final String username = USERNAME;
+//			final String password = PASSWORD_FALSCH;
+//			final String nachname = NEUER_NACHNAME;
+//			
+//			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+//	            		                  .add("nachname", nachname)
+//	            		                  .build();
+//			
+//			// When
+//			final Response response = given().contentType(APPLICATION_JSON)
+//					                         .body(jsonObject.toString())
+//	                                         .auth()
+//	                                         .basic(username, password)
+//	                                         .post(KUNDEN_PATH);
+//			
+//			// Then
+//			assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
+//			
+//			LOGGER.finer("ENDE");
+//		}
 //		@Ignore
 //		@Test
 //		public void createKundeInvalid() {
@@ -339,73 +319,73 @@ import de.shop.util.NoMimeTypeException;
 			// Then
 			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
 	   	}
-		@Ignore
-		@Test
-		public void deleteKunde() {
-			LOGGER.finer("BEGINN");
-			
-			// Given
-			final Long kundeId = KUNDE_ID_DELETE;
-			final String username = USERNAME_ADMIN;
-			final String password = PASSWORD_ADMIN;
-			
-			// When
-			final Response response = given().auth()
-	                                         .basic(username, password)
-	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-	                                         .delete(KUNDEN_ID_PATH);
-			
-			// Then
-			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-			LOGGER.finer("ENDE");
-		}
-		@Ignore
-		@Test
-		public void deleteKundeMitBestellung() {
-			LOGGER.finer("BEGINN");
-			
-			// Given
-			final Long kundeId = KUNDE_ID_DELETE_MIT_BESTELLUNGEN;
-			final String username = USERNAME_ADMIN;
-			final String password = PASSWORD_ADMIN;
-			
-			// When
-			final Response response = given().auth()
-	                                         .basic(username, password)
-	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-	                                         .delete(KUNDEN_ID_PATH);
-			
-			// Then
-			assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-			final String errorMsg = response.asString();
-			assertThat(errorMsg, startsWith("Kunde mit ID=" + kundeId + " kann nicht geloescht werden:"));
-			assertThat(errorMsg, endsWith("Bestellung(en)"));
-
-			LOGGER.finer("ENDE");
-		}
-		
-		@Ignore
-		@Test
-		public void deleteKundeFehlendeBerechtigung() {
-			LOGGER.finer("BEGINN");
-			
-			// Given
-			final String username = USERNAME;
-			final String password = PASSWORD;
-			final Long kundeId = KUNDE_ID_DELETE_FORBIDDEN;
-			
-			// When
-			final Response response = given().auth()
-	                                         .basic(username, password)
-	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-	                                         .delete(KUNDEN_ID_PATH);
-			
-			// Then
-			assertThat(response.getStatusCode(), anyOf(is(HTTP_FORBIDDEN), is(HTTP_NOT_FOUND)));
-			
-			LOGGER.finer("ENDE");
-		}
-		
+//		@Ignore
+//		@Test
+//		public void deleteKunde() {
+//			LOGGER.finer("BEGINN");
+//			
+//			// Given
+//			final Long kundeId = KUNDE_ID_DELETE;
+//			final String username = USERNAME_ADMIN;
+//			final String password = PASSWORD_ADMIN;
+//			
+//			// When
+//			final Response response = given().auth()
+//	                                         .basic(username, password)
+//	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
+//	                                         .delete(KUNDEN_ID_PATH);
+//			
+//			// Then
+//			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+//			LOGGER.finer("ENDE");
+//		}
+//		@Ignore
+//		@Test
+//		public void deleteKundeMitBestellung() {
+//			LOGGER.finer("BEGINN");
+//			
+//			// Given
+//			final Long kundeId = KUNDE_ID_DELETE_MIT_BESTELLUNGEN;
+//			final String username = USERNAME_ADMIN;
+//			final String password = PASSWORD_ADMIN;
+//			
+//			// When
+//			final Response response = given().auth()
+//	                                         .basic(username, password)
+//	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
+//	                                         .delete(KUNDEN_ID_PATH);
+//			
+//			// Then
+//			assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
+//			final String errorMsg = response.asString();
+//			assertThat(errorMsg, startsWith("Kunde mit ID=" + kundeId + " kann nicht geloescht werden:"));
+//			assertThat(errorMsg, endsWith("Bestellung(en)"));
+//
+//			LOGGER.finer("ENDE");
+//		}
+//		
+//		@Ignore
+//		@Test
+//		public void deleteKundeFehlendeBerechtigung() {
+//			LOGGER.finer("BEGINN");
+//			
+//			// Given
+//			final String username = USERNAME;
+//			final String password = PASSWORD;
+//			final Long kundeId = KUNDE_ID_DELETE_FORBIDDEN;
+//			
+//			// When
+//			final Response response = given().auth()
+//	                                         .basic(username, password)
+//	                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
+//	                                         .delete(KUNDEN_ID_PATH);
+//			
+//			// Then
+//			assertThat(response.getStatusCode(), anyOf(is(HTTP_FORBIDDEN), is(HTTP_NOT_FOUND)));
+//			
+//			LOGGER.finer("ENDE");
+//		}
+//		
 //		@Test
 //		public void uploadDownload() throws IOException {
 //			LOGGER.finer("BEGINN");

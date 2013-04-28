@@ -66,15 +66,14 @@ public class Adresse implements Serializable {
 	private String hausnr;
 
 	@Column(name = "ORT")
-	@NotNull
 	@Size(min = 2, max = 32)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
-	@JsonProperty("Ort")
+	@JsonProperty
 	private String ort;
 
 	@Column(name = "PLZ")
 	@Digits(integer = 5, fraction = 0)
-	@JsonProperty("PLZ")
+	@JsonProperty
 	private String plz;
 
 	@Column(name = "STRASSE")

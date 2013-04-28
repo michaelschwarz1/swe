@@ -263,7 +263,7 @@ public class KundeResource {
 	public void deleteKunde(@PathParam("id") Long kundeId, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		final Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+		final Kunde kunde = ks.findKundeById(kundeId, FetchType.MIT_BESTELLUNGEN, locale);
 		ks.deleteKunde(kunde);
 	}
 	

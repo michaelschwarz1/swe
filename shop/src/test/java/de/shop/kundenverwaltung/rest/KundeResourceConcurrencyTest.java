@@ -48,7 +48,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final String NEUER_NACHNAME_2 = "Neuername";
 	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(203);
 	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(204);
-
+	@Ignore
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");

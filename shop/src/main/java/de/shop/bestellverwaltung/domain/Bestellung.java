@@ -120,7 +120,7 @@ public class Bestellung implements Serializable {
 	}
 
 	@OneToMany(fetch = EAGER, cascade = { PERSIST, REMOVE })
-	@JoinColumn(name = "FK_BESTELLUNG", nullable = true, insertable = true, updatable = false)
+	@JoinColumn(name = "FK_BESTELLUNG", nullable = false, insertable = false, updatable = false)
 	@OrderColumn(name = "idx")
 	private List<Position> positionen;
 
