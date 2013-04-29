@@ -191,6 +191,13 @@ public class Artikel implements Serializable {
 	public void setPreis(double preis) {
 		this.preis = preis;
 	}
+	public void setValues(Artikel a){
+		version = a.version;
+		aufLager = a.aufLager;
+		beschreibung = a.beschreibung;
+		kategorie = a.kategorie;
+		preis = a.preis;
+	}
 	
 	public Artikel(String beschreibung, double preis) {
 		this.beschreibung = beschreibung;

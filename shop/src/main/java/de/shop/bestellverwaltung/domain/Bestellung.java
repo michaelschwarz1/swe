@@ -151,7 +151,12 @@ public class Bestellung implements Serializable {
 
 	public void setPkBestellung(Long pkBestellung) {
 		this.pkBestellung = pkBestellung;
-	}										
+	}			
+	
+	public void setValues(Bestellung b){
+		version = b.version;
+		positionen = b.positionen;
+	}
 
 	public Date getErzeugt() {
 		Date erz = this.erzeugt;

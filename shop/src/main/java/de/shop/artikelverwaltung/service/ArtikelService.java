@@ -7,12 +7,9 @@ import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.logging.Logger;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
-
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,10 +18,12 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.jboss.logging.Logger;
+
 import com.google.common.base.Strings;
 
 import de.shop.artikelverwaltung.domain.Artikel;
-
+import de.shop.util.ConcurrentDeletedException;
 import de.shop.util.Log;
 
 @Log
@@ -115,6 +114,25 @@ public class ArtikelService implements Serializable {
 
 		final List<Artikel> artikel = query.getResultList();
 		return artikel;
+	}
+	
+	public Artikel updateArtikel(Artikel artikel) {
+		if (artikel == null) {
+			return null;
+		}
+
+		// artikel vom EntityManager trennen, weil anschliessend z.B. nach Id und Email gesucht wird
+		em.detach(artikel);
+
+		// Wurde das Objekt konkurrierend geloescht?
+		Artikel tmp = findArtikelById(artikel.getPkArtikel());
+		if (tmp == null) {
+			throw new ConcurrentDeletedException(artikel.getPkArtikel());
+		}
+		em.detach(tmp);
+		artikel = em.merge(artikel);   // OptimisticLockException
+		return artikel;
+
 	}
 
 	
