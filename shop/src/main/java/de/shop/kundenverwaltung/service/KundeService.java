@@ -240,7 +240,6 @@ public class KundeService implements Serializable {
 		return kunde;	
 	}
 	
-	@SuppressWarnings("unused")
 	private void validateKunde(Kunde kunde, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);

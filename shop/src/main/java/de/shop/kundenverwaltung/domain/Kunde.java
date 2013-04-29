@@ -205,6 +205,7 @@ public static final String PARAM_KUNDE_USERNAME = "username";
 		vorname = k.vorname;
 		email = k.email;
 		password = k.password;
+		version = k.version;
 	}
 	
 	public Long getPkKunde() {

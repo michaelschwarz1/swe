@@ -27,7 +27,6 @@ import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,10 +43,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Long KUNDE_ID_UPDATE = Long.valueOf(210);
 	private static final String NEUER_NACHNAME = "Testname";
 	private static final String NEUER_NACHNAME_2 = "Neuername";
-//	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(203);
-//	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(204);
 	
-	@Ignore
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -113,110 +109,4 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-//	@Ignore
-//	@Test
-//	public void updateDelete() throws InterruptedException, ExecutionException {
-//		LOGGER.finer("BEGINN");
-//		
-//		// Given
-//		final Long kundeId = KUNDE_ID_DELETE1;
-//    	final String neuerNachname = NEUER_NACHNAME;
-//		final String username = USERNAME;
-//		final String password = PASSWORD;
-//		final String username2 = USERNAME_ADMIN;
-//		final String password2 = PASSWORD_ADMIN;
-//		
-//		// When
-//		Response response = given().header(ACCEPT, APPLICATION_JSON)
-//				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-//                                   .get(KUNDEN_ID_PATH);
-//		JsonObject jsonObject;
-//		try (final JsonReader jsonReader =
-//				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-//			jsonObject = jsonReader.readObject();
-//		}
-//
-//		// Konkurrierendes Delete
-//    	final ConcurrentDelete concurrentDelete = new ConcurrentDelete(KUNDEN_PATH + '/' + kundeId,
-//    			                                                       username2, password2);
-//    	final ExecutorService executorService = Executors.newSingleThreadExecutor();
-//		final Future<Response> future = executorService.submit(concurrentDelete);
-//		response = future.get();   // Warten bis der "parallele" Thread fertig ist
-//		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-//		
-//    	// Fehlschlagendes Update
-//		final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
-//    	final Set<String> keys = jsonObject.keySet();
-//    	for (String k : keys) {
-//    		if ("nachname".equals(k)) {
-//    			job.add("nachname", neuerNachname);
-//    		}
-//    		else {
-//    			job.add(k, jsonObject.get(k));
-//    		}
-//    	}
-//    	response = given().contentType(APPLICATION_JSON)
-//    			          .body(jsonObject.toString())
-//                          .auth()
-//                          .basic(username, password)
-//                          .put(KUNDEN_PATH);
-//		
-//		// Then
-//    	assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
-//		
-//		LOGGER.finer("ENDE");
-//	}
-//	@Ignore
-//	@Test
-//	public void deleteUpdate() throws InterruptedException, ExecutionException {
-//		LOGGER.finer("BEGINN");
-//		
-//		// Given
-//		final Long kundeId = KUNDE_ID_DELETE2;
-//    	final String neuerNachname = NEUER_NACHNAME;
-//    	final String username = USERNAME_ADMIN;
-//		final String password = PASSWORD_ADMIN;
-//		final String username2 = USERNAME;
-//		final String password2 = PASSWORD;
-//		
-//		// When
-//		Response response = given().header(ACCEPT, APPLICATION_JSON)
-//				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-//                                   .get(KUNDEN_ID_PATH);
-//		
-//		JsonObject jsonObject;
-//		try (final JsonReader jsonReader =
-//				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-//			jsonObject = jsonReader.readObject();
-//		}
-//
-//		// Konkurrierendes Update
-//		final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
-//    	final Set<String> keys = jsonObject.keySet();
-//    	for (String k : keys) {
-//    		if ("nachname".equals(k)) {
-//    			job.add("nachname", neuerNachname);
-//    		}
-//    		else {
-//    			job.add(k, jsonObject.get(k));
-//    		}
-//    	}
-//    	final ConcurrentUpdate concurrenUpdate = new ConcurrentUpdate(jsonObject, KUNDEN_PATH,
-//    			                                                      username2, password2);
-//    	final ExecutorService executorService = Executors.newSingleThreadExecutor();
-//		final Future<Response> future = executorService.submit(concurrenUpdate);
-//		response = future.get();   // Warten bis der "parallele" Thread fertig ist
-//		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-//		
-//    	// Erfolgreiches Delete trotz konkurrierendem Update
-//		response = given().auth()
-//                          .basic(username, password)
-//                          .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-//                          .delete(KUNDEN_ID_PATH);
-//		
-//		// Then
-//    	assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-//		
-//		LOGGER.finer("ENDE");
-//	}
 }
