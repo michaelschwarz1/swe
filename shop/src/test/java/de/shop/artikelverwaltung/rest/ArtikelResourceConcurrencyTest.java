@@ -38,7 +38,6 @@ public class ArtikelResourceConcurrencyTest extends AbstractResourceTest {
 
 
 		private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-
 		private static final Long ARTIKEL_ID_UPDATE = Long.valueOf(101);
 		private static final double NEUER_PREIS = 5.0;
 		private static final double NEUER_PREIS2 = 500.0;

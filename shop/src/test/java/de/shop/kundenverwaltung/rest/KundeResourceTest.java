@@ -60,7 +60,7 @@ import de.shop.util.AbstractResourceTest;
 		private static final String NEUE_EMAIL = NEUER_NACHNAME + "123@test.de";
 		private static final String NEUE_EMAIL_INVALID = "falsch";
 		private static final String NEUE_PLZ = "76133";
-		private static final String NEUER_ORT = "Karlsruhe";
+		private static final String NEUER_ORT = "Testortneu";
 		private static final String NEUE_STRASSE = "Testweg";
 		private static final String NEUE_HAUSNR = "1";
 		
@@ -316,6 +316,52 @@ import de.shop.util.AbstractResourceTest;
 			// Then
 			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
 	   	}
+		
+		@Test
+		public void updateKundeAdresse() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final Long kundeId = KUNDE_ID_UPDATE;
+			final String neuerOrt = NEUER_ORT;
+			final String username = USERNAME;
+			final String password = PASSWORD;
+			
+			// When
+			Response response = given().header(ACCEPT, APPLICATION_JSON)
+					                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
+	                                   .get(KUNDEN_ID_PATH);
+			
+			JsonObject jsonObject;
+			try (final JsonReader jsonReader =
+					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+				jsonObject = jsonReader.readObject();
+			}
+	    	assertThat(jsonObject.getJsonNumber("pkKunde").longValue(), is(kundeId.longValue()));
+	    	
+	    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+	    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+	    	final Set<String> keys = jsonObject.keySet();
+	    	for (String k : keys) {
+	    		if ("ort".equals(k)) {
+	    			job.add("ort", neuerOrt);
+	    		}
+	    		else {
+	    			job.add(k, jsonObject.get(k));
+	    		}
+	    	}
+	    	jsonObject = job.build();
+	    	
+			response = given().contentType(APPLICATION_JSON)
+					          .body(jsonObject.toString())
+	                          .auth()
+	                          .basic(username, password)
+	                          .put(KUNDEN_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+	   	}
+		
 //		@Ignore
 //		@Test
 //		public void deleteKunde() {
