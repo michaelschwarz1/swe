@@ -149,7 +149,7 @@ public class Artikel implements Serializable {
 	}
 
 	public Date getAktualisiert() {
-		Date akt = this.aktualisiert;
+		final Date akt = this.aktualisiert;
 		return akt;
 	} 
 
@@ -172,7 +172,7 @@ public class Artikel implements Serializable {
 	}
 
 	public Date getErzeugt() {
-		Date erz = this.erzeugt;
+		final Date erz = this.erzeugt;
 		return erz;
 	}
 
@@ -191,7 +191,7 @@ public class Artikel implements Serializable {
 	public void setPreis(double preis) {
 		this.preis = preis;
 	}
-	public void setValues(Artikel a){
+	public void setValues(Artikel a) {
 		version = a.version;
 		aufLager = a.aufLager;
 		beschreibung = a.beschreibung;
@@ -223,7 +223,7 @@ public class Artikel implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Artikel other = (Artikel) obj;
+		final Artikel other = (Artikel) obj;
 		
 		if (aufLager != other.aufLager) {
 			return false;

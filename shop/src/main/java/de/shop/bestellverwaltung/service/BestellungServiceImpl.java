@@ -25,12 +25,9 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.domain.PasswordGroup;
-import de.shop.kundenverwaltung.service.EmailExistsException;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.ConcurrentDeletedException;
-import de.shop.util.IdGroup;
 import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
 
@@ -147,7 +144,7 @@ public class BestellungServiceImpl implements Serializable, BestellungService {
 		em.detach(bestellung);
 
 		// Wurde das Objekt konkurrierend geloescht?
-		Bestellung tmp = findBestellungById(bestellung.getPkBestellung());
+		final Bestellung tmp = findBestellungById(bestellung.getPkBestellung());
 		if (tmp == null) {
 			throw new ConcurrentDeletedException(bestellung.getPkBestellung());
 		}

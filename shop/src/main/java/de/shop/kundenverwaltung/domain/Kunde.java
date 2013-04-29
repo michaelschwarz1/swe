@@ -72,7 +72,7 @@ import de.shop.bestellverwaltung.domain.Bestellung;
    			            + " FROM   Kunde k"
    			            + " WHERE  k.email = :" + Kunde.PARAM_KUNDE_EMAIL),
    	@NamedQuery(name = Kunde.FIND_KUNDEN_BY_PLZ,
-   				query ="SELECT k"
+   				query = "SELECT k"
    						+ " FROM Kunde k"
    						+ " WHERE k.adresse.plz LIKE :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
 	
@@ -217,12 +217,12 @@ public static final String PARAM_KUNDE_USERNAME = "username";
 	}
 
 	public Date getAktualisiert() {
-		Date akt = this.aktualisiert;
+		final Date akt = this.aktualisiert;
 		return akt;
 	}
 
 	public Date getErzeugt() {
-		Date erz = this.erzeugt;
+		final Date erz = this.erzeugt;
 		return erz;
 	}
 

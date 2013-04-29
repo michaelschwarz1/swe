@@ -99,7 +99,7 @@ public class KundeResource {
 	@GET
 	@Wrapped(element = "kunden") // RESTEasy, nicht Standard
 	public Collection<Kunde> findAlleKunden() {
-	Collection<Kunde> kunden = ks.findAllKunden(FetchType.NUR_KUNDE, null);
+	final Collection<Kunde> kunden = ks.findAllKunden(FetchType.NUR_KUNDE, null);
 	return kunden;    // Statuscode 200)
 	}
 	
@@ -254,7 +254,7 @@ public class KundeResource {
 		// Vorhandenen Kunden ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Kunde origKunde = ks.findKundeById(kunde.getPkKunde(), FetchType.NUR_KUNDE, locale);
+		final Kunde origKunde = ks.findKundeById(kunde.getPkKunde(), FetchType.NUR_KUNDE, locale);
 		if (origKunde == null) {
 			// TODO msg passend zu locale
 			final String msg = "Kein Kunde gefunden mit der ID " + kunde.getPkKunde();

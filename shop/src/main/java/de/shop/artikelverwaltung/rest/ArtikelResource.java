@@ -7,8 +7,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -31,8 +29,6 @@ import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
-import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
 import de.shop.util.Transactional;
@@ -66,7 +62,7 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 	@GET
 	@Wrapped(element = "artikel") // RESTEasy, nicht Standard
 	public Collection<Artikel> findArtikel() {
-	Collection<Artikel> artikel = as.findArtikel();
+	final Collection<Artikel> artikel = as.findArtikel();
 	return artikel;    // Statuscode 200
 	}
 	
@@ -96,7 +92,7 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 	@Produces
 	public void updateArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandenen artikel ermitteln
-		Artikel origArtikel = as.findArtikelById(artikel.getPkArtikel());
+		final Artikel origArtikel = as.findArtikelById(artikel.getPkArtikel());
 		if (origArtikel == null) {
 			// TODO msg passend zu locale
 			final String msg = "Kein Artikel gefunden mit der ID " + artikel.getPkArtikel();

@@ -129,7 +129,7 @@ public class Bestellung implements Serializable {
 		super();
 	}
 	
-	public Bestellung(List <Position> position) {
+	public Bestellung(List<Position> position) {
 		super();
 		this.positionen = position;
 	}
@@ -153,13 +153,13 @@ public class Bestellung implements Serializable {
 		this.pkBestellung = pkBestellung;
 	}			
 	
-	public void setValues(Bestellung b){
+	public void setValues(Bestellung b) {
 		version = b.version;
 		positionen = b.positionen;
 	}
 
 	public Date getErzeugt() {
-		Date erz = this.erzeugt;
+		final Date erz = this.erzeugt;
 		return erz;
 	}
 

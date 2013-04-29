@@ -140,8 +140,8 @@ public class BestellungResource {
 			throw new NotFoundException("Kein Kunde vorhanden mit der ID " + kundeId);
 		}
 		
-		Collection<Position> positionen = bestellung.getPositionen();
-		List<Long> artikelIds = new ArrayList<>(positionen.size());
+		final Collection<Position> positionen = bestellung.getPositionen();
+		final List<Long> artikelIds = new ArrayList<>(positionen.size());
 		for (Position bp : positionen) {
 			final String artikelUriStr = bp.getArtikelUri().toString();
 			startPos = artikelUriStr.lastIndexOf('/') + 1;
@@ -168,7 +168,7 @@ public class BestellungResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIds(artikelIds);
+		final Collection<Artikel> gefundeneArtikel = as.findArtikelByIds(artikelIds);
 		if (gefundeneArtikel.isEmpty()) {
 			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
 		}
@@ -219,7 +219,7 @@ public class BestellungResource {
 		// Vorhandene Bestellung ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Bestellung origBestellung = bs.findBestellungById(bestellung.getPkBestellung());
+		final Bestellung origBestellung = bs.findBestellungById(bestellung.getPkBestellung());
 		if (origBestellung == null) {
 			// TODO msg passend zu locale
 			final String msg = "Keine Bestellung gefunden mit der ID " + bestellung.getPkBestellung();

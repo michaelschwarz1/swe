@@ -147,7 +147,7 @@ public class Position implements Serializable {
 	}
 
 	public Date getAktualisiert() {
-		Date akt = this.aktualisiert;
+		final Date akt = this.aktualisiert;
 		return akt;
 	}
 

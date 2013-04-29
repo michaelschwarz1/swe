@@ -122,12 +122,12 @@ public class Adresse implements Serializable {
 	}
 
 	public Date getAktualisiert() {
-		Date akt = this.aktualisiert;
+		final Date akt = this.aktualisiert;
 		return akt;
 	}
 
 	public Date getErzeugt() {
-		Date erz = this.erzeugt;
+		final Date erz = this.erzeugt;
 		return erz;
 	}
 

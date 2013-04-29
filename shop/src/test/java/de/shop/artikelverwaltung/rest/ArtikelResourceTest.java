@@ -6,12 +6,10 @@ import static de.shop.util.TestConstants.ARTIKEL_ID_PATH;
 import static de.shop.util.TestConstants.ARTIKEL_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.ARTIKEL_PATH;
 import static de.shop.util.TestConstants.LOCATION;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,7 +24,6 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,9 +55,7 @@ import de.shop.util.AbstractResourceTest;
 //		private static final CopyOption[] COPY_OPTIONS = { REPLACE_EXISTING };
 //		private static final Long KUNDE_ID_UPLOAD = Long.valueOf(102);
 
-//		private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";
-//		private static final String FILENAME_UPLOAD_INVALID_MIMETYPE = "src/test/resources/rest/" + FILENAME_INVALID_MIMETYPE;
-		
+//		private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";	
 		
 		@Test
 		public void validate() {
@@ -427,3 +422,4 @@ import de.shop.util.AbstractResourceTest;
 //			assertThat(response.asString(), is(NoMimeTypeException.MESSAGE));
 //		}
 	}
+	

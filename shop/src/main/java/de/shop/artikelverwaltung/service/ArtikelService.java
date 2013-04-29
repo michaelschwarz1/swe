@@ -125,7 +125,7 @@ public class ArtikelService implements Serializable {
 		em.detach(artikel);
 
 		// Wurde das Objekt konkurrierend geloescht?
-		Artikel tmp = findArtikelById(artikel.getPkArtikel());
+		final Artikel tmp = findArtikelById(artikel.getPkArtikel());
 		if (tmp == null) {
 			throw new ConcurrentDeletedException(artikel.getPkArtikel());
 		}
