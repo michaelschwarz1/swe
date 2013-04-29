@@ -13,10 +13,6 @@
 			<!-- DMR (= Dynamic Model Representation) fuer die Klassen ModelControllerClient und ModelNode,
 			     um Rollen bei Zugriffsrechten dynamisch zu verwalten. -->
 			<module name="org.jboss.dmr"/>
-			<!-- RichFaces -->
-			<module name="com.google.guava"/>
-			<!-- Seam International -->
-			<module name="org.joda.time"/>
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>
