@@ -7,6 +7,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -24,8 +25,12 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.domain.PasswordGroup;
+import de.shop.kundenverwaltung.service.EmailExistsException;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.util.ConcurrentDeletedException;
+import de.shop.util.IdGroup;
 import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
 
@@ -131,6 +136,25 @@ public class BestellungServiceImpl implements Serializable, BestellungService {
 			LOGGER.debugf("BestellungService", "createBestellung", violations);
 			throw new BestellungValidationException(bestellung, violations);
 		}
+	}
+	
+	public Bestellung updateBestellung(Bestellung bestellung) {
+		if (bestellung == null) {
+			return null;
+		}
+
+		// Bestellung vom EntityManager trennen, weil anschliessend z.B. nach Id gesucht wird
+		em.detach(bestellung);
+
+		// Wurde das Objekt konkurrierend geloescht?
+		Bestellung tmp = findBestellungById(bestellung.getPkBestellung());
+		if (tmp == null) {
+			throw new ConcurrentDeletedException(bestellung.getPkBestellung());
+		}
+		em.detach(tmp);
+		
+		bestellung = em.merge(bestellung);   // OptimisticLockException
+		return bestellung;
 	}
 
 	/**
