@@ -4,7 +4,6 @@ import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
-import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
@@ -20,18 +19,15 @@ import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,8 +35,6 @@ import com.jayway.restassured.response.Response;
 
 import de.shop.util.AbstractResourceTest;
 
-
-	
 	@RunWith(Arquillian.class)
 	@FixMethodOrder(NAME_ASCENDING)
 	public class KundeResourceTest extends AbstractResourceTest {
@@ -49,11 +43,8 @@ import de.shop.util.AbstractResourceTest;
 		private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(201);
 		private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
 		private static final Long KUNDE_ID_UPDATE = Long.valueOf(202);
-//		private static final Long KUNDE_ID_DELETE = Long.valueOf(205);
-//		private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(203);
-//		private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(204);
-		private static final String NACHNAME_VORHANDEN = "Schwarz";
-		private static final String NACHNAME_NICHT_VORHANDEN = "König";
+//		private static final String NACHNAME_VORHANDEN = "Schwarz";
+//		private static final String NACHNAME_NICHT_VORHANDEN = "König";
 		private static final String NEUER_NACHNAME = "Nachnameneu";
 		private static final String NEUER_NACHNAME_INVALID = "!";
 		private static final String NEUER_VORNAME = "Vornameneu";
@@ -63,17 +54,6 @@ import de.shop.util.AbstractResourceTest;
 		private static final String NEUER_ORT = "Testortneu";
 		private static final String NEUE_STRASSE = "Testweg";
 		private static final String NEUE_HAUSNR = "1";
-		
-//		private static final String FILENAME = "image.gif";
-//		//private static final String FILENAME = "video.mp4";
-//		private static final String FILENAME_UPLOAD = "src/test/resources/rest/" + FILENAME;
-//		private static final String FILENAME_DOWNLOAD = "target/" + FILENAME;
-//		private static final CopyOption[] COPY_OPTIONS = { REPLACE_EXISTING };
-//		private static final Long KUNDE_ID_UPLOAD = Long.valueOf(102);
-
-//		private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";
-//		private static final String FILENAME_UPLOAD_INVALID_MIMETYPE = "src/test/resources/rest/" + FILENAME_INVALID_MIMETYPE;
-		
 		
 		@Test
 		public void validate() {
@@ -121,34 +101,32 @@ import de.shop.util.AbstractResourceTest;
 			LOGGER.finer("ENDE");
 		}
 		
-		//TODO findKundeByNachname
-		@Ignore
-		@Test
-		public void findKundenByNachnameVorhanden() {
-			LOGGER.finer("BEGINN");
-			
-			// Given
-			final String nachname = NACHNAME_VORHANDEN;
-
-			// When
-			final Response response = given().header(ACCEPT, APPLICATION_JSON)
-					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-	                                         .get(KUNDEN_PATH);
-			
-			// Then
-			try (final JsonReader jsonReader =
-					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-				final JsonArray jsonArray = jsonReader.readArray();
-		    	assertThat(jsonArray.size() > 1, is(true));
-		    	
-		    	final List<JsonObject> jsonObjectList = jsonArray.getValuesAs(JsonObject.class);
-		    	for (JsonObject jsonObject : jsonObjectList) {
-		    		assertThat(jsonObject.getString("nachname"), is(nachname));
-		    	}
-			}
-
-			LOGGER.finer("ENDE");
-		}
+//		@Test
+//TODO	public void findKundenByNachnameVorhanden() {
+//			LOGGER.finer("BEGINN");
+//			
+//			// Given
+//			final String nachname = NACHNAME_VORHANDEN;
+//
+//			// When
+//			final Response response = given().header(ACCEPT, APPLICATION_JSON)
+//					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
+//	                                         .get(KUNDEN_PATH);
+//			
+//			// Then
+//			try (final JsonReader jsonReader =
+//					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+//				final JsonArray jsonArray = jsonReader.readArray();
+//		    	assertThat(jsonArray.size() > 1, is(true));
+//		    	
+//		    	final List<JsonObject> jsonObjectList = jsonArray.getValuesAs(JsonObject.class);
+//		    	for (JsonObject jsonObject : jsonObjectList) {
+//		    		assertThat(jsonObject.getString("nachname"), is(nachname));
+//		    	}
+//			}
+//
+//			LOGGER.finer("ENDE");
+//		}
 		
 //		@Test
 //		public void findKundenByNachnameNichtVorhanden() {

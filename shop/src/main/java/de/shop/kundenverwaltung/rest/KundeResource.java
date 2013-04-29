@@ -19,7 +19,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -132,7 +131,7 @@ public class KundeResource {
 	 * @return Collection mit den gefundenen Kundendaten
 	 */
 	@GET
-	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
+	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") String nachname) {
 		Collection<Kunde> kunden = null;
 		if ("".equals(nachname)) {
 			kunden = ks.findAllKunden(FetchType.NUR_KUNDE, OrderType.KEINE);

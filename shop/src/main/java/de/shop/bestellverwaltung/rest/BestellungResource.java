@@ -217,24 +217,20 @@ public class BestellungResource {
 	@Produces
 	public void updateBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandene Bestellung ermitteln
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		final Bestellung origBestellung = bs.findBestellungById(bestellung.getPkBestellung());
 		if (origBestellung == null) {
-			// TODO msg passend zu locale
 			final String msg = "Keine Bestellung gefunden mit der ID " + bestellung.getPkBestellung();
 			throw new NotFoundException(msg);
 		}
 		LOGGER.log(FINEST, "Bestellung vorher: %s", origBestellung);
 	
-		// Daten des vorhandenen Bestellung ueberschreiben
+		// Daten der vorhandenen Bestellung ueberschreiben
 		origBestellung.setValues(bestellung);
 		LOGGER.log(FINEST, "Bestellung nachher: %s", origBestellung);
 		
 		// Update durchfuehren
 		bestellung = bs.updateBestellung(origBestellung);
 		if (bestellung == null) {
-			// TODO msg passend zu locale
 			final String msg = "Keine Bestellung gefunden mit der ID " + origBestellung.getPkBestellung();
 			throw new NotFoundException(msg);
 		}

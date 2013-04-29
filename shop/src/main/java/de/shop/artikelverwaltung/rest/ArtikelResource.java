@@ -94,7 +94,6 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 		// Vorhandenen artikel ermitteln
 		final Artikel origArtikel = as.findArtikelById(artikel.getPkArtikel());
 		if (origArtikel == null) {
-			// TODO msg passend zu locale
 			final String msg = "Kein Artikel gefunden mit der ID " + artikel.getPkArtikel();
 			throw new NotFoundException(msg);
 		}
@@ -107,7 +106,6 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 		// Update durchfuehren
 		artikel = as.updateArtikel(origArtikel);
 		if (artikel == null) {
-			// TODO msg passend zu locale
 			final String msg = "Kein Artikel gefunden mit der ID " + origArtikel.getPkArtikel();
 			throw new NotFoundException(msg);
 		}

@@ -14,7 +14,8 @@ public class JsonFile {
 	}
 
 	public byte[] getBytes() {
-		return bytes;
+		final byte[] tmp = this.bytes;
+		return tmp;
 	}
 
 	public void setBytes(byte[] bytes) {
