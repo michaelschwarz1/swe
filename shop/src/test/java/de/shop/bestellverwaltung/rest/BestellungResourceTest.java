@@ -118,13 +118,12 @@ public class BestellungResourceTest extends AbstractResourceTest {
 //				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 //			final JsonObject jsonObject = jsonReader.readObject();
 //			assertThat(jsonObject.getString("bestellungenUri"),
-//					   endsWith("/kunden/" + jsonObject.getInt("id") + "/bestellungen"));
+//					   endsWith("/bestellungen/" + jsonObject.getInt("pkBestellung")));
 //		}
 //
 //		LOGGER.finer("ENDE");
 //	}
-	
-	
+//		
 	@Test
 	public void createBestellung() {
 		LOGGER.finer("BEGINN");
