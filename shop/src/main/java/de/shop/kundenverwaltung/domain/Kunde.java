@@ -150,7 +150,7 @@ public static final String PARAM_KUNDE_USERNAME = "username";
 	private URI bestellungenUri;
 
 	//bi-directional many-to-one association to Bestellung
-	@OneToMany()
+	@OneToMany
 	@JoinColumn(name = "FK_KUNDE", nullable = true)
 	@Size(min = 1)
 	@JsonIgnore

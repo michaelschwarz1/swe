@@ -51,7 +51,11 @@ import de.shop.kundenverwaltung.domain.Kunde;
 	@NamedQuery(
 			name = Bestellung.ALLE_BESTELLUNGEN,
 			query = "SELECT b FROM Bestellung b"
-			),		
+			),
+	@NamedQuery(name  = Bestellung.FIND_KUNDE_BY_ID,
+            query = "SELECT DISTINCT b.kunde"
+                    + " FROM   Bestellung b"
+		            + " WHERE  b.id = :" + Bestellung.PARAM_ID),
 	@NamedQuery(
 			name = Bestellung.FIND_BESTELLUNGEN_BY_KUNDE,
 			query = "SELECT b FROM   Bestellung b WHERE  b.kunde.id =:" + Bestellung.PARAM_KUNDEID
@@ -77,7 +81,7 @@ public class Bestellung implements Serializable {
 	public static final String ALLE_POSITIONEN_FUER_BESTELLUNGEN = PREFIX + "allesPositionenfuerartikel";
 	public static final String PARAM_KUNDE_NACHNAME = "nachname";
 	public static final String PARAM_KUNDEID = "kundeId";
-	public static final String PARAM_ID = "id";
+	public static final String PARAM_ID = "pkBestellung";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
