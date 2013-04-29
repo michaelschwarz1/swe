@@ -76,11 +76,62 @@
    <web-resource-name>Bestellungen erzeugen</web-resource-name>
    <url-pattern>/rest/bestellungen</url-pattern>
    <http-method>POST</http-method>
+   <http-method>PUT</http-method>
   </web-resource-collection>
   <auth-constraint>
    <role-name>admin</role-name>
    <role-name>mitarbeiter</role-name>
    <role-name>kunde</role-name>
+  </auth-constraint>
+ </security-constraint>
+  <security-constraint>
+  <web-resource-collection>
+   <web-resource-name>Artikel erzeugen und modifizieren</web-resource-name>
+   <url-pattern>/rest/artikel</url-pattern>
+   <http-method>POST</http-method>
+   <http-method>PUT</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
+   <role-name>mitarbeiter</role-name>
+  </auth-constraint>
+ </security-constraint>
+  <security-constraint>
+  <web-resource-collection>
+   <web-resource-name>Position erzeugen und modifizieren</web-resource-name>
+   <url-pattern>/rest/positionen</url-pattern>
+   <http-method>POST</http-method>
+   <http-method>PUT</http-method>
+   <http-method>DELETE</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
+   <role-name>mitarbeiter</role-name>
+   <role-name>kunde</role-name>
+  </auth-constraint>
+ </security-constraint>
+  <security-constraint>
+  <web-resource-collection>
+   <web-resource-name>Adresse erzeugen und modifizieren</web-resource-name>
+   <url-pattern>/rest/adresse</url-pattern>
+   <http-method>POST</http-method>
+   <http-method>PUT</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
+   <role-name>mitarbeiter</role-name>
+   <role-name>kunde</role-name>
+  </auth-constraint>
+ </security-constraint>
+  <security-constraint>
+  <web-resource-collection>
+   <web-resource-name>Rolle vergeben und modifizieren</web-resource-name>
+   <url-pattern>/rest/kunden</url-pattern>
+   <http-method>POST</http-method>
+   <http-method>PUT</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
   </auth-constraint>
  </security-constraint>
  <security-role>
