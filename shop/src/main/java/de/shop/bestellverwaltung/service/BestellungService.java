@@ -25,7 +25,13 @@ public interface BestellungService {
 
 	/**
 	 */
+	
 	Bestellung createBestellung(Bestellung bestellung, Kunde kunde, Locale locale);
+	
+	/**
+	 */
+	
+	Bestellung updateBestellung(Bestellung bestellung);
 
 	/**
 	 */

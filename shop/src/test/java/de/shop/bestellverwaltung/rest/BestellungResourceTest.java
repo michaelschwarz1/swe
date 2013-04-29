@@ -207,7 +207,7 @@ public class BestellungResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 	
-    @Ignore
+   
 	@Test
 	public void updateBestellung() {
 		LOGGER.finer("BEGINN"); 

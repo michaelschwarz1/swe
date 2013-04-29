@@ -1,6 +1,7 @@
 package de.shop.bestellverwaltung.rest;
 
 import static java.util.logging.Level.FINER;
+import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.lang.invoke.MethodHandles;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -209,6 +211,33 @@ public class BestellungResource {
 		LOGGER.finest(bestellungUri.toString());
 		
 		return response;
+	}
+	@PUT
+	@Consumes(APPLICATION_JSON)
+	@Produces
+	public void updateBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+		// Vorhandene Bestellung ermitteln
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		Bestellung origBestellung = bs.findBestellungById(bestellung.getPkBestellung());
+		if (origBestellung == null) {
+			// TODO msg passend zu locale
+			final String msg = "Keine Bestellung gefunden mit der ID " + bestellung.getPkBestellung();
+			throw new NotFoundException(msg);
+		}
+		LOGGER.log(FINEST, "Bestellung vorher: %s", origBestellung);
+	
+		// Daten des vorhandenen Bestellung ueberschreiben
+		origBestellung.setValues(bestellung);
+		LOGGER.log(FINEST, "Bestellung nachher: %s", origBestellung);
+		
+		// Update durchfuehren
+		bestellung = bs.updateBestellung(origBestellung);
+		if (bestellung == null) {
+			// TODO msg passend zu locale
+			final String msg = "Keine Bestellung gefunden mit der ID " + origBestellung.getPkBestellung();
+			throw new NotFoundException(msg);
+		}
 	}
 
 }
