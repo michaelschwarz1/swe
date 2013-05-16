@@ -7,7 +7,6 @@ import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
-import java.io.File;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
@@ -30,7 +29,6 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
-import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
@@ -146,6 +144,7 @@ public class KundeController implements Serializable {
 	private String vornameFilter = "";
 	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
+	private Kunde neuerKunde;
 	
 	private byte[] bytes;
 	private String contentType;
@@ -273,35 +272,35 @@ public class KundeController implements Serializable {
 	 * F&uuml;r rich:autocomplete
 	 * @return Liste der potenziellen Kunden
 	 */
-	@TransactionAttribute(REQUIRED)
-	public List<Kunde> findKundenByIdPrefix(String idPrefix) {
-		List<Kunde> kundenPrefix = null;
-		Long id = null; 
-		try {
-			id = Long.valueOf(idPrefix);
-		}
-		catch (NumberFormatException e) {
-			findKundeByIdErrorMsg(idPrefix);
-			return null;
-		}
-		
-		kundenPrefix = ks.findKundenByIdPrefix(id);
-		if (kundenPrefix == null || kundenPrefix.isEmpty()) {
-			// Kein Kunde zu gegebenem ID-Praefix vorhanden
-			findKundeByIdErrorMsg(idPrefix);
-			return null;
-		}
-		
-		if (kundenPrefix.size() > MAX_AUTOCOMPLETE) {
-			return kundenPrefix.subList(0, MAX_AUTOCOMPLETE);
-		}
-		return kundenPrefix;
-	}
-	
+//	@TransactionAttribute(REQUIRED)
+//	public List<Kunde> findKundenByIdPrefix(String idPrefix) {
+//		List<Kunde> kundenPrefix = null;
+//		Long id = null; 
+//		try {
+//			id = Long.valueOf(idPrefix);
+//		}
+//		catch (NumberFormatException e) {
+//			findKundeByIdErrorMsg(idPrefix);
+//			return null;
+//		}
+//		
+//		kundenPrefix = ks.findKundenByIdPrefix(id);
+//		if (kundenPrefix == null || kundenPrefix.isEmpty()) {
+//			// Kein Kunde zu gegebenem ID-Praefix vorhanden
+//			findKundeByIdErrorMsg(idPrefix);
+//			return null;
+//		}
+//		
+//		if (kundenPrefix.size() > MAX_AUTOCOMPLETE) {
+//			return kundenPrefix.subList(0, MAX_AUTOCOMPLETE);
+//		}
+//		return kundenPrefix;
+//	}
+//	
 	@TransactionAttribute(REQUIRED)
 	public void loadKundeById() {
 		// Request-Parameter "kundeId" fuer ID des gesuchten Kunden
-		final String idStr = request.getParameter("kundeId");
+		final String idStr = request.getParameter("PK_Kunde");
 		Long id;
 		try {
 			id = Long.valueOf(idStr);
@@ -343,21 +342,21 @@ public class KundeController implements Serializable {
 	 * F&uuml;r rich:autocomplete
 	 * @return Liste der potenziellen Nachnamen
 	 */
-	@TransactionAttribute(REQUIRED)
-	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
-		// NICHT: Liste von Kunden. Sonst waeren gleiche Nachnamen mehrfach vorhanden.
-		final List<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
-		if (nachnamen.isEmpty()) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundeId);
-			return nachnamen;
-		}
-
-		if (nachnamen.size() > MAX_AUTOCOMPLETE) {
-			return nachnamen.subList(0, MAX_AUTOCOMPLETE);
-		}
-
-		return nachnamen;
-	}
+//	@TransactionAttribute(REQUIRED)
+//	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+//		// NICHT: Liste von Kunden. Sonst waeren gleiche Nachnamen mehrfach vorhanden.
+//		final List<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
+//		if (nachnamen.isEmpty()) {
+//			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundeId);
+//			return nachnamen;
+//		}
+//
+//		if (nachnamen.size() > MAX_AUTOCOMPLETE) {
+//			return nachnamen.subList(0, MAX_AUTOCOMPLETE);
+//		}
+//
+//		return nachnamen;
+//	}
 	
 	@TransactionAttribute(REQUIRED)
 	public String details(Kunde ausgewaehlterKunde) {
@@ -373,7 +372,7 @@ public class KundeController implements Serializable {
 	}
 	
 	@TransactionAttribute(REQUIRED)
-	public String createKundekunde() {
+	public String createKunde() {
 		// Liste von Strings als Set von Enums konvertieren
 //		final Set<HobbyType> hobbiesPrivatkunde = new HashSet<>();
 //		for (String s : hobbies) {
@@ -390,10 +389,10 @@ public class KundeController implements Serializable {
 		}
 
 		// Push-Event fuer Webbrowser
-		neuerKundeEvent.fire(String.valueOf(neuerPrivatkunde.getId()));
+		neuerKundeEvent.fire(String.valueOf(neuerKunde.getPkKunde()));
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = neuerKunde.getId();
+		kundeId = neuerKunde.getPkKunde();
 		kunde = neuerKunde;
 		neuerKunde = null;  // zuruecksetzen
 		
@@ -490,7 +489,7 @@ public class KundeController implements Serializable {
 		
 		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
 		try {
-			kunde = ks.updateKunde(kunde, locale, false);
+			kunde = ks.updateKunde(kunde, locale);
 		}
 		catch (EmailExistsException | InvalidKundeException
 			  | OptimisticLockException | ConcurrentDeletedException e) {
@@ -608,32 +607,32 @@ public class KundeController implements Serializable {
 		bytes = uploadedFile.getData();
 	}
 
-	@TransactionAttribute(REQUIRED)
-	public String upload() {
-		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
-		if (kunde == null) {
-			return null;
-		}
-		ks.setFile(kunde, bytes, contentType);
-
-		kundeId = null;
-		bytes = null;
-		contentType = null;
-		kunde = null;
-
-		return JSF_INDEX;
-	}
-	
-	public String getFilename(File file) {
-		if (file == null) {
-			return "";
-		}
-		
-		fileHelper.store(file);
-		return file.getFilename();
-	}
-	
-	public String getBase64(File file) {
-		return DatatypeConverter.printBase64Binary(file.getBytes());
-	}
+//	@TransactionAttribute(REQUIRED)
+//	public String upload() {
+//		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+//		if (kunde == null) {
+//			return null;
+//		}
+//		ks.setFile(kunde, bytes, contentType);
+//
+//		kundeId = null;
+//		bytes = null;
+//		contentType = null;
+//		kunde = null;
+//
+//		return JSF_INDEX;
+//	}
+//	
+//	public String getFilename(File file) {
+//		if (file == null) {
+//			return "";
+//		}
+//		
+//		fileHelper.store(file);
+//		return file.getFilename();
+//	}
+//	
+//	public String getBase64(File file) {
+//		return DatatypeConverter.printBase64Binary(file.getBytes());
+//	}
 }
