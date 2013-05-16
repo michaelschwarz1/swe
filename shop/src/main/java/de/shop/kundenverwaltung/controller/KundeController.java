@@ -10,14 +10,11 @@ import static javax.persistence.PersistenceContextType.EXTENDED;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -51,6 +48,7 @@ import de.shop.kundenverwaltung.service.InvalidNachnameException;
 import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.ConcurrentDeletedException;
@@ -73,7 +71,7 @@ public class KundeController implements Serializable {
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
-	private static final String JSF_UPDATE_PRIVATKUNDE = JSF_KUNDENVERWALTUNG + "updatePrivatkunde";
+	private static final String JSF_UPDATE_KUNDE = JSF_KUNDENVERWALTUNG + "updateKunde";
 	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
 	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
 	
@@ -92,11 +90,11 @@ public class KundeController implements Serializable {
 	
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_DUPLIKAT = "updatePrivatkunde.duplikat";
+	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updatePrivatkunde.duplikat";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT = "updateFirmenkunde.duplikat";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_UPDATE = "updatePrivatkunde.concurrentUpdate";
+	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updateKunde.concurrentUpdate";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE = "updateFirmenkunde.concurrentUpdate";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE = "updatePrivatkunde.concurrentDelete";
+	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE = "updateKunde.concurrentDelete";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
 	
 	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_PREFIX = "form:kundenTabelle:";
@@ -142,13 +140,12 @@ public class KundeController implements Serializable {
 	
 	private String nachname;
 	
-	private List<AbstractKunde> kunden = Collections.emptyList();
+	private List<Kunde> kunden = Collections.emptyList();
 	
 	private SortOrder vornameSortOrder = SortOrder.unsorted;
 	private String vornameFilter = "";
 	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
-	private Privatkunde neuerPrivatkunde;
 	
 	private byte[] bytes;
 	private String contentType;
@@ -198,16 +195,8 @@ public class KundeController implements Serializable {
 		this.kundeId = kundeId;
 	}
 
-	public AbstractKunde getKunde() {
+	public Kunde getKunde() {
 		return kunde;
-	}
-
-	public List<String> getHobbies() {
-		return hobbies;
-	}
-	
-	public void setHobbies(List<String> hobbies) {
-		this.hobbies = hobbies;
 	}
 
 	public String getNachname() {
@@ -218,7 +207,7 @@ public class KundeController implements Serializable {
 		this.nachname = nachname;
 	}
 
-	public List<AbstractKunde> getKunden() {
+	public List<Kunde> getKunden() {
 		return kunden;
 	}
 
@@ -244,9 +233,6 @@ public class KundeController implements Serializable {
 		this.vornameFilter = vornameFilter;
 	}
 
-	public Privatkunde getNeuerPrivatkunde() {
-		return neuerPrivatkunde;
-	}
 	
 	public void setMenuItemEmail(UIPanelMenuItem menuItemEmail) {
 		this.menuItemEmail = menuItemEmail;
@@ -288,8 +274,8 @@ public class KundeController implements Serializable {
 	 * @return Liste der potenziellen Kunden
 	 */
 	@TransactionAttribute(REQUIRED)
-	public List<AbstractKunde> findKundenByIdPrefix(String idPrefix) {
-		List<AbstractKunde> kundenPrefix = null;
+	public List<Kunde> findKundenByIdPrefix(String idPrefix) {
+		List<Kunde> kundenPrefix = null;
 		Long id = null; 
 		try {
 			id = Long.valueOf(idPrefix);
@@ -338,7 +324,7 @@ public class KundeController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String findKundenByNachname() {
 		if (nachname == null || nachname.isEmpty()) {
-			kunden = ks.findAllKunden(FetchType.MIT_BESTELLUNGEN, OrderByType.UNORDERED);
+			kunden = ks.findAllKunden(FetchType.MIT_BESTELLUNGEN, OrderType.KEINE);
 			return JSF_LIST_KUNDEN;
 		}
 
@@ -346,7 +332,7 @@ public class KundeController implements Serializable {
 			kunden = ks.findKundenByNachname(nachname, FetchType.MIT_BESTELLUNGEN, locale);
 		}
 		catch (InvalidNachnameException e) {
-			final Collection<ConstraintViolation<AbstractKunde>> violations = e.getViolations();
+			final Collection<ConstraintViolation<Kunde>> violations = e.getViolations();
 			messages.error(violations, CLIENT_ID_KUNDEN_NACHNAME);
 			return null;
 		}
@@ -374,32 +360,32 @@ public class KundeController implements Serializable {
 	}
 	
 	@TransactionAttribute(REQUIRED)
-	public String details(AbstractKunde ausgewaehlterKunde) {
+	public String details(Kunde ausgewaehlterKunde) {
 		if (ausgewaehlterKunde == null) {
 			return null;
 		}
 		
 		// Bestellungen nachladen
-		this.kunde = ks.findKundeById(ausgewaehlterKunde.getId(), FetchType.MIT_BESTELLUNGEN, locale);
-		this.kundeId = this.kunde.getId();
+		this.kunde = ks.findKundeById(ausgewaehlterKunde.getPkKunde(), FetchType.MIT_BESTELLUNGEN, locale);
+		this.kundeId = this.kunde.getPkKunde();
 		
 		return JSF_VIEW_KUNDE;
 	}
 	
 	@TransactionAttribute(REQUIRED)
-	public String createPrivatkunde() {
+	public String createKundekunde() {
 		// Liste von Strings als Set von Enums konvertieren
-		final Set<HobbyType> hobbiesPrivatkunde = new HashSet<>();
-		for (String s : hobbies) {
-			hobbiesPrivatkunde.add(HobbyType.valueOf(s));
-		}
-		neuerPrivatkunde.setHobbies(hobbiesPrivatkunde);
+//		final Set<HobbyType> hobbiesPrivatkunde = new HashSet<>();
+//		for (String s : hobbies) {
+//			hobbiesPrivatkunde.add(HobbyType.valueOf(s));
+//		}
+//		neuerPrivatkunde.setHobbies(hobbiesPrivatkunde);
 
 		try {
-			neuerPrivatkunde = (Privatkunde) ks.createKunde(neuerPrivatkunde, locale);
+			neuerKunde = (Kunde) ks.createKunde(neuerKunde, locale);
 		}
 		catch (InvalidKundeException | EmailExistsException e) {
-			final String outcome = createPrivatkundeErrorMsg(e);
+			final String outcome = createKundeErrorMsg(e);
 			return outcome;
 		}
 
@@ -407,10 +393,9 @@ public class KundeController implements Serializable {
 		neuerKundeEvent.fire(String.valueOf(neuerPrivatkunde.getId()));
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = neuerPrivatkunde.getId();
-		kunde = neuerPrivatkunde;
-		neuerPrivatkunde = null;  // zuruecksetzen
-		hobbies = null;
+		kundeId = neuerKunde.getId();
+		kunde = neuerKunde;
+		neuerKunde = null;  // zuruecksetzen
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
@@ -428,18 +413,18 @@ public class KundeController implements Serializable {
 		return null;
 	}
 
-	public void createEmptyPrivatkunde() {
-		if (neuerPrivatkunde != null) {
+	public void createEmptyKunde() {
+		if (neuerKunde != null) {
 			return;
 		}
 
-		neuerPrivatkunde = new Privatkunde();
+		neuerKunde = new Kunde();
 		final Adresse adresse = new Adresse();
-		adresse.setKunde(neuerPrivatkunde);
-		neuerPrivatkunde.setAdresse(adresse);
+		adresse.setKunde(neuerKunde);
+		neuerKunde.setAdresse(adresse);
 		
-		final int anzahlHobbies = HobbyType.values().length;
-		hobbies = new ArrayList<>(anzahlHobbies);
+//		final int anzahlHobbies = HobbyType.values().length;
+//		hobbies = new ArrayList<>(anzahlHobbies);
 	}
 	
 	/**
@@ -454,15 +439,15 @@ public class KundeController implements Serializable {
 	 * Hobbies als Liste von Strings fuer JSF aufbereiten, wenn ein existierender Privatkunde
 	 * in updatePrivatkunde.xhtml aktualisiert wird
 	 */
-	public void copyHobbies() {
-		hobbies = new ArrayList<>(HobbyType.values().length);
-
-		final Privatkunde privatkunde = (Privatkunde) kunde;
-		final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
-		for (HobbyType h : hobbiesPrivatkunde) {
-			hobbies.add(h.name());
-		}
-	}
+//	public void copyHobbies() {
+//		hobbies = new ArrayList<>(HobbyType.values().length);
+//
+//		final Privatkunde privatkunde = (Privatkunde) kunde;
+//		final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
+//		for (HobbyType h : hobbiesPrivatkunde) {
+//			hobbies.add(h.name());
+//		}
+//	}
 
 	/**
 	 * Verwendung als ValueChangeListener bei updatePrivatkunde.xhtml und updateFirmenkunde.xhtml
@@ -493,14 +478,14 @@ public class KundeController implements Serializable {
 			return JSF_INDEX;
 		}
 		
-		if (kunde.getClass().equals(Privatkunde.class)) {
-			final Privatkunde privatkunde = (Privatkunde) kunde;
-			final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
-			hobbiesPrivatkunde.clear();
-			
-			for (String s : hobbies) {
-				hobbiesPrivatkunde.add(HobbyType.valueOf(s));				
-			}
+		if (kunde.getClass().equals(Kunde.class)) {
+			final Kunde privatkunde = (Kunde) kunde;
+//			final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
+//			hobbiesPrivatkunde.clear();
+//			
+//			for (String s : hobbies) {
+//				hobbiesPrivatkunde.add(HobbyType.valueOf(s));				
+//			}
 		}
 		
 		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
@@ -514,44 +499,44 @@ public class KundeController implements Serializable {
 		}
 
 		// Push-Event fuer Webbrowser
-		updateKundeEvent.fire(String.valueOf(kunde.getId()));
+		updateKundeEvent.fire(String.valueOf(kunde.getPkKunde()));
 		
 		// ValueChangeListener zuruecksetzen
 		geaendertKunde = false;
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = kunde.getId();
+		kundeId = kunde.getPkKunde();
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
 	
-	private String updateErrorMsg(RuntimeException e, Class<? extends AbstractKunde> kundeClass) {
+	private String updateErrorMsg(RuntimeException e, Class<? extends Kunde> kundeClass) {
 		final Class<? extends RuntimeException> exceptionClass = e.getClass();
 		if (exceptionClass.equals(InvalidKundeException.class)) {
 			// Ungueltiges Password: Attribute wurden bereits von JSF validiert
 			final InvalidKundeException orig = (InvalidKundeException) e;
-			final Collection<ConstraintViolation<AbstractKunde>> violations = orig.getViolations();
+			final Collection<ConstraintViolation<Kunde>> violations = orig.getViolations();
 			messages.error(violations, CLIENT_ID_UPDATE_PASSWORD);
 		}
 		else if (exceptionClass.equals(EmailExistsException.class)) {
-			if (kundeClass.equals(Privatkunde.class)) {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
+			if (kundeClass.equals(Kunde.class)) {
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
 			}
 			else {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
 			}
 		}
 		else if (exceptionClass.equals(OptimisticLockException.class)) {
-			if (kundeClass.equals(Privatkunde.class)) {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_UPDATE, null);
+			if (kundeClass.equals(Kunde.class)) {
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE, null);
 			}
 			else {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE, null);
 			}
 		}
 		else if (exceptionClass.equals(ConcurrentDeletedException.class)) {
-			if (kundeClass.equals(Privatkunde.class)) {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE, null);
+			if (kundeClass.equals(Kunde.class)) {
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE, null);
 			}
 			else {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE, null);
@@ -581,7 +566,7 @@ public class KundeController implements Serializable {
 		}
 		
 		// Aufbereitung fuer ok.xhtml
-		request.setAttribute(REQUEST_KUNDE_ID, kunde.getId());
+		request.setAttribute(REQUEST_KUNDE_ID, kunde.getPkKunde());
 		
 		// Zuruecksetzen
 		kunde = null;
@@ -590,20 +575,20 @@ public class KundeController implements Serializable {
 		return JSF_DELETE_OK;
 	}
 	
-	public String selectForUpdate(AbstractKunde ausgewaehlterKunde) {
+	public String selectForUpdate(Kunde ausgewaehlterKunde) {
 		if (ausgewaehlterKunde == null) {
 			return null;
 		}
 		
 		kunde = ausgewaehlterKunde;
 		
-		return Privatkunde.class.equals(ausgewaehlterKunde.getClass())
-			   ? JSF_UPDATE_PRIVATKUNDE
+		return Kunde.class.equals(ausgewaehlterKunde.getClass())
+			   ? JSF_UPDATE_KUNDE
 			   : JSF_UPDATE_FIRMENKUNDE;
 	}
 
 	@TransactionAttribute(REQUIRED)
-	public String delete(AbstractKunde ausgewaehlterKunde) {
+	public String delete(Kunde ausgewaehlterKunde) {
 		try {
 			ks.deleteKunde(ausgewaehlterKunde);
 		}
