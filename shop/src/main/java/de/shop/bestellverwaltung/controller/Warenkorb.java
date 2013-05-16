@@ -18,7 +18,7 @@ import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
-import de.shop.bestellverwaltung.domain.Bestellposition;
+import de.shop.bestellverwaltung.domain.Position;
 import de.shop.util.Log;
 
 @Named("wk")
@@ -32,7 +32,7 @@ public class Warenkorb implements Serializable {
 	private static final String JSF_VIEW_WARENKORB = "/bestellverwaltung/viewWarenkorb?init=true";
 	private static final int TIMEOUT = 5;
 	
-	private final List<Bestellposition> positionen = new ArrayList<Bestellposition>();;
+	private final List<Position> positionen = new ArrayList<Position>();;
 	private Long artikelId;  // fuer selectArtikel.xhtml
 	
 	@Inject
@@ -51,7 +51,7 @@ public class Warenkorb implements Serializable {
 		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
-	public List<Bestellposition> getPositionen() {
+	public List<Position> getPositionen() {
 		return positionen;
 	}
 		
@@ -73,16 +73,16 @@ public class Warenkorb implements Serializable {
 	public String add(Artikel artikel) {
 		beginConversation();
 		
-		for (Bestellposition bp : positionen) {
+		for (Position bp : positionen) {
 			if (bp.getArtikel().equals(artikel)) {
 				// bereits im Warenkorb
-				final short vorhandeneAnzahl = bp.getAnzahl();
-				bp.setAnzahl((short) (vorhandeneAnzahl + 1));
+				final int vorhandeneAnzahl = bp.getAnzahl();
+				bp.setAnzahl((int) (vorhandeneAnzahl + 1));
 				return JSF_VIEW_WARENKORB;
 			}
 		}
 		
-		final Bestellposition neu = new Bestellposition(artikel);
+		final Position neu = new Position(artikel);
 		positionen.add(neu);
 		return JSF_VIEW_WARENKORB;
 	}
@@ -120,8 +120,8 @@ public class Warenkorb implements Serializable {
 	
 	/**
 	 */
-	public void remove(Bestellposition bestellposition) {
-		positionen.remove(bestellposition);
+	public void remove(Position position) {
+		positionen.remove(position);
 		if (positionen.isEmpty()) {
 			endConversation();
 		}
