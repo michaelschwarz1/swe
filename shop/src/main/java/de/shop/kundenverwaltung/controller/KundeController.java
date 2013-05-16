@@ -82,7 +82,7 @@ public class KundeController implements Serializable {
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
 
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
-	private static final String MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS = "createPrivatkunde.emailExists";
+	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
 	
 	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
 	
@@ -399,10 +399,10 @@ public class KundeController implements Serializable {
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
 
-	private String createPrivatkundeErrorMsg(AbstractShopException e) {
+	private String createKundeErrorMsg(AbstractShopException e) {
 		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
 		if (exceptionClass.equals(EmailExistsException.class)) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS, CLIENT_ID_CREATE_EMAIL);
+			messages.error(KUNDENVERWALTUNG, MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS, CLIENT_ID_CREATE_EMAIL);
 		}
 		else if (exceptionClass.equals(InvalidKundeException.class)) {
 			final InvalidKundeException orig = (InvalidKundeException) e;
