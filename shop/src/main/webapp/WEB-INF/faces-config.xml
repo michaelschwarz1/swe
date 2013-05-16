@@ -19,5 +19,20 @@
    <base-name>de.shop.kundenverwaltung.controller.messages</base-name>
    <var>msgKv</var>
   </resource-bundle>
+  
+  <resource-bundle>
+   <base-name>de.shop.bestellverwaltung.controller.messages</base-name>
+   <var>msgBv</var>
+  </resource-bundle>
+ 
+  <resource-bundle>
+   <base-name>de.shop.artikelverwaltung.controller.messages</base-name>
+   <var>msgAv</var>
+  </resource-bundle>
+  
+  <resource-bundle>
+   <base-name>de.shop.auth.controller.messages</base-name>
+   <var>msgAuth</var>
+  </resource-bundle>
  </application>
 </faces-config>

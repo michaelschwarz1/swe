@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html">
 
-	<f:view locale="#{userLocale}">
+	<f:view locale="#{locale}">
 		<f:metadata>
 			<ui:insert name="metadata"/>
 		</f:metadata>
@@ -14,9 +14,9 @@
 		
 		<h:head>
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-			<meta http-equiv="language" content="#{userLocale}"/>
-			<meta http-equiv="content-language" content="#{userLocale}"/>
-			<meta name="language" content="#{userLocale}"/>
+			<meta http-equiv="language" content="#{locale}"/>
+			<meta http-equiv="content-language" content="#{locale}"/>
+			<meta name="language" content="#{locale}"/>
 			<meta http-equiv="Content-Style-Type" content="text/css"/>
 			<base href="#{request.contextPath}"/>
 			<title>#{empty pageTitle ? 'Webshop' : pageTitle}</title>
@@ -33,7 +33,7 @@
 					<ui:include src="header.xml"/>
 				</ui:insert>
 			</header>
-		
+
 			<nav id="nav">
 				<ui:insert name="nav">
 					<ui:include src="nav.xml"/>
@@ -43,11 +43,11 @@
 			<article id="article">
 				<ui:insert name="article"/>
 			</article>
-			
+		
 			<aside id="aside">
 				<ui:insert name="aside"/>
 			</aside>
-		
+
 			<footer id="footer">
 				<ui:insert name="footer">
 					<ui:include src="footer.xml"/>
