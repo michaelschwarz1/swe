@@ -17,11 +17,11 @@ import org.jboss.logging.Logger;
 
 import de.shop.auth.controller.AuthController;
 import de.shop.auth.controller.KundeLoggedIn;
-import de.shop.bestellverwaltung.domain.Bestellposition;
 import de.shop.bestellverwaltung.domain.Bestellung;
-import de.shop.bestellverwaltung.service.AbstractBestellungValidationException;
+import de.shop.bestellverwaltung.domain.Position;
+import de.shop.bestellverwaltung.service.AbstractBestellungServiceException;
 import de.shop.bestellverwaltung.service.BestellungService;
-import de.shop.kundenverwaltung.domain.AbstractKunde;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.Client;
@@ -52,7 +52,7 @@ public class BestellungController implements Serializable {
 	
 	@Inject
 	@KundeLoggedIn
-	private AbstractKunde kunde;
+	private Kunde kunde;
 	
 	@Inject
 	@Client
@@ -72,12 +72,12 @@ public class BestellungController implements Serializable {
 		}
 		
 		// Den eingeloggten Kunden mit seinen Bestellungen ermitteln, und dann die neue Bestellung zu ergaenzen
-		kunde = ks.findKundeById(kunde.getId(), FetchType.MIT_BESTELLUNGEN, locale);
+		kunde = ks.findKundeById(kunde.getPkKunde(), FetchType.MIT_BESTELLUNGEN, locale);
 		
 		// Aus dem Warenkorb nur Positionen mit Anzahl > 0
-		final List<Bestellposition> positionen = warenkorb.getPositionen();
-		final List<Bestellposition> neuePositionen = new ArrayList<>(positionen.size());
-		for (Bestellposition bp : positionen) {
+		final List<Position> positionen = warenkorb.getPositionen();
+		final List<Position> neuePositionen = new ArrayList<>(positionen.size());
+		for (Position bp : positionen) {
 			if (bp.getAnzahl() > 0) {
 				neuePositionen.add(bp);
 			}
@@ -88,15 +88,15 @@ public class BestellungController implements Serializable {
 		
 		// Neue Bestellung mit neuen Bestellpositionen erstellen
 		Bestellung bestellung = new Bestellung();
-		bestellung.setBestellpositionen(neuePositionen);
-		LOGGER.tracef("Neue Bestellung: %s\nBestellpositionen: %s", bestellung, bestellung.getBestellpositionen());
+		bestellung.setPositionen(neuePositionen);
+		LOGGER.tracef("Neue Bestellung: %s\nBestellpositionen: %s", bestellung, bestellung.getPositionen());
 		
 		// Bestellung mit VORHANDENEM Kunden verknuepfen:
 		// dessen Bestellungen muessen geladen sein, weil es eine bidirektionale Beziehung ist
 		try {
 			bestellung = bs.createBestellung(bestellung, kunde, locale);
 		}
-		catch (AbstractBestellungValidationException e) {
+		catch (AbstractBestellungServiceException e) {
 			// Validierungsfehler KOENNEN NICHT AUFTRETEN, da Attribute durch JSF validiert wurden
 			// und in der Klasse Bestellung keine Validierungs-Methoden vorhanden sind
 			throw new IllegalStateException(e);

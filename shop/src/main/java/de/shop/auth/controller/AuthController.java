@@ -28,8 +28,9 @@ import com.google.common.collect.Lists;
 
 import de.shop.auth.service.jboss.AuthService;
 import de.shop.auth.service.jboss.AuthService.RolleType;
-import de.shop.kundenverwaltung.domain.AbstractKunde;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
+import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.InternalError;
 import de.shop.util.Log;
 import de.shop.util.Messages;
@@ -56,13 +57,13 @@ public class AuthController implements Serializable {
 	private String username;
 	private String password;
 	
-	private String usernameUpdateRollen;
+	private Long usernameUpdateRollen;
 	private Long kundeId;
 
 	@Produces
 	@SessionScoped
 	@KundeLoggedIn
-	private AbstractKunde user;
+	private Kunde user;
 	
 	@Inject
 	private KundeService ks;
@@ -118,11 +119,11 @@ public class AuthController implements Serializable {
 		this.password = password;
 	}
 	
-	public String getUsernameUpdateRollen() {
+	public Long getUsernameUpdateRollen() {
 		return usernameUpdateRollen;
 	}
 
-	public void setUsernameUpdateRollen(String usernameUpdateRollen) {
+	public void setUsernameUpdateRollen(Long usernameUpdateRollen) {
 		this.usernameUpdateRollen = usernameUpdateRollen;
 	}
 
@@ -230,16 +231,16 @@ public class AuthController implements Serializable {
 		return user != null;
 	}
 	
-	@Transactional
-	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
-		final List<String> usernameList = authService.findUsernameListByUsernamePrefix(usernamePrefix);
-		return usernameList;
-	}
-	
+//	@Transactional
+//	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
+//		final List<String> usernameList = authService.findUsernameListByUsernamePrefix(usernamePrefix);
+//		return usernameList;
+//	}
+//	
 	@Transactional
 	public String findRollenByUsername() {
 		// Gibt es den Usernamen ueberhaupt?
-		final AbstractKunde kunde = ks.findKundeByUserName(usernameUpdateRollen);
+		final Kunde kunde = ks.findKundeById(usernameUpdateRollen,FetchType.NUR_KUNDE,null);
 		if (kunde == null) {
 			kundeId = null;
 			ausgewaehlteRollenOrig = null;
@@ -251,7 +252,7 @@ public class AuthController implements Serializable {
 		
 		ausgewaehlteRollenOrig = Lists.newArrayList(kunde.getRollen());
 		ausgewaehlteRollen = Lists.newArrayList(kunde.getRollen());
-		kundeId = kunde.getId();
+		kundeId = kunde.getPkKunde();
 		LOGGER.tracef("Rollen von %s: %s", usernameUpdateRollen, ausgewaehlteRollen);
 
 		if (verfuegbareRollen == null) {
