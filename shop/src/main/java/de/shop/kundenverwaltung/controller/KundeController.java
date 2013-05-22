@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -33,7 +32,6 @@ import javax.validation.ConstraintViolation;
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
-import org.richfaces.component.UIPanelMenuItem;
 
 import de.shop.auth.controller.AuthController;
 import de.shop.kundenverwaltung.domain.Adresse;

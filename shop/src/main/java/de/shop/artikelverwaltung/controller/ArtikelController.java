@@ -39,7 +39,7 @@ public class ArtikelController implements Serializable {
 
 	private String beschreibung;
 	
-	private List<Artikel> ladenhueter;
+//	private List<Artikel> ladenhueter;
 
 	@Inject
 	private ArtikelService as;
@@ -63,24 +63,24 @@ public class ArtikelController implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "ArtikelController [bezeichnung=" + beschreibung + "]";
+		return "ArtikelController [beschreibung=" + beschreibung + "]";
 	}
 
-	public String getBezeichnung() {
+	public String getBeschreibung() {
 		return beschreibung;
 	}
 
-	public void setBezeichnung(String beschreibung) {
+	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
 	}
 
 
-	public List<Artikel> getLadenhueter() {
-		return ladenhueter;
-	}
+//	public List<Artikel> getLadenhueter() {
+//		return ladenhueter;
+//	}
 
 	@Transactional
-	public String findArtikelByBezeichnung() {
+	public String findArtikelByBeschreibung() {
 		final List<Artikel> artikel = as.findArtikelByBeschreibung(beschreibung);
 		flash.put(FLASH_ARTIKEL, artikel);
 

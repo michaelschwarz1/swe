@@ -22,10 +22,10 @@
 				<rich:menuItem id="schnellsucheItem">
 					<h:panelGrid id="schnellsucheGrid" columns="3">
 						<h:outputLabel id="artikelBezLabel"
-						               value="#{msg['header.schnellsuche.artikelBezeichnung']}"
-						               for="artikelBezeichnung"/>
-						<h:inputText id="artikelBezeichnung" value="#{ac.bezeichnung}"/>
-						<h:commandButton id="artikelButton" action="#{ac.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
+						               value="#{msg['header.schnellsuche.artikelBeschreibung']}"
+						               for="artikelBeschreibung"/>
+						<h:inputText id="artikelBeschreibung" value="#{ac.beschreibung}"/>
+						<h:commandButton id="artikelButton" action="#{ac.findArtikelByBeschreibung}" value="#{msg['header.schnellsuche.button']}"/>
 
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
@@ -94,11 +94,11 @@
 								#{position.artikel.id}
 							</rich:column>
 								
-							<rich:column id="bezeichnungSpalte">
+							<rich:column id="BeschreibungSpalte">
 								<f:facet name="header">
-									#{msgBv['viewWarenkorb.artikel.bezeichnung']}
+									#{msgBv['viewWarenkorb.artikel.beschreibung']}
 								</f:facet>
-								#{position.artikel.bezeichnung}
+								#{position.artikel.beschreibung}
 							</rich:column>
 					
 							<rich:column id="anzahlSpalte">

@@ -15,14 +15,14 @@
 		<ui:define name="article">
 			<h:form id="selectForm">
 				<h:panelGrid id="selectGrid" columns="2">
-					<rich:select id="artikelBezeichnung"
+					<rich:select id="artikelBeschreibung"
 					             defaultLabel="#{msgAv['selectArtikel.auswahl']}"
 					             value="#{wk.artikelId}">
 						<!--
 						<f:selectItems id="artikelItems" values="#{verfuegbareArtikel}"/>
 						-->
 						<c:forEach var="artikel" items="#{verfuegbareArtikel}">
-							<f:selectItem id="artikelItem#{artikel.id}" itemLabel="#{artikel.bezeichnung}" itemValue="#{artikel.id}"/>
+							<f:selectItem id="artikelItem#{artikel.id}" itemLabel="#{artikel.beschreibung}" itemValue="#{artikel.id}"/>
 						</c:forEach>
 					</rich:select>
 		

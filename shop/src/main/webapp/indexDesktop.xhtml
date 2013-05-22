@@ -9,10 +9,10 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:define name="metadata">
-			<f:event type="preRenderView" listener="#{ac.loadLadenhueter}"/>
+<!-- 		  	<f:event type="preRenderView" listener="#{ac.loadLadenhueter}"/>  -->
 			<!-- JSF 2.2:
-			<f:viewAction action="#{ac.loadLadenhueter}">
-			-->
+			<f:viewAction action="#{ac.loadLadenhueter}"> -->
+			
 		</ui:define>
 		
 		<ui:param name="pageTitle" value="#{msg['index.title']}"/>
@@ -20,14 +20,14 @@
 		<ui:define name="article">
 			<h1 id="heading">#{msg['index.welcome']}</h1>
 			
-			<rich:dataTable id="ladenhueterTabelle"
+ 			<!-- rich:dataTable id="ladenhueterTabelle"
 			                var="artikel"
 			                value="#{ac.ladenhueter}"
 			                rendered="#{not empty ac.ladenhueter}">
 			             
 			    <f:facet name="header">
 			    	#{msg['index.ladenhueter']}
-				</f:facet>
+				</f:facet> 
 					 
 				<rich:column id="idSpalte">
 					<f:facet name="header">
@@ -38,11 +38,11 @@
 						
 				<rich:column id="bezeichnungSpalte">
 					<f:facet name="header">
-						#{msg['index.artikelBezeichnung']}
+						#{msg['index.artikelBeschreibung']}
 					</f:facet>
 					#{artikel.bezeichnung}
 				</rich:column>
-			</rich:dataTable>
+			</rich:dataTable> -->
 			
 			<p id="datum">
 				#{msg['index.heute']}

@@ -18,16 +18,16 @@
 				
 				<rich:panel id="suchePanel" header="#{msgAv['listArtikel.sucheNeu']}">
 					<h:panelGrid id="sucheGrid" columns="4">
-						<h:outputLabel id="bezeichnungLabel"
-						               value="#{msgAv['listArtikel.bezeichnung']}"
-						               for="bezeichnung"/>
+						<h:outputLabel id="beschreibungLabel"
+						               value="#{msgAv['listArtikel.beschreibung']}"
+						               for="beschreibung"/>
 		
-						<h:inputText id="bezeichnung" value="#{ac.bezeichnung}"/>
+						<h:inputText id="beschreibung" value="#{ac.beschreibung}"/>
 		
 						<a4j:commandButton id="findButton"
-						                   action="#{ac.findArtikelByBezeichnung}"
+						                   action="#{ac.findArtikelByBeschreibung}"
 								           value="#{msgAv['listArtikel.submit']}"
-								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
+								           render="artikelPanel sucheForm:fehlermeldungbeschreibung"/>
 						
 						<a4j:status id="statusStart">
 							<f:facet name="start">
@@ -60,16 +60,16 @@
 						                rendered="#{not empty artikel or param.init ne 'true'}">
 							<rich:column id="idSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.id']}
+									#{msgAv['listArtikel.pkArtikel']}
 								</f:facet>
-								#{art.id}
+								#{art.pkArtikel}
 							</rich:column>
 							
-							<rich:column id="bezeichnungSpalte">
+							<rich:column id="beschreibungSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.bezeichnung']}
+									#{msgAv['listArtikel.beschreibung']}
 								</f:facet>
-								#{art.bezeichnung}
+								#{art.beschreibung}
 							</rich:column>
 							
 							<rich:column id="buttonSpalte"
