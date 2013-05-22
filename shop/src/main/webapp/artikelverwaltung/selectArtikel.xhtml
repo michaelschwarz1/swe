@@ -22,7 +22,7 @@
 						<f:selectItems id="artikelItems" values="#{verfuegbareArtikel}"/>
 						-->
 						<c:forEach var="artikel" items="#{verfuegbareArtikel}">
-							<f:selectItem id="artikelItem#{artikel.id}" itemLabel="#{artikel.beschreibung}" itemValue="#{artikel.id}"/>
+							<f:selectItem id="artikelItem#{artikel.pkArtikel}" itemLabel="#{artikel.beschreibung}" itemValue="#{artikel.pkArtikel}"/>
 						</c:forEach>
 					</rich:select>
 		

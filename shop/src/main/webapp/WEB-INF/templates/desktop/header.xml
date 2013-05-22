@@ -91,7 +91,7 @@
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.artikel.id']}
 								</f:facet>
-								#{position.artikel.id}
+								#{position.artikel.pkArtikel}
 							</rich:column>
 								
 							<rich:column id="BeschreibungSpalte">
