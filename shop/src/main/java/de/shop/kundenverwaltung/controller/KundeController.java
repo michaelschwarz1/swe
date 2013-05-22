@@ -143,31 +143,31 @@ public class KundeController implements Serializable {
 //	private byte[] bytes;
 //	private String contentType;
 
-	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
+//	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
-	@PostConstruct
-	private void postConstruct() {
-//		// Dynamischer Menuepunkt fuer Emails
-//		final Application app = facesCtx.getApplication();  // javax.faces.application.Application
-//		menuItemEmail = (UIPanelMenuItem) app.createComponent(facesCtx,
-//				                                              UIPanelMenuItem.COMPONENT_TYPE,
-//				                                              PanelMenuItemRenderer.class.getName());
-//		menuItemEmail.setLabel("Email dynamisch");
-//		menuItemEmail.setId("kundenverwaltungViewByEmail");
-//		
-//		// <h:outputLink>
-//		// component-family: javax.faces.Output renderer-type: javax.faces.Link
-//		
-//		//menuGroup = (UIPanelMenuGroup) app.createComponent(facesCtx,
-//		//                                                   UIPanelMenuGroup.COMPONENT_TYPE,
-//		//                                                   PanelMenuGroupRenderer.class.getName());
-//		//UIPanelMenuItem item = (UIPanelMenuItem) app.createComponent(facesCtx,
-//		//                                                             UIPanelMenuItem.COMPONENT_TYPE,
-//		//                                                             PanelMenuItemRenderer.class.getName());
-//		//menuGroup.getChildren().add(item);
-
-		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
-	}
+//	@PostConstruct
+//	private void postConstruct() {
+////		// Dynamischer Menuepunkt fuer Emails
+////		final Application app = facesCtx.getApplication();  // javax.faces.application.Application
+////		menuItemEmail = (UIPanelMenuItem) app.createComponent(facesCtx,
+////				                                              UIPanelMenuItem.COMPONENT_TYPE,
+////				                                              PanelMenuItemRenderer.class.getName());
+////		menuItemEmail.setLabel("Email dynamisch");
+////		menuItemEmail.setId("kundenverwaltungViewByEmail");
+////		
+////		// <h:outputLink>
+////		// component-family: javax.faces.Output renderer-type: javax.faces.Link
+////		
+////		//menuGroup = (UIPanelMenuGroup) app.createComponent(facesCtx,
+////		//                                                   UIPanelMenuGroup.COMPONENT_TYPE,
+////		//                                                   PanelMenuGroupRenderer.class.getName());
+////		//UIPanelMenuItem item = (UIPanelMenuItem) app.createComponent(facesCtx,
+////		//                                                             UIPanelMenuItem.COMPONENT_TYPE,
+////		//                                                             PanelMenuItemRenderer.class.getName());
+////		//menuGroup.getChildren().add(item);
+//
+//		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+//	}
 
 	@PreDestroy
 	private void preDestroy() {
@@ -227,12 +227,12 @@ public class KundeController implements Serializable {
 	}
 
 	
-	public void setMenuItemEmail(UIPanelMenuItem menuItemEmail) {
-		this.menuItemEmail = menuItemEmail;
-	}
-	public UIPanelMenuItem getMenuItemEmail() {
-		return menuItemEmail;
-	}
+//	public void setMenuItemEmail(UIPanelMenuItem menuItemEmail) {
+//		this.menuItemEmail = menuItemEmail;
+//	}
+//	public UIPanelMenuItem getMenuItemEmail() {
+//		return menuItemEmail;
+//	}
 
 	public Date getAktuellesDatum() {
 		final Date datum = new Date();
@@ -294,7 +294,7 @@ public class KundeController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public void loadKundeById() {
 		// Request-Parameter "kundeId" fuer ID des gesuchten Kunden
-		final String idStr = request.getParameter("PK_Kunde");
+		final String idStr = request.getParameter("PK_KUNDE");
 		Long id;
 		try {
 			id = Long.valueOf(idStr);
