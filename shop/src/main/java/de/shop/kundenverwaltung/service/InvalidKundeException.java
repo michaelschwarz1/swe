@@ -5,7 +5,7 @@ import java.util.Collection;
 import javax.ejb.ApplicationException;
 import javax.validation.ConstraintViolation;
 
-import de.shop.kundenverwaltung.domain.AbstractKunde;
+import de.shop.kundenverwaltung.domain.Kunde;
 
 @ApplicationException(rollback = true)
 public class InvalidKundeException extends AbstractKundeValidationException {
@@ -15,23 +15,23 @@ public class InvalidKundeException extends AbstractKundeValidationException {
 	private String nachname;
 	private String vorname;
 
-	public InvalidKundeException(AbstractKunde kunde,
-			                     Collection<ConstraintViolation<AbstractKunde>> violations) {
+	public InvalidKundeException(Kunde kunde,
+			                     Collection<ConstraintViolation<Kunde>> violations) {
 		super(violations);
 		if (kunde != null) {
-			this.id = kunde.getId();
+			this.id = kunde.getPkKunde();
 			this.nachname = kunde.getNachname();
 			this.vorname = kunde.getVorname();
 		}
 	}
 	
 	
-	public InvalidKundeException(Long id, Collection<ConstraintViolation<AbstractKunde>> violations) {
+	public InvalidKundeException(Long id, Collection<ConstraintViolation<Kunde>> violations) {
 		super(violations);
 		this.id = id;
 	}
 	
-	public InvalidKundeException(String nachname, Collection<ConstraintViolation<AbstractKunde>> violations) {
+	public InvalidKundeException(String nachname, Collection<ConstraintViolation<Kunde>> violations) {
 		super(violations);
 		this.nachname = nachname;
 	}
