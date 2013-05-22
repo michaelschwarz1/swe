@@ -12,7 +12,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */
 @ApplicationException(rollback = true)
-public class KundeValidationException extends AbstractKundeServiceException {
+public class AbstractKundeValidationException extends AbstractKundeServiceException {
 	private static final long serialVersionUID = 4255133082483647701L;
 	private final Kunde kunde;
 	private final Collection<ConstraintViolation<Kunde>> violations;
@@ -20,7 +20,7 @@ public class KundeValidationException extends AbstractKundeServiceException {
 //	@Resource(lookup = "java:jboss/UserTransaction")
 //	private UserTransaction trans;
 
-	public KundeValidationException(Kunde kunde,
+	public AbstractKundeValidationException(Kunde kunde,
 			                        Collection<ConstraintViolation<Kunde>> violations) {
 		super("Ungueltiger Kunde: " + kunde + ", Violations: " + violations);
 		this.kunde = kunde;

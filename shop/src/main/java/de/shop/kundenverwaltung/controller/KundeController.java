@@ -34,14 +34,13 @@ import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
 import org.richfaces.component.UIPanelMenuItem;
-import org.richfaces.event.FileUploadEvent;
-import org.richfaces.model.UploadedFile;
 
 import de.shop.auth.controller.AuthController;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
 import de.shop.kundenverwaltung.service.EmailExistsException;
+import de.shop.kundenverwaltung.service.InvalidKundeException;
 import de.shop.kundenverwaltung.service.InvalidNachnameException;
 import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.shop.kundenverwaltung.service.KundeService;
@@ -64,13 +63,12 @@ public class KundeController implements Serializable {
 	
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
-	private static final int MAX_AUTOCOMPLETE = 10;
+//	private static final int MAX_AUTOCOMPLETE = 10;
 
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_KUNDE = JSF_KUNDENVERWALTUNG + "updateKunde";
-	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
 	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
 	
 	private static final String REQUEST_KUNDE_ID = "kundeId";
@@ -79,7 +77,7 @@ public class KundeController implements Serializable {
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
 	
 	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
-	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
+//	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
 
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
@@ -88,12 +86,9 @@ public class KundeController implements Serializable {
 	
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
-	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updatePrivatkunde.duplikat";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT = "updateFirmenkunde.duplikat";
+	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updateKunde.duplikat";
 	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updateKunde.concurrentUpdate";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE = "updateFirmenkunde.concurrentUpdate";
 	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE = "updateKunde.concurrentDelete";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
 	
 	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_PREFIX = "form:kundenTabelle:";
 	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_SUFFIX = ":deleteButton";
@@ -134,7 +129,6 @@ public class KundeController implements Serializable {
 
 	private Long kundeId;
 	private Kunde kunde;
-	private List<String> hobbies;
 	
 	private String nachname;
 	
@@ -146,8 +140,8 @@ public class KundeController implements Serializable {
 	private boolean geaendertKunde;    // fuer ValueChangeListener
 	private Kunde neuerKunde;
 	
-	private byte[] bytes;
-	private String contentType;
+//	private byte[] bytes;
+//	private String contentType;
 
 	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
@@ -477,15 +471,15 @@ public class KundeController implements Serializable {
 			return JSF_INDEX;
 		}
 		
-		if (kunde.getClass().equals(Kunde.class)) {
-			final Kunde privatkunde = (Kunde) kunde;
-//			final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
-//			hobbiesPrivatkunde.clear();
-//			
-//			for (String s : hobbies) {
-//				hobbiesPrivatkunde.add(HobbyType.valueOf(s));				
-//			}
-		}
+//		if (kunde.getClass().equals(Kunde.class)) {
+//			final Kunde kunde = (Kunde) kunde;
+////			final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
+////			hobbiesPrivatkunde.clear();
+////			
+////			for (String s : hobbies) {
+////				hobbiesPrivatkunde.add(HobbyType.valueOf(s));				
+////			}
+//		}
 		
 		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
 		try {
@@ -521,25 +515,22 @@ public class KundeController implements Serializable {
 			if (kundeClass.equals(Kunde.class)) {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
 			}
-			else {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
-			}
+//			else {
+//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
+//			}
 		}
 		else if (exceptionClass.equals(OptimisticLockException.class)) {
 			if (kundeClass.equals(Kunde.class)) {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE, null);
-			}
-			else {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE, null);
 			}
 		}
 		else if (exceptionClass.equals(ConcurrentDeletedException.class)) {
 			if (kundeClass.equals(Kunde.class)) {
 				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE, null);
 			}
-			else {
-				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE, null);
-			}
+//			else {
+//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE, null);
+//			}
 		}
 		return null;
 	}
@@ -582,9 +573,8 @@ public class KundeController implements Serializable {
 		kunde = ausgewaehlterKunde;
 		
 		return Kunde.class.equals(ausgewaehlterKunde.getClass())
-			   ? JSF_UPDATE_KUNDE
-			   : JSF_UPDATE_FIRMENKUNDE;
-	}
+			   ? JSF_UPDATE_KUNDE : null;
+			   	}
 
 	@TransactionAttribute(REQUIRED)
 	public String delete(Kunde ausgewaehlterKunde) {
@@ -601,11 +591,11 @@ public class KundeController implements Serializable {
 		return null;
 	}
 
-	public void uploadListener(FileUploadEvent event) {
-		final UploadedFile uploadedFile = event.getUploadedFile();
-		contentType = uploadedFile.getContentType();
-		bytes = uploadedFile.getData();
-	}
+//	public void uploadListener(FileUploadEvent event) {
+//		final UploadedFile uploadedFile = event.getUploadedFile();
+//		contentType = uploadedFile.getContentType();
+//		bytes = uploadedFile.getData();
+//	}
 
 //	@TransactionAttribute(REQUIRED)
 //	public String upload() {
