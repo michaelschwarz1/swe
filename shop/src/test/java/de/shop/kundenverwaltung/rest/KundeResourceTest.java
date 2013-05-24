@@ -3,6 +3,7 @@ package de.shop.kundenverwaltung.rest;
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
+import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
@@ -19,9 +20,11 @@ import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
@@ -43,8 +46,8 @@ import de.shop.util.AbstractResourceTest;
 		private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(201);
 		private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
 		private static final Long KUNDE_ID_UPDATE = Long.valueOf(202);
-//		private static final String NACHNAME_VORHANDEN = "Schwarz";
-//		private static final String NACHNAME_NICHT_VORHANDEN = "König";
+		private static final String NACHNAME_VORHANDEN = "Schwarz";
+		private static final String NACHNAME_NICHT_VORHANDEN = "Nichtvorhanden";
 		private static final String NEUER_NACHNAME = "Nachnameneu";
 		private static final String NEUER_NACHNAME_INVALID = "!";
 		private static final String NEUER_VORNAME = "Vornameneu";
@@ -101,50 +104,50 @@ import de.shop.util.AbstractResourceTest;
 			LOGGER.finer("ENDE");
 		}
 		
-//		@Test
-//TODO	public void findKundenByNachnameVorhanden() {
-//			LOGGER.finer("BEGINN");
-//			
-//			// Given
-//			final String nachname = NACHNAME_VORHANDEN;
-//
-//			// When
-//			final Response response = given().header(ACCEPT, APPLICATION_JSON)
-//					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-//	                                         .get(KUNDEN_PATH);
-//			
-//			// Then
-//			try (final JsonReader jsonReader =
-//					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-//				final JsonArray jsonArray = jsonReader.readArray();
-//		    	assertThat(jsonArray.size() > 1, is(true));
-//		    	
-//		    	final List<JsonObject> jsonObjectList = jsonArray.getValuesAs(JsonObject.class);
-//		    	for (JsonObject jsonObject : jsonObjectList) {
-//		    		assertThat(jsonObject.getString("nachname"), is(nachname));
-//		    	}
-//			}
-//
-//			LOGGER.finer("ENDE");
-//		}
+		@Test
+	public void findKundenByNachnameVorhanden() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final String nachname = NACHNAME_VORHANDEN;
+
+			// When
+			final Response response = given().header(ACCEPT, APPLICATION_JSON)
+					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
+	                                         .get(KUNDEN_PATH);
+			
+			// Then
+			try (final JsonReader jsonReader =
+					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+				final JsonArray jsonArray = jsonReader.readArray();
+		    	assertThat(jsonArray.size() > 0, is(true));
+		    	
+		    	final List<JsonObject> jsonObjectList = jsonArray.getValuesAs(JsonObject.class);
+		    	for (JsonObject jsonObject : jsonObjectList) {
+		    		assertThat(jsonObject.getString("nachname"), is(nachname));
+		    	}
+			}
+
+			LOGGER.finer("ENDE");
+		}
 		
-//		@Test
-//		public void findKundenByNachnameNichtVorhanden() {
-//			LOGGER.finer("BEGINN");
-//			
-//			// Given
-//			final String nachname = NACHNAME_NICHT_VORHANDEN;
-//			
-//			// When
-//			final Response response = given().header(ACCEPT, APPLICATION_JSON)
-//					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-//	                                         .get(KUNDEN_PATH);
-//			
-//			// Then
-//			assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
-//
-//			LOGGER.finer("ENDE");
-//		}
+		@Test
+		public void findKundenByNachnameNichtVorhanden() {
+			LOGGER.finer("BEGINN");
+			
+			// Given
+			final String nachname = NACHNAME_NICHT_VORHANDEN;
+			
+			// When
+			final Response response = given().header(ACCEPT, APPLICATION_JSON)
+					                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
+	                                         .get(KUNDEN_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
+
+			LOGGER.finer("ENDE");
+		}
 		
 		@Test
 		public void createKunde() {

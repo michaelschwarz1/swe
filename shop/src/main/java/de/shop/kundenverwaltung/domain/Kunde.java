@@ -64,9 +64,9 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 		                + " FROM  Kunde k"
 		                + " WHERE k.id LIKE :" + Kunde.PARAM_KUNDE_ID),
 	@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_NACHNAME,
-	            query = "SELECT k"
-				        + " FROM   Kunde k"
-	            		+ " WHERE  UPPER(k.nachname) LIKE UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
+			    query = "SELECT k"
+					    + " FROM   Kunde k"
+			         	+ " WHERE  UPPER(k.nachname) = UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
  	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_EMAIL,
    	            query = "SELECT DISTINCT k"
    			            + " FROM   Kunde k"
