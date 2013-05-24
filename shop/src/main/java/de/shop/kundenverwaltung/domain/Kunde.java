@@ -71,6 +71,10 @@ import de.shop.bestellverwaltung.domain.Bestellung;
    	            query = "SELECT DISTINCT k"
    			            + " FROM   Kunde k"
    			            + " WHERE  k.email = :" + Kunde.PARAM_KUNDE_EMAIL),
+   	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_USERNAME,
+   	   	       	query = "SELECT  k"
+   	   			        + " FROM   Kunde k"
+   	   			        + " WHERE  k.id LIKE :" + Kunde.PARAM_KUNDE_USERNAME),		            
    	@NamedQuery(name = Kunde.FIND_KUNDEN_BY_PLZ,
    				query = "SELECT k"
    						+ " FROM Kunde k"
@@ -98,7 +102,7 @@ public static final String PARAM_KUNDE_NACHNAME = "nachname";
 public static final String PARAM_KUNDE_ADRESSE_PLZ = "plz";
 //public static final String PARAM_KUNDE_SEIT = "seit";
 public static final String PARAM_KUNDE_EMAIL = "email";
-public static final String PARAM_KUNDE_USERNAME = "username";
+public static final String PARAM_KUNDE_USERNAME = "pkKunde";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
