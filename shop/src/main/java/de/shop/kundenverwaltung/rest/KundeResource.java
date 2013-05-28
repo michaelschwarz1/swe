@@ -5,6 +5,7 @@ import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.kundenverwaltung.service.KundeService.OrderType;
+import de.shop.util.JsonFile;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
@@ -289,21 +291,25 @@ public class KundeResource {
 	}
 	
 	
-//	@Path("{id:[1-9][0-9]*}/multimedia")
-//	@POST
-//	@Consumes(APPLICATION_JSON)
-//	public Response upload(@PathParam("id") Long kundeId, JsonFile file) {
-//	Locale locale = localeHelper.getLocale(headers);
-//	ks.setFile(kundeId, file.getBytes(), FetchType.NUR_KUNDE, locale);
-//	URI location = uriHelperKunde.getUriDownload(kundeId, uriInfo);
-//	return Response.created(location).build();
-//	}
-//	
-//	@Path("{id:[1-9][0-9]*}/multimedia")
-//	@GET
-//	public JsonFile download(@PathParam("id") Long kundeId) {
-//	Locale locale = localeHelper.getLocale(headers);
-//	Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
-//	return new JsonFile(kunde.getFile().getBytes());
-//	}
+	@Path("{id:[1-9][0-9]*}/file")
+	@POST
+	@Consumes(APPLICATION_JSON)
+	public Response upload(@PathParam("id") Long kundeId, JsonFile file) {
+		final Locale locale = localeHelper.getLocale(headers);
+		ks.setFile(kundeId, file.getBytes(), locale);
+		final URI location = uriHelperKunde.getUriDownload(kundeId, uriInfo);
+		return Response.created(location).build();
+	}
+	
+	@Path("{id:[1-9][0-9]*}/file")
+	@GET
+	public JsonFile download(@PathParam("id") Long kundeId) throws IOException {
+		final Locale locale = localeHelper.getLocale(headers);
+		final Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+		if (kunde.getFile() == null) {
+			return new JsonFile(new byte[] {});
+		}
+		
+		return new JsonFile(kunde.getFile().getBytes());
+	}
 }

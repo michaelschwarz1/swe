@@ -28,10 +28,13 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
+import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
+import org.richfaces.event.FileUploadEvent;
+import org.richfaces.model.UploadedFile;
 
 import de.shop.auth.controller.AuthController;
 import de.shop.kundenverwaltung.domain.Adresse;
@@ -47,6 +50,8 @@ import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.ConcurrentDeletedException;
+import de.shop.util.File;
+import de.shop.util.FileHelper;
 import de.shop.util.Messages;
 
 /**
@@ -122,8 +127,8 @@ public class KundeController implements Serializable {
 	@Push(topic = "updateKunde")
 	private transient Event<String> updateKundeEvent;
 	
-//	@Inject
-//	private FileHelper fileHelper;
+	@Inject
+	private FileHelper fileHelper;
 
 	private Long kundeId;
 	private Kunde kunde;
@@ -138,8 +143,8 @@ public class KundeController implements Serializable {
 	private boolean geaendertKunde;    // fuer ValueChangeListener
 	private Kunde neuerKunde;
 	
-//	private byte[] bytes;
-//	private String contentType;
+	private byte[] bytes;
+	private String contentType;
 
 //	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
@@ -589,38 +594,38 @@ public class KundeController implements Serializable {
 		return null;
 	}
 
-//	public void uploadListener(FileUploadEvent event) {
-//		final UploadedFile uploadedFile = event.getUploadedFile();
-//		contentType = uploadedFile.getContentType();
-//		bytes = uploadedFile.getData();
-//	}
+	public void uploadListener(FileUploadEvent event) {
+		final UploadedFile uploadedFile = event.getUploadedFile();
+		contentType = uploadedFile.getContentType();
+		bytes = uploadedFile.getData();
+	}
 
-//	@TransactionAttribute(REQUIRED)
-//	public String upload() {
-//		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
-//		if (kunde == null) {
-//			return null;
-//		}
-//		ks.setFile(kunde, bytes, contentType);
-//
-//		kundeId = null;
-//		bytes = null;
-//		contentType = null;
-//		kunde = null;
-//
-//		return JSF_INDEX;
-//	}
-//	
-//	public String getFilename(File file) {
-//		if (file == null) {
-//			return "";
-//		}
-//		
-//		fileHelper.store(file);
-//		return file.getFilename();
-//	}
-//	
-//	public String getBase64(File file) {
-//		return DatatypeConverter.printBase64Binary(file.getBytes());
-//	}
+	@TransactionAttribute(REQUIRED)
+	public String upload() {
+		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+		if (kunde == null) {
+			return null;
+		}
+		ks.setFile(kunde, bytes, contentType);
+
+		kundeId = null;
+		bytes = null;
+		contentType = null;
+		kunde = null;
+
+		return JSF_INDEX;
+	}
+	
+	public String getFilename(File file) {
+		if (file == null) {
+			return "";
+		}
+		
+		fileHelper.store(file);
+		return file.getFilename();
+	}
+	
+	public String getBase64(File file) {
+		return DatatypeConverter.printBase64Binary(file.getBytes());
+	}
 }

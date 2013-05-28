@@ -45,7 +45,8 @@ import com.sun.istack.NotNull;
 
 import de.shop.auth.service.jboss.AuthService.RolleType;
 import de.shop.bestellverwaltung.domain.Bestellung;
-
+import de.shop.util.File;
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * The persistent class for the KUNDE database table.
@@ -173,6 +174,14 @@ public static final String PARAM_KUNDE_USERNAME = "pkKunde";
 	@JsonProperty
 	private Adresse adresse;
 	
+	@OneToOne(fetch = LAZY, cascade = { PERSIST, REMOVE })
+	@JoinColumn(name = "file_fk")
+	@JsonIgnore
+	private File file;
+	
+	@Transient
+	private URI fileUri;
+	
 	@PrePersist
 	private void prePersist() {
 		erzeugt = new Date();
@@ -299,6 +308,22 @@ public static final String PARAM_KUNDE_USERNAME = "pkKunde";
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public URI getFileUri() {
+		return fileUri;
+	}
+
+	public void setFileUri(URI fileUri) {
+		this.fileUri = fileUri;
 	}
 
 }
