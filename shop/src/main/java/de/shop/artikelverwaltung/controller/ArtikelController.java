@@ -56,6 +56,7 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
+	
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_UPDATE = "updateArtikel.concurrentUpdate";
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
 
@@ -163,7 +164,7 @@ public class ArtikelController implements Serializable {
 		// Push-Event fuer Webbrowser
 		neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getPkArtikel()));
 		
-		// Aufbereitung fuer viewKunde.xhtml
+		// Aufbereitung fuer viewArtikel.xhtml
 		artikelId = neuerArtikel.getPkArtikel();
 		artikel = neuerArtikel;
 		neuerArtikel = null;  // zuruecksetzen
