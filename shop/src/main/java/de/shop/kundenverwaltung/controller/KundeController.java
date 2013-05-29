@@ -628,4 +628,12 @@ public class KundeController implements Serializable {
 	public String getBase64(File file) {
 		return DatatypeConverter.printBase64Binary(file.getBytes());
 	}
+
+	public Kunde getNeuerKunde() {
+		return neuerKunde;
+	}
+
+	public void setNeuerKunde(Kunde neuerKunde) {
+		this.neuerKunde = neuerKunde;
+	}
 }
