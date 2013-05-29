@@ -61,6 +61,7 @@ public class ArtikelController implements Serializable {
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
 
 	private String beschreibung;
+	private double preis;
 	private Long artikelId;
 	private Artikel artikel;
 	private Artikel neuerArtikel;
@@ -246,6 +247,38 @@ public class ArtikelController implements Serializable {
 			messages.error(violations, getBeschreibung());
 		}
 		return null;
+	}
+
+	public Artikel getArtikel() {
+		return artikel;
+	}
+
+	public void setArtikel(Artikel artikel) {
+		this.artikel = artikel;
+	}
+
+	public Artikel getNeuerArtikel() {
+		return neuerArtikel;
+	}
+
+	public void setNeuerArtikel(Artikel neuerArtikel) {
+		this.neuerArtikel = neuerArtikel;
+	}
+
+	public boolean isGeaendertArtikel() {
+		return geaendertArtikel;
+	}
+
+	public void setGeaendertArtikel(boolean geaendertArtikel) {
+		this.geaendertArtikel = geaendertArtikel;
+	}
+
+	public double getPreis() {
+		return preis;
+	}
+
+	public void setPreis(double preis) {
+		this.preis = preis;
 	}
 	
 
