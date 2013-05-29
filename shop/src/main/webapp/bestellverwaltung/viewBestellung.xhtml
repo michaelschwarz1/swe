@@ -18,10 +18,10 @@
 				<h:panelGrid id="bestellungGrid" columns="2">
 		
 					<h:outputText id="idLabel" value="#{msgBv['viewBestellung.id']}"/>
-					<h:outputText id="id" value="#{bestellung.id}"/>
+					<h:outputText id="id" value="#{bestellung.pkBestellung}"/>
 		
 					<h:outputText id="kundeIdLabel" value="#{msgBv['viewBestellung.kundeId']}"/>
-					<h:outputText id="kundeId" value="#{bestellung.kunde.id}"/>
+					<h:outputText id="kundeId" value="#{bestellung.kunde.pkKunde}"/>
 		
 					<h:outputText id="erzeugtLabel" value="#{msgBv['viewBestellung.zeitstempel']}"/>
 					<h:outputText id="erzeugt" value="#{bestellung.erzeugt}">
@@ -34,20 +34,20 @@
 	
 			<rich:panel id="positionen" header="#{msgBv['viewBestellung.positionen']}"> 
 				<rich:dataTable id="positionenTabelle"
-				                value="#{bestellung.bestellpositionen}"
+				                value="#{bestellung.positionen}"
 				                var="pos">
 					<rich:column id="artikelIdSpalte">
 						<f:facet name="header">
 							#{msgBv['viewBestellung.artikel.id']}
 						</f:facet>
-						#{pos.artikel.id}
+						#{pos.artikel.pkArtikel}
 					</rich:column>
 		
 					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
-							#{msgBv['viewBestellung.artikel.bezeichnung']}
+							#{msgBv['viewBestellung.artikel.beschreibung']}
 						</f:facet>
-						#{pos.artikel.bezeichnung}
+						#{pos.artikel.beschreibung}
 					</rich:column>
 		
 					<rich:column id="anzahlSpalte">
