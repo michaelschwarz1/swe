@@ -99,6 +99,7 @@ public class KundeController implements Serializable {
 	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
 	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "viewKunde.deleteKundeBestellung";
+	private Kunde neuerKunde;
 	
 	@PersistenceContext(type = EXTENDED)
 	private transient EntityManager em;
@@ -141,7 +142,7 @@ public class KundeController implements Serializable {
 	private String vornameFilter = "";
 	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
-	private Kunde neuerKunde;
+	
 	
 	private byte[] bytes;
 	private String contentType;
