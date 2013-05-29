@@ -24,14 +24,14 @@
 					<f:facet name="header">
 						#{msgBv['confirmBestellung.artikel.id']}
 					</f:facet>
-					#{pos.artikel.id}
+					#{pos.artikel.pkArtikel}
 				</rich:column>
 	
 				<rich:column id="bezeichnungSpalte">
 					<f:facet name="header">
-						#{msgBv['confirmBestellung.artikel.bezeichnung']}
+						#{msgBv['confirmBestellung.artikel.beschreibung']}
 					</f:facet>
-					#{pos.artikel.bezeichnung}
+					#{pos.artikel.beschreibung}
 				</rich:column>
 	
 				<rich:column id="anzahlSpalte">

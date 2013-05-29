@@ -19,7 +19,7 @@
 				#{msgAv['createArtikel.heading']}
 			</h1>
 	
-			<h:form id="createKundeForm">
+			<h:form id="createArtikelForm">
 				<rich:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
 				<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
 				<rich:focus id="createKundeFormFocus"/>
@@ -29,21 +29,21 @@
 					https://issues.jboss.org/browse/AS7-1348
 					http://community.jboss.org/thread/169487 
 				-->
-				<rich:graphValidator id="kundeValidator"
-				                     value="#{kc.neuerPrivatkunde}"
-				                     groups="#{kc.passwordGroup}">
+				<rich:graphValidator id="artikelValidator"
+				                     value="#{ac.neuerArtikel}"
+				                     groups="#{ac.passwordGroup}">
 					<rich:messages for="kundeValidator"/>
 					<rich:messages id="fehlermeldungPassword" globalOnly="true"/>
 					<p id="abstand"/>
 					
-					<h:panelGrid id="createKundeTabelle"
-					             columns="3">
+					<h:panelGrid id="createArtikelTabelle"
+					             columns="2">
 			
-						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createPrivatkunde.nachname']}"/>
-						<h:inputText id="nachname" value="#{kc.neuerPrivatkunde.nachname}">
-							<rich:validator oninvalid="$(#{rich:element('nachname')}).addClass('invalid')"
-                                            onvalid="$(#{rich:element('nachname')}).removeClass('invalid')"/>
-						</h:inputText>
+						<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
+				  		<h:inputText id="beschreibung" value="#{ac.neuerArtikel.beschreibung}">
+				<!--			<rich:validator oninvalid="$(#{rich:element('beschreibung')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('beschreibung')}).removeClass('invalid')"/>
+				-->		</h:inputText>
 						<rich:messages id="fehlermeldungenNachname" for="nachname"/>
 			
 						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createPrivatkunde.vorname']}"/>
