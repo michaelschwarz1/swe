@@ -3,6 +3,7 @@ package de.shop.artikelverwaltung.controller;
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.ejb.TransactionAttributeType.SUPPORTS;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -12,8 +13,9 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.faces.context.Flash;
 import javax.faces.event.ValueChangeEvent;
@@ -42,8 +44,10 @@ import de.shop.util.Transactional;
  * Dialogsteuerung fuer die ArtikelService
  */
 @Named("ac")
-@RequestScoped
+@SessionScoped
 @Log
+@Stateful
+@TransactionAttribute(SUPPORTS)
 public class ArtikelController implements Serializable {
 	private static final long serialVersionUID = 1564024850446471639L;
 
@@ -170,7 +174,7 @@ public class ArtikelController implements Serializable {
 		artikel = neuerArtikel;
 		neuerArtikel = null;  // zuruecksetzen
 		
-		return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
+		return JSF_LIST_ARTIKEL + JSF_REDIRECT_SUFFIX;
 	}
 	
 	private String createArtikelErrorMsg(AbstractShopException e) {
@@ -235,7 +239,7 @@ public class ArtikelController implements Serializable {
 		// Aufbereitung fuer viewKunde.xhtml
 		artikelId = artikel.getPkArtikel();
 		
-		return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
+		return JSF_LIST_ARTIKEL + JSF_REDIRECT_SUFFIX;
 	}
 	
 	private String updateErrorMsg(RuntimeException e, Class<? extends Artikel> artikelClass) {
