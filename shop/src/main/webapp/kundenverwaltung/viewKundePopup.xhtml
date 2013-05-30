@@ -97,13 +97,13 @@
 					<!-- Alternativen siehe http://html5video.org/wiki/HTML5_Video_Player_Comparison -->
 					<h:outputScript id="jsVideo" library="js" name="mediaelement-and-player.min.js"/>
 					<h:outputStylesheet id="cssVideo" library="css" name="mediaelementplayer.css"/>
-					<video id="video"
+					<!-- <video id="video"
 						   controls="controls"
 						   width="640"
 						   height="480">
 						<source src="#{request.contextPath}/resources/filesDb/#{filename}"
 						        type="#{file.mimeType.toString()}"/>
-					</video>
+					</video> -->
 				</c:when>
 
 				<c:when test="${multimediaType eq 'AUDIO'}">
