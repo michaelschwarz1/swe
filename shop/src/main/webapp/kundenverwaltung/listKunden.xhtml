@@ -20,11 +20,12 @@
 					               value="#{msgKv['listKunden.nachname']}"
 					               for="nachname"/>
 					             
-					<rich:autocomplete id="nachname"
+					<!-- <rich:autocomplete id="nachname"
 					                   value="#{kc.nachname}"
 					                   mode="ajax"
-					                   minChars="1"
-					                   autocompleteMethod="#{kc.findNachnamenByPrefix}"/> 
+					                   minChars="100"
+					                   autocompleteMethod="#{kc.findKundenByNachname}"/>  -->
+					                   <h:inputText id="nachname" value="#{kc.nachname}"  />
 	
 					<a4j:commandButton id="sucheButton"
 					                   action="#{kc.findKundenByNachname}"
@@ -66,7 +67,7 @@
 						<f:facet name="header">
 			                 #{msgKv['listKunden.kundenr']}
 						</f:facet>
-						#{kunde.id}
+						#{kunde.pkKunde}
 					</rich:column>
 					
 					<rich:column id="nachnameSpalte">
@@ -80,7 +81,7 @@
 						<rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
 							<f:facet name="header">
 								<h:outputFormat id="popupTitle" value="#{msgKv['viewKundePopup.title']}">
-									<f:param id="popupTitleId" value="#{kunde.id}"/>
+									<f:param id="popupTitleId" value="#{kunde.pkKunde}"/>
 								</h:outputFormat>
 							</f:facet>
 							<f:facet name="controls">
@@ -167,7 +168,7 @@
 						          image="#{resource['images:details2.gif']}"
 								  outcome="/kundenverwaltung/viewKundeGET"
 								  alt="#{msgKv['listKunden.detailsButtonGETAlt']}">
-							<f:param id="idParam" name="kundeId" value="#{kunde.id}"/>
+							<f:param id="idParam" name="kundeId" value="#{kunde.pkKunde}"/>
 						</h:button>
 					</rich:column>
 									
