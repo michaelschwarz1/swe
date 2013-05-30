@@ -69,6 +69,7 @@ public class ArtikelController implements Serializable {
 
 	private String beschreibung;
 	private String kategorie;
+	private int aufLager;
 	private double preis;
 	private Long artikelId;
 	private Artikel artikel;
@@ -300,6 +301,14 @@ public class ArtikelController implements Serializable {
 
 	public void setKategorie(String kategorie) {
 		this.kategorie = kategorie;
+	}
+
+	public int getAufLager() {
+		return aufLager;
+	}
+
+	public void setAufLager(int aufLager) {
+		this.aufLager = aufLager;
 	}
 	
 

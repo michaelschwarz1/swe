@@ -37,12 +37,12 @@
 					<p id="abstand"/>
 					
 					<h:panelGrid id="createArtikelTabelle"
-					             columns="2">
+					             columns="3">
 			
 						<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
 				  		<h:inputText id="beschreibung" value="#{ac.neuerArtikel.beschreibung}">
 						</h:inputText>
-						
+						<f:verbatim/>
 						<!-- <rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/> -->
 						
 						
@@ -50,13 +50,15 @@
 						<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.Preis']}"/>
 						<h:inputText id="preis" value="#{ac.neuerArtikel.preis}">
 						</h:inputText>
-						
-						
+						<f:verbatim/>
+						<h:outputLabel id="aufLagerLabel" for="aufLager" value="#{msgAv['createArtikel.aufLager']}"/>
+						<h:inputText id="aufLager" value="#{ac.neuerArtikel.aufLager}"/>
+						<f:verbatim/>
 						
 						<h:outputLabel id="kategorieLabel" for="kategorie" value="#{msgAv['createArtikel.kategorie']}"/>
 						<h:inputText id="kategorie" value="#{ac.neuerArtikel.kategorie}">
 						</h:inputText>
-						
+						<f:verbatim/>
 												
 					</h:panelGrid>
 					<p id="buttons">
