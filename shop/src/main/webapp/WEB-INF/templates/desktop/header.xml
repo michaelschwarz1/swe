@@ -30,7 +30,7 @@
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
 						               for="kundeId"/>
-						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
+						<h:inputText id="kundeId" value="#{kc.kunde.pkKunde}"/>
 						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
 					</h:panelGrid>
 				</rich:menuItem>

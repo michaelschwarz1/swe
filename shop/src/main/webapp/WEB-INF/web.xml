@@ -88,7 +88,7 @@
   <context-param>
     <description>Alternativen: blueSky, classic, deepMarine, emeraldTown, japanCherry, ruby, wine</description>
     <param-name>org.richfaces.skin</param-name>
-    <param-value>blueSky</param-value>
+    <param-value>classic</param-value>
   </context-param>
   <context-param>
     <description>Mapping fuer JSON usw.</description>
