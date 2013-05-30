@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+				
+		<ui:param name="pageTitle" value="#{msgKv['updatePrivatkunde.title']}"/>
+	
+		<ui:define name="article">
+			<h1>
+				<h:outputFormat id="headingPrivatkunde" value="#{msgKv['updatePrivatkunde.heading']}" rendered="#{not empty kc.kunde}">
+					<f:param id="idWert" value="#{kc.kunde.pkKunde}"/>
+				</h:outputFormat>
+			</h1>
+			
+			<h:outputText id="fehlerKeinKunde"
+			              value="#{msgKv['updatePrivatkunde.keinKunde']}"
+			              class="rf-msg-err"
+			              rendered="#{empty kc.kunde}"/>
+
+			<a4j:push id="updateEvent" address="updateKunde"
+		              ondataavailable="if (event.rf.data == '#{kc.kunde.pkKunde}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updatePrivatkunde.concurrentUpdate']}&lt;/span&gt;') }"/>
+			<span id="updateMessage"></span>
+			
+			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
+			<h:form id="updateKundeForm" rendered="#{not empty kc.kunde}">
+				<rich:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
+				<!--
+				<rich:focus id="formFocus"/>
+				-->
+				
+				<h:panelGrid id="updateKundeTabelle"
+				             columns="3">
+					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updatePrivatkunde.nachname']}"/>
+					<h:inputText id="nachname"
+					             value="#{kc.kunde.nachname}"
+					             valueChangeListener="#{kc.geaendert}">
+						<rich:validator oninvalid="$(#{rich:element('nachname')}).addClass('invalid')"
+                                        onvalid="$(#{rich:element('nachname')}).removeClass('invalid')"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenNachname" for="nachname"/>
+		
+					<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updatePrivatkunde.vorname']}"/>
+					<h:inputText id="vorname" value="#{kc.kunde.vorname}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					
+					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
+					<h:inputText id="email" value="#{kc.kunde.email}" valueChangeListener="#{kc.geaendert}">
+						<rich:validator oninvalid="$(#{rich:element('email')}).addClass('invalid')"
+                                        onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenEmail" for="email"/>
+				</h:panelGrid>
+	
+				<p id="buttons">
+					<h:commandButton id="button" action="#{kc.update}" value="#{msgKv['updatePrivatkunde.submit']}"/>
+					#{' '}
+					<h:commandButton type="reset" value="#{msgKv['updatePrivatkunde.reset']}"/>
+				</p>
+				
+				<p id="hinweisPflichtfelder">
+					#{msgKv['updatePrivatkunde.required']}
+				</p>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
