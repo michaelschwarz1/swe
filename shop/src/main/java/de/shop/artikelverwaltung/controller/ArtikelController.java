@@ -4,6 +4,7 @@ import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -21,7 +22,9 @@ import javax.faces.context.Flash;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 
@@ -65,12 +68,16 @@ public class ArtikelController implements Serializable {
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
 
 	private String beschreibung;
+	private String kategorie;
 	private double preis;
 	private Long artikelId;
 	private Artikel artikel;
 	private Artikel neuerArtikel;
 	private boolean geaendertArtikel;
 //	private List<Artikel> ladenhueter;
+	
+	@PersistenceContext(type = EXTENDED)
+	private transient EntityManager em;
 
 	@Inject
 	private ArtikelService as;
@@ -168,8 +175,10 @@ public class ArtikelController implements Serializable {
 
 		// Push-Event fuer Webbrowser
 		neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getPkArtikel()));
+
 		
 		// Aufbereitung fuer viewArtikel.xhtml
+		beschreibung = neuerArtikel.getBeschreibung();
 		artikelId = neuerArtikel.getPkArtikel();
 		artikel = neuerArtikel;
 		neuerArtikel = null;  // zuruecksetzen
@@ -283,6 +292,14 @@ public class ArtikelController implements Serializable {
 
 	public void setPreis(double preis) {
 		this.preis = preis;
+	}
+
+	public String getKategorie() {
+		return kategorie;
+	}
+
+	public void setKategorie(String kategorie) {
+		this.kategorie = kategorie;
 	}
 	
 

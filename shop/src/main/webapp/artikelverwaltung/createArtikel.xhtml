@@ -42,9 +42,10 @@
 						<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
 				  		<h:inputText id="beschreibung" value="#{ac.neuerArtikel.beschreibung}">
 						</h:inputText>
-						<rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/>
 						
-						<p id="abstand"/>
+						<!-- <rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/> -->
+						
+						
 						
 						<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.Preis']}"/>
 						<h:inputText id="preis" value="#{ac.neuerArtikel.preis}">
@@ -52,7 +53,11 @@
 						
 						
 						
+						<h:outputLabel id="kategorieLabel" for="kategorie" value="#{msgAv['createArtikel.kategorie']}"/>
+						<h:inputText id="kategorie" value="#{ac.neuerArtikel.kategorie}">
+						</h:inputText>
 						
+												
 					</h:panelGrid>
 					<p id="buttons">
 						<h:commandButton id="createSubmit" action="#{ac.createArtikel}" value="#{msgAv['createArtikel.submit']}"/>
