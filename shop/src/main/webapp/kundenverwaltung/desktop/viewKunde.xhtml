@@ -271,23 +271,12 @@
 				
 					<p id="buttons">
 						<h:panelGroup id="buttonsGroup" rendered="#{not empty kc.kunde}">
-							<h:commandButton id="updateButtonPrivatkunde"
+							<h:commandButton id="updateButtonKunde"
 							                 image="#{resource['images:edit.gif']}"
-							                 action="/kundenverwaltung/updatePrivatkunde"
+							                 action="/kundenverwaltung/updateKunde"
 							                 alt="#{msgKv['viewKunde.update.alt']}"
-							                 rendered="#{kc.kunde.class.simpleName eq 'Privatkunde'}"/>
-							<h:commandButton id="updateButtonFirmenkunde"
-							                 image="#{resource['images/edit.gif']}"
-							                 action="/kundenverwaltung/updateFirmenkunde"
-							                 alt="#{msgKv['viewKunde.update.alt']}"
-							                 rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>
-							#{' '}
-							<h:commandButton id="deleteButton"
-											 image="#{resource['images:delete.gif']}"
-									         action="#{kc.deleteAngezeigtenKunden}"
-									         onclick="return confirm('#{msgKv['viewKunde.deleteKundeBestaetigung']}')"
-									         alt="#{msgKv['viewKunde.deleteButtonAlt']}"
-									         rendered="#{rich:isUserInRole('admin')}"/>
+							                 rendered="#{rich:isUserInRole('admin')}"/>
+							
 							#{' '}
 							<rich:messages id="fehlermeldungDeleteButton" for="deleteButton"/>
 						</h:panelGroup>
