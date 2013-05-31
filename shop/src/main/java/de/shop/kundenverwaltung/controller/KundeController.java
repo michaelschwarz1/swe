@@ -66,7 +66,7 @@ public class KundeController implements Serializable {
 	
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
-//	private static final int MAX_AUTOCOMPLETE = 10;
+	private static final int MAX_AUTOCOMPLETE = 10;
 
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
@@ -80,7 +80,7 @@ public class KundeController implements Serializable {
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
 	
 	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
-//	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
+	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
 
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
@@ -270,31 +270,31 @@ public class KundeController implements Serializable {
 	 * F&uuml;r rich:autocomplete
 	 * @return Liste der potenziellen Kunden
 	 */
-//	@TransactionAttribute(REQUIRED)
-//	public List<Kunde> findKundenByIdPrefix(String idPrefix) {
-//		List<Kunde> kundenPrefix = null;
-//		Long id = null; 
-//		try {
-//			id = Long.valueOf(idPrefix);
-//		}
-//		catch (NumberFormatException e) {
-//			findKundeByIdErrorMsg(idPrefix);
-//			return null;
-//		}
-//		
-//		kundenPrefix = ks.findKundenByIdPrefix(id);
-//		if (kundenPrefix == null || kundenPrefix.isEmpty()) {
-//			// Kein Kunde zu gegebenem ID-Praefix vorhanden
-//			findKundeByIdErrorMsg(idPrefix);
-//			return null;
-//		}
-//		
-//		if (kundenPrefix.size() > MAX_AUTOCOMPLETE) {
-//			return kundenPrefix.subList(0, MAX_AUTOCOMPLETE);
-//		}
-//		return kundenPrefix;
-//	}
-//	
+	@TransactionAttribute(REQUIRED)
+	public List<Kunde> findKundenByIdPrefix(String idPrefix) {
+		List<Kunde> kundenPrefix = null;
+		Long id = null; 
+		try {
+			id = Long.valueOf(idPrefix);
+		}
+		catch (NumberFormatException e) {
+			findKundeByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		kundenPrefix = ks.findKundenByIdPrefix(id);
+		if (kundenPrefix == null || kundenPrefix.isEmpty()) {
+			// Kein Kunde zu gegebenem ID-Praefix vorhanden
+			findKundeByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		if (kundenPrefix.size() > MAX_AUTOCOMPLETE) {
+			return kundenPrefix.subList(0, MAX_AUTOCOMPLETE);
+		}
+		return kundenPrefix;
+	}
+	
 	@TransactionAttribute(REQUIRED)
 	public void loadKundeById() {
 		// Request-Parameter "kundeId" fuer ID des gesuchten Kunden
@@ -340,21 +340,21 @@ public class KundeController implements Serializable {
 	 * F&uuml;r rich:autocomplete
 	 * @return Liste der potenziellen Nachnamen
 	 */
-//	@TransactionAttribute(REQUIRED)
-//	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
-//		// NICHT: Liste von Kunden. Sonst waeren gleiche Nachnamen mehrfach vorhanden.
-//		final List<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
-//		if (nachnamen.isEmpty()) {
-//			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundeId);
-//			return nachnamen;
-//		}
-//
-//		if (nachnamen.size() > MAX_AUTOCOMPLETE) {
-//			return nachnamen.subList(0, MAX_AUTOCOMPLETE);
-//		}
-//
-//		return nachnamen;
-//	}
+	@TransactionAttribute(REQUIRED)
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+		// NICHT: Liste von Kunden. Sonst waeren gleiche Nachnamen mehrfach vorhanden.
+		final List<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
+		if (nachnamen.isEmpty()) {
+			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundeId);
+			return nachnamen;
+		}
+
+		if (nachnamen.size() > MAX_AUTOCOMPLETE) {
+			return nachnamen.subList(0, MAX_AUTOCOMPLETE);
+		}
+
+		return nachnamen;
+	}
 	
 	@TransactionAttribute(REQUIRED)
 	public String details(Kunde ausgewaehlterKunde) {

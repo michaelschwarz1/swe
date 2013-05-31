@@ -64,10 +64,25 @@ import static javax.persistence.FetchType.LAZY;
 		        query = "SELECT   k"
 		                + " FROM  Kunde k"
 		                + " WHERE k.id LIKE :" + Kunde.PARAM_KUNDE_ID),
+	@NamedQuery(name  = Kunde.FIND_IDS_BY_PREFIX,
+			            query = "SELECT   k.id"
+						        + " FROM  Kunde k"
+						        + " WHERE CONCAT('', k.id) LIKE :" + Kunde.PARAM_KUNDE_ID_PREFIX
+						        + " ORDER BY k.id"),
+	@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_ID_PREFIX,
+						query = "SELECT   k"
+						        + " FROM  Kunde k"
+						        + " WHERE CONCAT('', k.id) LIKE :" + Kunde.PARAM_KUNDE_ID_PREFIX
+						        + " ORDER BY k.id"),
 	@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_NACHNAME,
 			    query = "SELECT k"
 					    + " FROM   Kunde k"
 			         	+ " WHERE  UPPER(k.nachname) = UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
+	@NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
+		   	            query = "SELECT   DISTINCT k.nachname"
+						        + " FROM  Kunde k "
+		   	            		+ " WHERE UPPER(k.nachname) LIKE UPPER(:"
+		   	            		+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
  	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_EMAIL,
    	            query = "SELECT DISTINCT k"
    			            + " FROM   Kunde k"
@@ -89,19 +104,20 @@ public class Kunde implements Serializable {
 private static final String PREFIX = "Kunde.";
 public static final String FIND_KUNDEN = PREFIX + "findKunden";
 public static final String FIND_KUNDEN_ORDER_BY_ID = PREFIX + "findKundenOrderById";
-//public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnamenByPrefix";
+public static final String FIND_KUNDEN_BY_ID_PREFIX = PREFIX + "findKundenByIdPrefix";
 public static final String FIND_KUNDE_BY_EMAIL = PREFIX + "findKundeByEmail";
 public static final String FIND_KUNDEN_BY_PLZ = PREFIX + "findKundenByPlz";
 public static final String FIND_KUNDE_BY_USERNAME = PREFIX + "findKundeByUsername";
 //public static final String FIND_KUNDEN_BY_DATE = PREFIX + "findKundenByDate";
 public static final String FIND_KUNDEN_BY_NACHNAME = PREFIX + "findKundenByNachname";
+public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnamenByPrefix";
 public static final String FIND_KUNDE_BY_ID = PREFIX + "findKundeById";
+public static final String FIND_IDS_BY_PREFIX = PREFIX + "findIdsByIdPrefix";
 public static final String PARAM_KUNDE_ID = "pkKunde";
 public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
 public static final String PARAM_KUNDE_NACHNAME = "nachname";
-//public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
+public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 public static final String PARAM_KUNDE_ADRESSE_PLZ = "plz";
-//public static final String PARAM_KUNDE_SEIT = "seit";
 public static final String PARAM_KUNDE_EMAIL = "email";
 public static final String PARAM_KUNDE_USERNAME = "pkKunde";
 

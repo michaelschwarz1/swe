@@ -3,6 +3,7 @@ import static de.shop.util.Constants.KEINE_ID;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -19,6 +20,8 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import org.jboss.logging.Logger;
+
+import com.google.common.base.Strings;
 
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
@@ -122,6 +125,16 @@ public class KundeService implements Serializable {
 		return kunden;
 	}
 	
+	/**
+	 */
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX, String.class)
+				                         .setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
+				                         .getResultList();
+		return nachnamen;
+	}
+
+	
 	private void validateNachname(String nachname, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
@@ -132,13 +145,31 @@ public class KundeService implements Serializable {
 			throw new InvalidNachnameException(nachname, violations);
 	}
 	
-//	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
-//		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX,
-//				                                           String.class)
-//				                         .setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
-//				                         .getResultList();
-//		return nachnamen;
-//	}
+	/**
+	 */
+	public List<Long> findIdsByPrefix(String idPrefix) {
+		if (Strings.isNullOrEmpty(idPrefix)) {
+			return Collections.emptyList();
+		}
+		final List<Long> ids = em.createNamedQuery(Kunde.FIND_IDS_BY_PREFIX, Long.class)
+				                 .setParameter(Kunde.PARAM_KUNDE_ID_PREFIX, idPrefix + '%')
+				                 .getResultList();
+		return ids;
+	}
+	
+	/**
+	 */
+	public List<Kunde> findKundenByIdPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_ID_PREFIX,
+				                                               Kunde.class)
+				                             .setParameter(Kunde.PARAM_KUNDE_ID_PREFIX, id.toString() + '%')
+				                             .getResultList();
+		return kunden;
+	}
 
 	/**
 	 */
