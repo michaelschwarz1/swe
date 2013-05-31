@@ -2,13 +2,13 @@ package de.shop.artikelverwaltung.controller;
 
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
+import static de.shop.util.Messages.MessagesType.KUNDENVERWALTUNG;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
@@ -35,9 +34,9 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.artikelverwaltung.service.InvalidArtikelException;
 import de.shop.auth.controller.AuthController;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
-import de.shop.util.ConcurrentDeletedException;
 import de.shop.util.Log;
 import de.shop.util.Messages;
 import de.shop.util.Transactional;
@@ -63,6 +62,7 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
+	private static final String JSF_UPDATE_ARTIKEL = ARTIKELVERWALTUNG + "updateArtikel";
 	
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_UPDATE = "updateArtikel.concurrentUpdate";
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
@@ -234,8 +234,7 @@ public class ArtikelController implements Serializable {
 		try {
 			artikel = as.updateArtikel(artikel);
 		}
-		catch (InvalidArtikelException
-			  | OptimisticLockException | ConcurrentDeletedException e) {
+		catch (OptimisticLockException e) {
 			final String outcome = updateErrorMsg(e, artikel.getClass());
 			return outcome;
 		}
@@ -246,7 +245,7 @@ public class ArtikelController implements Serializable {
 		// ValueChangeListener zuruecksetzen
 		geaendertArtikel = false;
 		
-		// Aufbereitung fuer viewKunde.xhtml
+		// Aufbereitung fuer viewArtikel.xhtml
 		artikelId = artikel.getPkArtikel();
 		
 		return JSF_LIST_ARTIKEL + JSF_REDIRECT_SUFFIX;
@@ -254,14 +253,25 @@ public class ArtikelController implements Serializable {
 	
 	private String updateErrorMsg(RuntimeException e, Class<? extends Artikel> artikelClass) {
 		final Class<? extends RuntimeException> exceptionClass = e.getClass();
-		if (exceptionClass.equals(InvalidArtikelException.class)) {
-			// Ungueltiges Password: Attribute wurden bereits von JSF validiert
-			final InvalidArtikelException orig = (InvalidArtikelException) e;
-			final Collection<ConstraintViolation<Artikel>> violations = orig.getViolations();
-			messages.error(violations, getBeschreibung());
+		 if (exceptionClass.equals(OptimisticLockException.class)) {
+			if (artikelClass.equals(Artikel.class)) {
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_UPDATE, null);
+			}
 		}
+		
 		return null;
 	}
+	
+	public String selectForUpdate(Artikel ausgewaehlterArtikel) {
+		if (ausgewaehlterArtikel == null) {
+			return null;
+		}
+		
+		artikel = ausgewaehlterArtikel;
+		
+		return Artikel.class.equals(ausgewaehlterArtikel.getClass())
+			   ? JSF_UPDATE_ARTIKEL : null;
+			   	}
 
 	public Artikel getArtikel() {
 		return artikel;

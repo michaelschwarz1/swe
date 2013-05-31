@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+				
+		<ui:param name="pageTitle" value="#{msgAv['updateArtikel.title']}"/>
+	
+		<ui:define name="article">
+			<h1>
+				<h:outputFormat id="headingArtikel" value="#{msgAv['updateArtikel.heading']}" rendered="#{not empty ac.artikel}">
+					<f:param id="idWert" value="#{ac.artikel.pkArtikel}"/>
+				</h:outputFormat>
+			</h1>
+			
+			<h:outputText id="fehlerKeinArtikel"
+			              value="#{msgAv['updateArtikel.keinArtikel']}"
+			              class="rf-msg-err"
+			              rendered="#{empty ac.artikel}"/>
+
+			<a4j:push id="updateEvent" address="updateArtikel"
+		              ondataavailable="if (event.rf.data == '#{ac.artikel.pkArtikel}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgAv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+			<span id="updateMessage"></span>
+			
+			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
+			<h:form id="updateArtikelForm" rendered="#{not empty ac.artikel}">
+				<rich:jQuery id="beschreibungFocus" selector="#beschreibung" query="focus()"/>
+				<!--
+				<rich:focus id="formFocus"/>
+				-->
+				
+				<h:panelGrid id="updateArtikelTabelle"
+				             columns="3">
+					<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
+					<h:inputText id="beschreibung"
+					             value="#{ac.artikel.beschreibung}"
+					             valueChangeListener="#{ac.geaendert}">
+						<rich:validator oninvalid="$(#{rich:element('beschreibung')}).addClass('invalid')"
+                                        onvalid="$(#{rich:element('beschreibung')}).removeClass('invalid')"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/>
+		
+					<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.Preis']}"/>
+					<h:inputText id="preis" value="#{ac.artikel.preis}" valueChangeListener="#{ac.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="aufLagerLabel" for="aufLager" value="#{msgAv['createArtikel.aufLager']}"/>
+					<h:inputText id="aufLager" value="#{ac.artikel.aufLager}" valueChangeListener="#{ac.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="kategorieLabel" for="kategorie" value="#{msgAv['createArtikel.kategorie']}"/>
+					<h:inputText id="kategorie" value="#{ac.artikel.kategorie}" valueChangeListener="#{ac.geaendert}"/>
+					<f:verbatim/>
+					
+				</h:panelGrid>
+	
+				<p id="buttons">
+					<h:commandButton id="button" action="#{ac.update}" value="#{msgAv['createArtikel.submit']}"/>
+					#{' '}
+					<h:commandButton type="reset" value="#{msgAv['createArtikel.reset']}"/>
+				</p>
+				
+				<p id="hinweisPflichtfelder">
+					#{msgAv['createArtikel.required']}
+				</p>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
