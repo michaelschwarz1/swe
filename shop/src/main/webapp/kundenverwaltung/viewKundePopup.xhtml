@@ -13,27 +13,27 @@
 					                name="stammdaten.gif"
 					                library="images"/>
 					#{' '}
-					#{msgKv['viewKundePopup.kunde.stammdaten']}
+					#{msgKv['viewKunde.kunde.stammdaten']}
 				</h:panelGroup>
 			</f:facet>
 			
 			<rich:panel id="stammdatenPanel">
 				<h:panelGrid id="stammdatenGrid" columns="2">
-					<h:outputText id="idLabel" value="#{msgKv['viewKundePopup.kundenr']}"/>
+					<h:outputText id="idLabel" value="#{msgKv['viewKunde.kundenr']}"/>
 					<h:outputText id="id" value="#{kunde.pkKunde}"/>
 			
-					<h:outputText id="nachnameLabel" value="#{msgKv['viewKundePopup.nachname']}"/>
+					<h:outputText id="nachnameLabel" value="#{msgKv['viewKunde.nachname']}"/>
 					<h:outputText id="nachname" value="#{kunde.nachname}"/>
 		
-					<h:outputText id="vornameLabel" value="#{msgKv['viewKundePopup.vorname']}"/>
+					<h:outputText id="vornameLabel" value="#{msgKv['viewKunde.vorname']}"/>
 					<h:outputText id="vorname" value="#{kunde.vorname}"/>
 					
-					<h:outputText id="seitLabel" value="#{msgKv['viewKundePopup.erzeugt']}"/>
+					<h:outputText id="seitLabel" value="#{msgKv['viewKunde.erzeugt']}"/>
 					<h:outputText id="seit" value="#{kunde.erzeugt}">
 						<f:convertDateTime type="date" dateStyle="long"/>
 					</h:outputText>
 					
-					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
+					<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
 	
 					<!-- <h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
@@ -119,7 +119,7 @@
 					                name="bestellungen.gif"
 					                library="images"/>
 					#{' '}
-					#{msgKv['viewKundePopup.kunde.bestellung']}
+					#{msgKv['viewKunde.kunde.bestellungen']}
 				</h:panelGroup>
 			</f:facet>
 			
@@ -127,21 +127,21 @@
 				<f:facet name="header">
 					<rich:columnGroup id="positionenSpalten">
 						<rich:column id="artikelIdSpalte">
-							#{msgKv['viewKundePopup.artikel.pkArtikel']}
+							#{msgAv['listArtikel.pkArtikel']}
 						</rich:column>
 						<rich:column id="bezeichnungSpalte">
-							#{msgKv['viewKundePopup.artikel.beschreibung']}
+							#{msgAv['listArtikel.beschreibung']}
 						</rich:column>
 						<rich:column id="anzahlSpalte">
-							#{msgKv['viewKundePopup.artikel.aufLager']}
+							#{msgAv['createArtikel.aufLager']}
 						</rich:column>
 					</rich:columnGroup>
 				</f:facet>
 				
 				<rich:column id="togglerSpalte" colspan="3">
 					<rich:collapsibleSubTableToggler id="subTableToggler" for="positionenSubtable"
-					                                 collapsedLabel="#{msgKv['viewKundePopup.bestellung']} #{bestellung.pkBestellung} : #{bestellung.getErzeugt()}"
-					                                 expandedLabel="#{msgKv['viewKundePopup.bestellung']} #{bestellung.pkBestellung} : #{bestellung.getErzeugt()}"/>
+					                                 collapsedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.pkBestellung} : #{bestellung.getErzeugt()}"
+					                                 expandedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.pkBestellung} : #{bestellung.getErzeugt()}"/>
 				</rich:column>
 				
 				<rich:collapsibleSubTable id="positionenSubtable"

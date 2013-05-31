@@ -25,21 +25,21 @@
 			<h:panelGrid id="ausgewaehlterKunde"
 			             columns="2"
 			             rendered="#{not empty kc.kunde}">
-				<h:outputText id="idLabel" value="#{msgKv['viewKundeGET.kundenr']}"/>
+				<h:outputText id="idLabel" value="#{msgKv['viewKunde.kundenr']}"/>
 				<h:outputText id="id" value="#{kc.kunde.pkKunde}"/>
 				
-				<h:outputText id="nachnameLabel" value="#{msgKv['viewKundeGET.nachname']}"/>
+				<h:outputText id="nachnameLabel" value="#{msgKv['viewKunde.nachname']}"/>
 				<h:outputText id="nachname" value="#{kc.kunde.nachname}"/>
 				
-				<h:outputText id="vornameLabel" value="#{msgKv['viewKundeGET.vorname']}"/>
+				<h:outputText id="vornameLabel" value="#{msgKv['viewKunde.vorname']}"/>
 				<h:outputText id="vorname" value="#{kc.kunde.vorname}"/>
 							
-				<h:outputText id="seitLabel" value="#{msgKv['viewKundeGET.seit']}"/>
+				<h:outputText id="seitLabel" value="#{msgKv['viewKunde.erzeugt']}"/>
 				<h:outputText id="seit" value="#{kc.kunde.erzeugt}">
 					<f:convertDateTime type="date" dateStyle="long"/>
 				</h:outputText>
 				
-				<h:outputText id="emailLabel" value="#{msgKv['viewKundeGET.email']}"/>
+				<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 				<h:outputText id="email" value="#{kc.kunde.email}"/>
 			
 				<!-- <h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>

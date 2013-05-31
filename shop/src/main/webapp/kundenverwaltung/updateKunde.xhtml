@@ -10,17 +10,17 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 				
-		<ui:param name="pageTitle" value="#{msgKv['updatePrivatkunde.title']}"/>
+		<ui:param name="pageTitle" value="#{msgKv['updateKunde.heading']}"/>
 	
 		<ui:define name="article">
 			<h1>
-				<h:outputFormat id="headingPrivatkunde" value="#{msgKv['updatePrivatkunde.heading']}" rendered="#{not empty kc.kunde}">
+				<h:outputFormat id="headingPrivatkunde" value="#{msgKv['updateKunde.heading']}" rendered="#{not empty kc.kunde}">
 					<f:param id="idWert" value="#{kc.kunde.pkKunde}"/>
 				</h:outputFormat>
 			</h1>
 			
 			<h:outputText id="fehlerKeinKunde"
-			              value="#{msgKv['updatePrivatkunde.keinKunde']}"
+			              value="#{msgKv['listKunden.keineDaten']}"
 			              class="rf-msg-err"
 			              rendered="#{empty kc.kunde}"/>
 
@@ -37,7 +37,7 @@
 				
 				<h:panelGrid id="updateKundeTabelle"
 				             columns="3">
-					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updatePrivatkunde.nachname']}"/>
+					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createPrivatkunde.nachname']}"/>
 					<h:inputText id="nachname"
 					             value="#{kc.kunde.nachname}"
 					             valueChangeListener="#{kc.geaendert}">
@@ -46,12 +46,12 @@
 					</h:inputText>
 					<rich:messages id="fehlermeldungenNachname" for="nachname"/>
 		
-					<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updatePrivatkunde.vorname']}"/>
+					<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createPrivatkunde.vorname']}"/>
 					<h:inputText id="vorname" value="#{kc.kunde.vorname}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
 					
-					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
+					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createPrivatkunde.email']}"/>
 					<h:inputText id="email" value="#{kc.kunde.email}" valueChangeListener="#{kc.geaendert}">
 						<rich:validator oninvalid="$(#{rich:element('email')}).addClass('invalid')"
                                         onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
@@ -60,13 +60,13 @@
 				</h:panelGrid>
 	
 				<p id="buttons">
-					<h:commandButton id="button" action="#{kc.update}" value="#{msgKv['updatePrivatkunde.submit']}"/>
+					<h:commandButton id="button" action="#{kc.update}" value="#{msgKv['updateKunde.submit']}"/>
 					#{' '}
-					<h:commandButton type="reset" value="#{msgKv['updatePrivatkunde.reset']}"/>
+					<h:commandButton type="reset" value="#{msgKv['updateKunde.reset']}"/>
 				</p>
 				
 				<p id="hinweisPflichtfelder">
-					#{msgKv['updatePrivatkunde.required']}
+					#{msgKv['updateKunde.required']}
 				</p>
 			</h:form>
 		</ui:define>
