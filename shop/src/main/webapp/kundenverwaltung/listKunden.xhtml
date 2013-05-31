@@ -30,7 +30,7 @@
 					<a4j:commandButton id="sucheButton"
 					                   action="#{kc.findKundenByNachname}"
 									   value="#{msgKv['listKunden.submit']}"
-									   render="kundenPanel fehlermeldungNachname"/>
+									   render="kundePanel fehlermeldungNachname"/>
 									   
 					<a4j:status id="statusStart">
 						<f:facet name="start">
@@ -39,6 +39,7 @@
 								                name="waiting.gif"
 								                library="images"/>
 								#{msgKv['listKunden.inBearbeitung']}
+
 							</h:panelGroup>
 						</f:facet>
 					</a4j:status>
@@ -52,7 +53,7 @@
 				<rich:messages id="globaleFehlermeldungen" globalOnly="true"/>
 			</p> -->
 		
-			<a4j:outputPanel id="kundenPanel">
+			<a4j:outputPanel id="kundePanel">
 				<rich:dataTable id="kundenTabelle"
 				                value="#{kc.kunden}"
 				                var="kunde"
@@ -103,6 +104,8 @@
 								#{msgKv['viewKundePopup.hide.button']}
 							</h:outputLink>
 						</rich:popupPanel>
+						
+
 
 						<rich:contextMenu id="ctxmenu"
 						                  attachTo="nachnamePopup"
