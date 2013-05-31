@@ -36,7 +36,7 @@
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
 	
-					<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
+					<!-- <h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
 					<h:outputText id="firmenkunde" value="#{msgKv['viewKundePopup.firmenkunde']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
 		
 					<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
@@ -46,21 +46,21 @@
 					<h:outputText id="weiblich" value="#{msgKv['viewKundePopup.geschlecht.weiblich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'WEIBLICH'}"/>
 		
 					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
-					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/> -->
 	
-					<h:outputText id="hobbiesLabel" value="#{msgKv['viewKundePopup.hobbies']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
+<!-- 					<h:outputText id="hobbiesLabel" value="#{msgKv['viewKundePopup.hobbies']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
 					<h:selectManyCheckbox value="#{kunde.hobbies}"
 					                      layout="pageDirection"
 					                      disabled="true"
 					                      readonly="true"
-					                      rendered="#{kunde.class.simpleName eq 'Privatkunde'}">
+					                      rendered="#{kunde.class.simpleName eq 'Kunde'}">
 						<f:selectItem itemValue="SPORT"
 									  itemLabel="#{msgKv['viewKundePopup.hobbies.sport']}"/>
 						<f:selectItem itemValue="LESEN" 
 									  itemLabel="#{msgKv['viewKundePopup.hobbies.lesen']}"/>
 						<f:selectItem itemValue="REISEN" 
 									  itemLabel="#{msgKv['viewKundePopup.hobbies.reisen']}"/>
-					</h:selectManyCheckbox>
+					</h:selectManyCheckbox> -->
 				</h:panelGrid>
 			</rich:panel>
 		</rich:tab>

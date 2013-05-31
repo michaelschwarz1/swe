@@ -42,7 +42,7 @@
 				<h:outputText id="emailLabel" value="#{msgKv['viewKundeGET.email']}"/>
 				<h:outputText id="email" value="#{kc.kunde.email}"/>
 			
-				<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>
+				<!-- <h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>
 				<h:outputText id="firmenkunde" value="#{msgKv['viewKundeGET.firmenkunde']}" rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>
 				
 				<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kc.kunde.class.simpleName eq 'Privatkunde'}"/>
@@ -52,21 +52,20 @@
 				<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{kc.kunde.class.simpleName eq 'Privatkunde' and kc.kunde.geschlecht eq 'WEIBLICH'}"/>
 			
 				<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kc.kunde.class.simpleName eq 'Privatkunde' and kc.kunde.geschlecht eq 'MAENNLICH'}"/>
-				<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{kc.kunde.class.simpleName eq 'Privatkunde' and kc.kunde.geschlecht eq 'MAENNLICH'}"/>
+				<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{kc.kunde.class.simpleName eq 'Privatkunde' and kc.kunde.geschlecht eq 'MAENNLICH'}"/> -->
 	
 			</h:panelGrid>
 						
 			<h:form id="buttons" rendered="#{not empty kc.kunde}">
-				<h:commandButton id="updateButtonPrivatkunde"
+				<h:commandButton id="updateButtonKunde"
 				                 image="#{resource['images/edit.gif']}"
-				                 action="/kundenverwaltung/updatePrivatkunde"
-				                 alt="#{msgKv['viewKundeGET.update.alt']}"
-				                 rendered="#{kc.kunde.class.simpleName eq 'Privatkunde'}"/>
-				<h:commandButton id="updateButtonFirmenkunde"
+				                 action="/kundenverwaltung/updateKunde"
+				                 alt="#{msgKv['viewKundeGET.update.alt']}"/>
+<!-- 				<h:commandButton id="updateButtonFirmenkunde"
 				                 image="#{resource['images/edit.gif']}"
 				                 action="/kundenverwaltung/updateFirmenkunde"
 				                 alt="#{msgKv['viewKundeGET.update.alt']}"
-				                 rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/>
+				                 rendered="#{kc.kunde.class.simpleName eq 'Firmenkunde'}"/> -->
 			</h:form>
 		</ui:define>
 	</ui:composition>

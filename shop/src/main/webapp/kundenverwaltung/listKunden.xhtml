@@ -120,11 +120,11 @@
 								           action="#{kc.selectForUpdate(kunde)}"/>
 							<rich:menuSeparator id="menuSeparatorDelete"
 							                    rendered="#{rich:isUserInRole('admin')}"/>
-							<rich:menuItem id="deleteContext"
+							<!-- <rich:menuItem id="deleteContext"
 								           label="#{msgKv['listKunden.deleteButtonAlt']}"
 								           icon="#{resource['images:delete.gif']}"
 								           action="#{kc.delete(kunde)}"
-								           rendered="#{rich:isUserInRole('admin')}"/>
+								           rendered="#{rich:isUserInRole('admin')}"/> -->
 						</rich:contextMenu>
 
 					</rich:column>

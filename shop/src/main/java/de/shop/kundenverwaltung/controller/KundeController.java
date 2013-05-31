@@ -298,7 +298,7 @@ public class KundeController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public void loadKundeById() {
 		// Request-Parameter "kundeId" fuer ID des gesuchten Kunden
-		final String idStr = request.getParameter("PK_KUNDE");
+		final String idStr = request.getParameter("kundeId");
 		Long id;
 		try {
 			id = Long.valueOf(idStr);
