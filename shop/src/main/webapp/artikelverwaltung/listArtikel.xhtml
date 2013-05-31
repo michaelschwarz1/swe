@@ -72,6 +72,13 @@
 								#{art.beschreibung}
 							</rich:column>
 							
+							<rich:column id="aufLagerSpalte">
+								<f:facet name="header">
+									#{msgAv['createArtikel.aufLager']}
+								</f:facet>
+								#{art.aufLager}
+							</rich:column>
+							
 							<rich:column id="buttonSpalte"
 							             rendered="#{not empty artikel}">
 								<h:commandButton id="warenkorbButton"
@@ -79,7 +86,15 @@
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
+							<rich:column id="editSpalte" rendered="#{not empty artikel and rich:isUserInRole('admin')}">
+								<h:commandButton id="updateButtonArtikel"
+							              		 image="#{resource['images:edit.gif']}"
+							                	 action="#{ac.selectForUpdate(art)}"
+							              	   	 alt="#{msgAv['updateArtikel.update.alt']}"
+							                	 rendered="#{rich:isUserInRole('admin')}"/>
+							</rich:column>
 						</rich:dataTable>
+						
 						
 						<p id="abstand2"/>
 						<rich:dataScroller id="dataScroller"
