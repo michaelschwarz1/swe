@@ -34,7 +34,6 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.artikelverwaltung.service.InvalidArtikelException;
 import de.shop.auth.controller.AuthController;
-import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.Log;
@@ -58,14 +57,14 @@ public class ArtikelController implements Serializable {
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
 	private static final String ARTIKELVERWALTUNG = "/artikelverwaltung/";
-	private static final String JSF_VIEW_ARTIKEL = ARTIKELVERWALTUNG + "viewArtikel";
+	// private static final String JSF_VIEW_ARTIKEL = ARTIKELVERWALTUNG + "viewArtikel";
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
 	private static final String JSF_UPDATE_ARTIKEL = ARTIKELVERWALTUNG + "updateArtikel";
 	
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_UPDATE = "updateArtikel.concurrentUpdate";
-	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
+	// private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
 
 	private String beschreibung;
 	private String kategorie;
