@@ -130,6 +130,35 @@
 							</rich:panel>
 						</rich:tab>
 						
+						<rich:tab id="adresseTab">
+							<f:facet name="header">
+								<h:panelGroup id="adresseLabel">
+									<h:graphicImage id="adresseGif"
+									                name="adresse.gif"
+									                library="images"/>
+									#{' '}
+									#{msgKv['viewKunde.kunde.adresse']}
+								</h:panelGroup>
+							</f:facet>
+						<rich:panel id="adressePanel">
+								<h:panelGrid id="adresseGrid" columns="2">					
+									<h:outputText id="strasseLabel" value="#{msgKv['viewKunde.strasse']}"/>
+									<h:outputText id="strasse" value="#{kc.kunde.adresse.strasse}"/>
+						
+									<h:outputText id="hausnrLabel" value="#{msgKv['viewKunde.hausnr']}"/>
+									<h:outputText id="hausnr" value="#{kc.kunde.adresse.hausnr}"/>
+									
+									<h:outputText id="plzLabel" value="#{msgKv['viewKunde.plz']}"/>
+									<h:outputText id="plz" value="#{kc.kunde.adresse.plz}"/>
+									
+									<h:outputText id="ortLabel" value="#{msgKv['viewKunde.ort']}"/>
+									<h:outputText id="ort" value="#{kc.kunde.adresse.ort}"/>
+					
+									
+								</h:panelGrid>
+							</rich:panel>
+						</rich:tab>
+						
 						<rich:tab id="multimediaTab" rendered="#{not empty kc.kunde.file}">
 							<f:facet name="header">
 								<h:panelGroup id="multimediaLabel">
@@ -177,6 +206,8 @@
 								</c:when>
 							</c:choose>
 						</rich:tab>
+						
+						
 						
 						<rich:tab id="bestellungenTab" rendered="#{not empty kc.kunde.bestellung}">
 							<f:facet name="header">
