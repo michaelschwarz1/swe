@@ -261,9 +261,12 @@
       <url-pattern>/kundenverwaltung/updatePrivatkunde.jsf</url-pattern>
       <url-pattern>/kundenverwaltung/updatePrivatkunde.faces</url-pattern>
       <url-pattern>/faces/kundenverwaltung/updatePrivatkunde.xhtml</url-pattern>
-      <url-pattern>/kundenverwaltung/updateFirmenkunde.jsf</url-pattern>
-      <url-pattern>/kundenverwaltung/updateFirmenkunde.faces</url-pattern>
-      <url-pattern>/faces/kundenverwaltung/updateFirmenkunde.xhtml</url-pattern>
+      <url-pattern>/artikelverwaltung/createArtikel.jsf</url-pattern>
+      <url-pattern>/artikelverwaltung/createArtikel.faces</url-pattern>
+      <url-pattern>/artikelverwaltung/createArtikel.xhtml</url-pattern>
+      <url-pattern>/artikelverwaltung/updateArtikel.jsf</url-pattern>
+      <url-pattern>/artikelverwaltung/updateArtikel.faces</url-pattern>
+      <url-pattern>/artikelverwaltung/updateArtikel.xhtml</url-pattern>
       <http-method>POST</http-method>
       <http-method>GET</http-method>
     </web-resource-collection>
