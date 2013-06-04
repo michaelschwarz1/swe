@@ -43,7 +43,6 @@ import de.shop.kundenverwaltung.domain.PasswordGroup;
 import de.shop.kundenverwaltung.service.EmailExistsException;
 import de.shop.kundenverwaltung.service.InvalidKundeException;
 import de.shop.kundenverwaltung.service.InvalidNachnameException;
-import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.kundenverwaltung.service.KundeService.OrderType;
@@ -71,28 +70,19 @@ public class KundeController implements Serializable {
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_KUNDE = JSF_KUNDENVERWALTUNG + "updateKunde";
-	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
-	
 	private static final String REQUEST_KUNDE_ID = "kundeId";
-
 	private static final String CLIENT_ID_KUNDEID = "form:kundeIdInput";
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
-	
 	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
-
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
-	
 	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
-	
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
 	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updateKunde.duplikat";
 	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updatePrivatkunde.concurrentUpdate";
 	
-	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "viewKunde.deleteKundeBestellung";
 	private Kunde neuerKunde;
 	
 	@PersistenceContext(type = EXTENDED)
@@ -137,36 +127,11 @@ public class KundeController implements Serializable {
 	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
 	
-	
 	private byte[] bytes;
 	private String contentType;
 
 //	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
-//	@PostConstruct
-//	private void postConstruct() {
-////		// Dynamischer Menuepunkt fuer Emails
-////		final Application app = facesCtx.getApplication();  // javax.faces.application.Application
-////		menuItemEmail = (UIPanelMenuItem) app.createComponent(facesCtx,
-////				                                              UIPanelMenuItem.COMPONENT_TYPE,
-////				                                              PanelMenuItemRenderer.class.getName());
-////		menuItemEmail.setLabel("Email dynamisch");
-////		menuItemEmail.setId("kundenverwaltungViewByEmail");
-////		
-////		// <h:outputLink>
-////		// component-family: javax.faces.Output renderer-type: javax.faces.Link
-////		
-////		//menuGroup = (UIPanelMenuGroup) app.createComponent(facesCtx,
-////		//                                                   UIPanelMenuGroup.COMPONENT_TYPE,
-////		//                                                   PanelMenuGroupRenderer.class.getName());
-////		//UIPanelMenuItem item = (UIPanelMenuItem) app.createComponent(facesCtx,
-////		//                                                             UIPanelMenuItem.COMPONENT_TYPE,
-////		//                                                             PanelMenuItemRenderer.class.getName());
-////		//menuGroup.getChildren().add(item);
-//
-//		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
-//	}
-
 	@PreDestroy
 	private void preDestroy() {
 		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
@@ -224,17 +189,29 @@ public class KundeController implements Serializable {
 		this.vornameFilter = vornameFilter;
 	}
 
-	
-//	public void setMenuItemEmail(UIPanelMenuItem menuItemEmail) {
-//		this.menuItemEmail = menuItemEmail;
-//	}
-//	public UIPanelMenuItem getMenuItemEmail() {
-//		return menuItemEmail;
-//	}
-
 	public Date getAktuellesDatum() {
 		final Date datum = new Date();
 		return datum;
+	}
+	public String getFilename(File file) {
+		if (file == null) {
+			return "";
+		}
+		
+		fileHelper.store(file);
+		return file.getFilename();
+	}
+	
+	public String getBase64(File file) {
+		return DatatypeConverter.printBase64Binary(file.getBytes());
+	}
+
+	public Kunde getNeuerKunde() {
+		return neuerKunde;
+	}
+
+	public void setNeuerKunde(Kunde neuerKunde) {
+		this.neuerKunde = neuerKunde;
 	}
 	
 	/**
@@ -254,7 +231,6 @@ public class KundeController implements Serializable {
 		return JSF_VIEW_KUNDE;
 	}
 	
-
 	private String findKundeByIdErrorMsg(String id) {
 		messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDE_NOT_FOUND_BY_ID, CLIENT_ID_KUNDEID, id);
 		return null;
@@ -416,7 +392,6 @@ public class KundeController implements Serializable {
 		return PASSWORD_GROUP.clone();
 	}
 
-
 	/**
 	 * Verwendung als ValueChangeListener bei updatePrivatkunde.xhtml und updateFirmenkunde.xhtml
 	 */
@@ -436,7 +411,6 @@ public class KundeController implements Serializable {
 			geaendertKunde = true;				
 		}
 	}
-	
 
 	@TransactionAttribute(REQUIRED)
 	public String update() {
@@ -489,36 +463,6 @@ public class KundeController implements Serializable {
 		return null;
 	}
 	
-	/**
-	 * Action Methode, um einen zuvor gesuchten Kunden zu l&ouml;schen
-	 * @return URL fuer Startseite im Erfolgsfall, sonst wieder die gleiche Seite
-	 */
-	@TransactionAttribute(REQUIRED)
-	public String deleteAngezeigtenKunden() {
-		if (kunde == null) {
-			return null;
-		}
-		
-		LOGGER.trace(kunde);
-		try {
-			ks.deleteKunde(kunde);
-		}
-		catch (KundeDeleteBestellungException e) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_DELETE_KUNDE_BESTELLUNG, CLIENT_ID_DELETE_BUTTON,
-					       e.getKundeId(), e.getAnzahlBestellungen());
-			return null;
-		}
-		
-		// Aufbereitung fuer ok.xhtml
-		request.setAttribute(REQUEST_KUNDE_ID, kunde.getPkKunde());
-		
-		// Zuruecksetzen
-		kunde = null;
-		kundeId = null;
-
-		return JSF_DELETE_OK;
-	}
-	
 	public String selectForUpdate(Kunde ausgewaehlterKunde) {
 		if (ausgewaehlterKunde == null) {
 			return null;
@@ -552,24 +496,5 @@ public class KundeController implements Serializable {
 		return JSF_INDEX;
 	}
 	
-	public String getFilename(File file) {
-		if (file == null) {
-			return "";
-		}
-		
-		fileHelper.store(file);
-		return file.getFilename();
-	}
-	
-	public String getBase64(File file) {
-		return DatatypeConverter.printBase64Binary(file.getBytes());
-	}
 
-	public Kunde getNeuerKunde() {
-		return neuerKunde;
-	}
-
-	public void setNeuerKunde(Kunde neuerKunde) {
-		this.neuerKunde = neuerKunde;
-	}
 }

@@ -57,14 +57,10 @@ public class ArtikelController implements Serializable {
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
 	private static final String ARTIKELVERWALTUNG = "/artikelverwaltung/";
-	// private static final String JSF_VIEW_ARTIKEL = ARTIKELVERWALTUNG + "viewArtikel";
-	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
 	private static final String JSF_UPDATE_ARTIKEL = ARTIKELVERWALTUNG + "updateArtikel";
-	
 	private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_UPDATE = "updateArtikel.concurrentUpdate";
-	// private static final String MSG_KEY_UPDATE_ARTIKEL_CONCURRENT_DELETE = "updateArtikel.concurrentDelete";
 
 	private String beschreibung;
 	private String kategorie;
@@ -74,7 +70,6 @@ public class ArtikelController implements Serializable {
 	private Artikel artikel;
 	private Artikel neuerArtikel;
 	private boolean geaendertArtikel;
-//	private List<Artikel> ladenhueter;
 	
 	@PersistenceContext(type = EXTENDED)
 	private transient EntityManager em;
@@ -138,12 +133,55 @@ public class ArtikelController implements Serializable {
 	public void setArtikelId(Long artikelId) {
 		this.artikelId = artikelId;
 	}
+	public Artikel getArtikel() {
+		return artikel;
+	}
 
-//	public List<Artikel> getLadenhueter() {
-//		return ladenhueter;
-//	}
+	public void setArtikel(Artikel artikel) {
+		this.artikel = artikel;
+	}
 
-	@Transactional
+	public Artikel getNeuerArtikel() {
+		return neuerArtikel;
+	}
+
+	public void setNeuerArtikel(Artikel neuerArtikel) {
+		this.neuerArtikel = neuerArtikel;
+	}
+
+	public boolean isGeaendertArtikel() {
+		return geaendertArtikel;
+	}
+
+	public void setGeaendertArtikel(boolean geaendertArtikel) {
+		this.geaendertArtikel = geaendertArtikel;
+	}
+
+	public double getPreis() {
+		return preis;
+	}
+
+	public void setPreis(double preis) {
+		this.preis = preis;
+	}
+
+	public String getKategorie() {
+		return kategorie;
+	}
+
+	public void setKategorie(String kategorie) {
+		this.kategorie = kategorie;
+	}
+
+	public int getAufLager() {
+		return aufLager;
+	}
+
+	public void setAufLager(int aufLager) {
+		this.aufLager = aufLager;
+	}
+
+	@TransactionAttribute(REQUIRED)
 	public String findArtikelByBeschreibung() {
 		final List<Artikel> artikel = as.findArtikelByBeschreibung(beschreibung);
 		flash.put(FLASH_ARTIKEL, artikel);
@@ -151,7 +189,7 @@ public class ArtikelController implements Serializable {
 		return JSF_LIST_ARTIKEL;
 	}
 	
-	@Transactional
+	@TransactionAttribute(REQUIRED)
 	public String selectArtikel() {
 		if (session.getAttribute(SESSION_VERFUEGBARE_ARTIKEL) != null) {
 			return JSF_SELECT_ARTIKEL;
@@ -270,55 +308,6 @@ public class ArtikelController implements Serializable {
 		
 		return Artikel.class.equals(ausgewaehlterArtikel.getClass())
 			   ? JSF_UPDATE_ARTIKEL : null;
-			   	}
-
-	public Artikel getArtikel() {
-		return artikel;
 	}
-
-	public void setArtikel(Artikel artikel) {
-		this.artikel = artikel;
-	}
-
-	public Artikel getNeuerArtikel() {
-		return neuerArtikel;
-	}
-
-	public void setNeuerArtikel(Artikel neuerArtikel) {
-		this.neuerArtikel = neuerArtikel;
-	}
-
-	public boolean isGeaendertArtikel() {
-		return geaendertArtikel;
-	}
-
-	public void setGeaendertArtikel(boolean geaendertArtikel) {
-		this.geaendertArtikel = geaendertArtikel;
-	}
-
-	public double getPreis() {
-		return preis;
-	}
-
-	public void setPreis(double preis) {
-		this.preis = preis;
-	}
-
-	public String getKategorie() {
-		return kategorie;
-	}
-
-	public void setKategorie(String kategorie) {
-		this.kategorie = kategorie;
-	}
-
-	public int getAufLager() {
-		return aufLager;
-	}
-
-	public void setAufLager(int aufLager) {
-		this.aufLager = aufLager;
-	}
-	
 
 }

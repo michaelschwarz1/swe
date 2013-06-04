@@ -74,6 +74,13 @@
                                         onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
 					</h:inputText>
 					<rich:messages id="fehlermeldungenEmail" for="email"/>
+					
+					<h:outputLabel id="passwordLabel" for="password"
+						           value="#{msgKv['createPrivatkunde.password']}"/>
+					<h:inputSecret id="password"
+						           value="#{kc.kunde.password}"
+						           redisplay="true"/>
+					<f:verbatim/>
 				</h:panelGrid>
 			</rich:panel>
 		</rich:tab>
@@ -81,9 +88,6 @@
 		<rich:tab id="adresseTab">
 							<f:facet name="header">
 								<h:panelGroup id="adresseLabel">
-									<!-- <h:graphicImage id="adresseGif"
-									                name="adresse.gif"
-									                library="images"/> -->
 									#{' '}
 									#{msgKv['viewKunde.kunde.adresse']}
 								</h:panelGroup>
