@@ -49,7 +49,6 @@ import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
-import de.shop.util.ConcurrentDeletedException;
 import de.shop.util.File;
 import de.shop.util.FileHelper;
 import de.shop.util.Messages;
@@ -90,7 +89,7 @@ public class KundeController implements Serializable {
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
 	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updateKunde.duplikat";
-	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updateKunde.concurrentUpdate";
+	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updatePrivatkunde.concurrentUpdate";
 	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
 	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "viewKunde.deleteKundeBestellung";

@@ -29,13 +29,30 @@
 			<span id="updateMessage"></span>
 			
 			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
-			<h:form id="updateKundeForm" rendered="#{not empty kc.kunde}">
+			
+
+			
+			<h:form id="updateKundeForm">
 				<rich:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
 				<!--
 				<rich:focus id="formFocus"/>
 				-->
 				
-				<h:panelGrid id="updateKundeTabelle"
+		<a4j:outputPanel id="gesuchterKundePanel">
+					<rich:tabPanel id="tabPanel" switchType="client">		
+			<rich:tab id="stammdatenTab">
+				<f:facet name="header">
+					<h:panelGroup id="stammdatenLabel">
+						<h:graphicImage id="stammdatenGif"
+									    name="stammdaten.gif"
+									    library="images"/>
+							#{' '}
+							#{msgKv['viewKunde.kunde.stammdaten']}
+					</h:panelGroup>
+				</f:facet>
+							
+			<rich:panel id="stammdatenPanel">
+				<h:panelGrid id="updateKundeStammdaten"
 				             columns="3">
 					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createPrivatkunde.nachname']}"/>
 					<h:inputText id="nachname"
@@ -58,7 +75,53 @@
 					</h:inputText>
 					<rich:messages id="fehlermeldungenEmail" for="email"/>
 				</h:panelGrid>
-	
+			</rich:panel>
+		</rich:tab>
+		
+		<rich:tab id="adresseTab">
+							<f:facet name="header">
+								<h:panelGroup id="adresseLabel">
+									<!-- <h:graphicImage id="adresseGif"
+									                name="adresse.gif"
+									                library="images"/> -->
+									#{' '}
+									#{msgKv['viewKunde.kunde.adresse']}
+								</h:panelGroup>
+							</f:facet>
+						<rich:panel id="adressePanel">
+								<h:panelGrid id="adresseGrid" columns="3">					
+									<h:outputText id="strasseLabel" value="#{msgKv['viewKunde.strasse']}"/>
+									<h:inputText id="strasse"
+					             				 value="#{kc.kunde.adresse.strasse}"
+					             				 valueChangeListener="#{kc.geaendert}">
+										<rich:validator oninvalid="$(#{rich:element('stasse')}).addClass('invalid')"
+                                       				    onvalid="$(#{rich:element('strasse')}).removeClass('invalid')"/>	
+                                     </h:inputText>
+                                     <rich:messages id="fehlermeldungenStrasse" for="strasse"/>
+                                     
+                                       				    					
+									<h:outputText id="hausnrLabel" value="#{msgKv['viewKunde.hausnr']}"/>
+									<h:inputText id="hausnr" value="#{kc.kunde.adresse.hausnr}" valueChangeListener="#{kc.geaendert}"/>
+									<f:verbatim/>		
+																
+									<h:outputText id="plzLabel" value="#{msgKv['viewKunde.plz']}"/>
+									<h:inputText id="plz" value="#{kc.kunde.adresse.plz}" valueChangeListener="#{kc.geaendert}"/>
+									<f:verbatim/>
+																		
+									<h:outputText id="ortLabel" value="#{msgKv['viewKunde.ort']}"/>
+									<h:inputText id="ort" value="#{kc.kunde.adresse.ort}" valueChangeListener="#{kc.geaendert}"/>
+									<f:verbatim/>
+				
+					
+					<rich:messages id="fehlermeldungenAdresse"/>
+									
+								</h:panelGrid>
+							</rich:panel>
+						</rich:tab>
+		
+		
+		</rich:tabPanel>	
+		</a4j:outputPanel>
 				<p id="buttons">
 					<h:commandButton id="button" action="#{kc.update}" value="#{msgKv['updateKunde.submit']}"/>
 					#{' '}
