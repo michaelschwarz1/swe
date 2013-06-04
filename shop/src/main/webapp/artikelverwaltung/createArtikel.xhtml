@@ -5,7 +5,8 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:rich="http://richfaces.org/rich">
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:define name="metadata">
@@ -21,14 +22,7 @@
 	
 			<h:form id="createArtikelForm">
 				<rich:jQuery id="beschreibungFocus" selector="beschreibung" query="focus()"/>
-				<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
-				<rich:focus id="createKundeFormFocus"/>
-				-->
-				
-				<!--
-					https://issues.jboss.org/browse/AS7-1348
-					http://community.jboss.org/thread/169487 
-				-->
+
 				<rich:graphValidator id="artikelValidator"
 				                     value="#{ac.neuerArtikel}">
 				                     
@@ -36,6 +30,16 @@
 					<rich:messages id="fehlermeldungPassword" globalOnly="true"/>
 					<p id="abstand"/>
 					
+					
+					<a4j:outputPanel id="neuerArtikelPanel">
+					<rich:tabPanel id="tabPanel" switchType="client">		
+						<rich:tab id="stammdatenTab">
+							<f:facet name="header">
+							<h:panelGroup id="artikelLabel">
+							#{' '}
+							#{msgAv['createArtikel.tabArtikel']}
+					</h:panelGroup>
+				</f:facet>
 					<h:panelGrid id="createArtikelTabelle"
 					             columns="3">
 			
@@ -52,15 +56,24 @@
 						</h:inputText>
 						<f:verbatim/>
 						<h:outputLabel id="aufLagerLabel" for="aufLager" value="#{msgAv['createArtikel.aufLager']}"/>
-						<h:inputText id="aufLager" value="#{ac.neuerArtikel.aufLager}"/>
+						<rich:inputNumberSlider id="aufLager"
+												value="#{ac.neuerArtikel.aufLager}"
+												minValue="0"
+												maxValue="100"
+												inputSize="5"
+												width="100"/>
 						<f:verbatim/>
-						
 						<h:outputLabel id="kategorieLabel" for="kategorie" value="#{msgAv['createArtikel.kategorie']}"/>
 						<h:inputText id="kategorie" value="#{ac.neuerArtikel.kategorie}">
 						</h:inputText>
 						<f:verbatim/>
 												
 					</h:panelGrid>
+					
+					</rich:tab></rich:tabPanel>
+					</a4j:outputPanel>
+			
+					
 					<p id="buttons">
 						<h:commandButton id="createSubmit" action="#{ac.createArtikel}" value="#{msgAv['createArtikel.submit']}"/>
 						#{' '}

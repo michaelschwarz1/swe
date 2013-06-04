@@ -34,7 +34,15 @@
 				<!--
 				<rich:focus id="formFocus"/>
 				-->
-				
+									<a4j:outputPanel id="updateArtikelPanel">
+					<rich:tabPanel id="tabPanel" switchType="client">		
+						<rich:tab id="artikelTab">
+							<f:facet name="header">
+							<h:panelGroup id="artikelLabel">
+							#{' '}
+							#{msgAv['updateArtikel.tabArtikel']} #{ac.artikel.pkArtikel}
+					</h:panelGroup>
+				</f:facet>
 				<h:panelGrid id="updateArtikelTabelle"
 				             columns="3">
 					<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
@@ -51,14 +59,22 @@
 					<f:verbatim/>
 					
 					<h:outputLabel id="aufLagerLabel" for="aufLager" value="#{msgAv['createArtikel.aufLager']}"/>
-					<h:inputText id="aufLager" value="#{ac.artikel.aufLager}" valueChangeListener="#{ac.geaendert}"/>
-					<f:verbatim/>
+					<rich:inputNumberSlider id="aufLager"
+											value="#{ac.artikel.aufLager}"
+											valueChangeListener="#{ac.geaendert}"
+											minValue="0"
+											maxValue="100"
+											inputSize="5"
+											width="100"/>
+						<f:verbatim/>
 					
 					<h:outputLabel id="kategorieLabel" for="kategorie" value="#{msgAv['createArtikel.kategorie']}"/>
 					<h:inputText id="kategorie" value="#{ac.artikel.kategorie}" valueChangeListener="#{ac.geaendert}"/>
 					<f:verbatim/>
 					
 				</h:panelGrid>
+				</rich:tab></rich:tabPanel>
+					</a4j:outputPanel>
 	
 				<p id="buttons">
 					<h:commandButton id="button" action="#{ac.update}" value="#{msgAv['createArtikel.submit']}"/>
