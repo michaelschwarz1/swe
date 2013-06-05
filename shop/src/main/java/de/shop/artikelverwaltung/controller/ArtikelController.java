@@ -38,8 +38,6 @@ import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Messages;
-import de.shop.util.Transactional;
-
 
 /**
  * Dialogsteuerung fuer die ArtikelService
