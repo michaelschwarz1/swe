@@ -198,7 +198,7 @@ public class KundeService implements Serializable {
 	public Kunde findKundeByUserName(String userName) {
 		Kunde kunde;
 		try {
-			Long  user = Long.valueOf(userName);
+			Long  user = Long.valueOf(userName).longValue();
 			kunde = em.createNamedQuery(Kunde.FIND_KUNDE_BY_USERNAME, Kunde.class)
 					  .setParameter(Kunde.PARAM_KUNDE_USERNAME, user)
 					  .getSingleResult();
