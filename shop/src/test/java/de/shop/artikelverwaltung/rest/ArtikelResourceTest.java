@@ -176,5 +176,4 @@ import de.shop.util.AbstractResourceTest;
 			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
 	   	}
 
-	}
-	
+}

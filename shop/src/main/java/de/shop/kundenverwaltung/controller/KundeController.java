@@ -77,7 +77,7 @@ public class KundeController implements Serializable {
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
-	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
+	private static final Class<?>[] PASSWORD_GROUP = {PasswordGroup.class};
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
 	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updateKunde.duplikat";
