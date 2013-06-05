@@ -240,7 +240,7 @@ public class AuthController implements Serializable {
 	@Transactional
 	public String findRollenByUsername() {
 		// Gibt es den Usernamen ueberhaupt?
-		final Kunde kunde = ks.findKundeById(usernameUpdateRollen,FetchType.NUR_KUNDE,null);
+		final Kunde kunde = ks.findKundeById(usernameUpdateRollen, FetchType.NUR_KUNDE, null);
 		if (kunde == null) {
 			kundeId = null;
 			ausgewaehlteRollenOrig = null;
